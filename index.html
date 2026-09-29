@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hub Pembelajaran MPU24381 - Pengakap Kelana Politeknik 1</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            scout: {
+              purple: '#581c87',
+              gold: '#f59e0b',
+              green: '#065f46',
+              forest: '#064e3b',
+              dark: '#0f172a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at top left, #f8fafc, #f1f5f9, #e2e8f0);
+    }
+    .badge-glow {
+      box-shadow: 0 0 20px -5px rgba(245, 158, 11, 0.4);
+    }
+    .card-hover {
+      transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 30px -10px rgba(15, 23, 42, 0.12);
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col antialiased selection:bg-amber-400 selection:text-slate-900">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-800 via-emerald-700 to-amber-500 p-0.5 shadow-md flex items-center justify-center text-white">
+          <i class="fa-solid fa-compass text-2xl"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Politeknik Malaysia</span>
+            <span class="text-xs font-extrabold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">MPU24381</span>
+          </div>
+          <h1 class="font-extrabold text-slate-900 text-base sm:text-lg tracking-tight">Hub Pengakap Kelana 1</h1>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button onclick="openConfigModal()" class="px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors flex items-center gap-2">
+          <i class="fa-solid fa-gear text-slate-500"></i>
+          <span class="hidden sm:inline">Urus Pautan</span>
+        </button>
+        <button onclick="resetAllProgress()" class="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 text-slate-500 hover:text-rose-600 hover:border-rose-300 transition-colors title='Set Semula Kemajuan'">
+          <i class="fa-solid fa-rotate-left"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    
+    <!-- Hero Banner -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-950 via-emerald-900 to-purple-950 text-white p-6 sm:p-10 shadow-2xl border border-emerald-800/40">
+      <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none text-9xl">
+        <i class="fa-solid fa-award"></i>
+      </div>
+      
+      <div class="relative z-10 max-w-3xl space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-400/30 text-amber-300 text-xs font-medium tracking-wide">
+          <i class="fa-solid fa-shield-halved"></i>
+          Pendidikan Kokurikulum Berkredit
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-extrabold leading-tight tracking-tight text-white">
+          Portal Modul Pembelajaran <br class="hidden sm:block">
+          <span class="bg-gradient-to-r from-amber-300 via-amber-200 to-emerald-200 bg-clip-text text-transparent">MPU24381 Pengakap Kelana 1</span>
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+          Pusat capaian sehenti bagi kesemua 12 topik dan silibus rasmi Pengakap Kelana Politeknik. Tekan mana-mana modul untuk mengakses laman pembelajaran, nota rujukan, dan aktiviti latihan.
+        </p>
+
+        <!-- Progress Overview -->
+        <div class="pt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-300 font-medium">Jumlah Modul</p>
+              <p class="text-2xl font-bold text-white">12 Topik</p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center text-amber-400">
+              <i class="fa-solid fa-layer-group text-lg"></i>
+            </div>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-300 font-medium">Modul Diselesaikan</p>
+              <p class="text-2xl font-bold text-emerald-400" id="completedCount">0 / 12</p>
+            </div>
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-300">
+              <i class="fa-solid fa-circle-check text-lg"></i>
+            </div>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10">
+            <div class="flex justify-between items-center mb-1.5">
+              <p class="text-xs text-slate-300 font-medium">Kemajuan Kursus</p>
+              <span class="text-xs font-bold text-amber-300" id="progressPercent">0%</span>
+            </div>
+            <div class="w-full bg-white/20 h-2.5 rounded-full overflow-hidden">
+              <div id="progressBar" class="bg-gradient-to-r from-amber-400 to-emerald-400 h-full w-0 transition-all duration-500 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters and Search Bar -->
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+      <!-- Search Input -->
+      <div class="relative w-full md:w-80">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Cari topik atau kata kunci..."
+          oninput="filterModules()"
+          class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all"
+        >
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 text-xs font-semibold">
+        <button onclick="setFilter('semua')" data-filter="semua" class="filter-btn active-filter px-3.5 py-2 rounded-xl bg-emerald-800 text-white transition-all whitespace-nowrap">
+          Semua (12)
+        </button>
+        <button onclick="setFilter('teras')" data-filter="teras" class="filter-btn px-3.5 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all whitespace-nowrap">
+          Kenegaraan & Sejarah
+        </button>
+        <button onclick="setFilter('kemahiran')" data-filter="kemahiran" class="filter-btn px-3.5 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all whitespace-nowrap">
+          Kemahiran & Tali
+        </button>
+        <button onclick="setFilter('taktikal')" data-filter="taktikal" class="filter-btn px-3.5 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all whitespace-nowrap">
+          Kawad & Ekspedisi
+        </button>
+      </div>
+    </div>
+
+    <!-- Modules Grid Container -->
+    <div id="modulesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Populated dynamically via JavaScript -->
+    </div>
+
+    <!-- Empty State Message -->
+    <div id="emptyState" class="hidden text-center py-16 bg-white rounded-3xl border border-dashed border-slate-300">
+      <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400 mb-3">
+        <i class="fa-solid fa-binoculars text-2xl"></i>
+      </div>
+      <h3 class="text-base font-bold text-slate-800">Tiada Modul Dijumpai</h3>
+      <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Sila periksa kata carian anda atau pilih kategori penapis yang lain.</p>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-tree text-emerald-600"></i>
+        <span>Pusat Kurikulum & Ko-Kurikulum Politeknik Malaysia &bull; Silibus Pengakap Kelana</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span>Keahlian & Latihan Kelana</span>
+        <span>&bull;</span>
+        <button onclick="openConfigModal()" class="text-emerald-700 hover:underline font-medium">Tetapan Pautan URL</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Detail Modal -->
+  <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 transform transition-all">
+      <div class="relative p-6 text-white bg-gradient-to-r from-emerald-900 to-purple-900">
+        <button onclick="closeDetailModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+        <span id="modalNumber" class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-amber-400 text-slate-900 inline-block mb-2">MODUL 1.0</span>
+        <h3 id="modalTitle" class="text-lg sm:text-xl font-bold">Tajuk Modul</h3>
+        <p id="modalCategory" class="text-xs text-emerald-200 mt-1 font-medium">Kategori</p>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <div>
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Penerangan Silibus</h4>
+          <p id="modalDesc" class="text-sm text-slate-600 leading-relaxed"></p>
+        </div>
+
+        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-xs">
+              <i class="fa-solid fa-link"></i>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-slate-700">Destinasi URL Semasa:</p>
+              <p id="modalUrlText" class="text-xs text-slate-400 truncate max-w-[240px]">https://...</p>
+            </div>
+          </div>
+          <button id="modalEditBtn" onclick="quickEditLink()" class="text-xs font-semibold text-emerald-700 hover:text-emerald-800">
+            Tukar
+          </button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+          <button id="modalLaunchBtn" onclick="launchModule()" class="w-full sm:flex-1 py-3 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm shadow-md shadow-emerald-700/20 flex items-center justify-center gap-2 transition-all">
+            <span>Buka Laman Modul</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+          </button>
+          
+          <button id="modalToggleDoneBtn" onclick="toggleCurrentModuleDone()" class="w-full sm:w-auto py-3 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm flex items-center justify-center gap-2 transition-all">
+            <i class="fa-solid fa-check"></i>
+            <span id="modalDoneText">Tanda Selesai</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Configuration & Link Manager Modal -->
+  <div id="configModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-slate-100">
+      <!-- Modal Header -->
+      <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900">Urus Pautan Laman (Custom URLs)</h3>
+          <p class="text-xs text-slate-500">Masukkan pautan laman sebenar (cth: Google Sites, Google Classroom, CIDOS) untuk setiap modul.</p>
+        </div>
+        <button onclick="closeConfigModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Editable List) -->
+      <div id="configList" class="flex-1 overflow-y-auto p-6 space-y-4">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-3">
+        <button onclick="resetDefaultLinks()" class="text-xs text-rose-600 font-semibold hover:underline">
+          Kembalikan Pautan Asal
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="closeConfigModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-xl transition-colors">
+            Tutup
+          </button>
+          <button onclick="saveCustomLinks()" class="px-4 py-2 text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl shadow-md transition-colors">
+            Simpan Perubahan
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification banner -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 bg-slate-900 text-white text-xs sm:text-sm font-semibold py-3 px-5 rounded-2xl shadow-xl flex items-center gap-3">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toastMsg">Mesej berjaya</span>
+  </div>
+
+  <script>
+    // 12 official modules from syllabus
+    const DEFAULT_MODULES = [
+      {
+        id: 1,
+        code: "1.0",
+        title: "Dasar Keselamatan dan Pertahanan Negara",
+        category: "teras",
+        categoryName: "Kenegaraan & Keselamatan",
+        desc: "Kefahaman asas mengenai tonggak pertahanan menyeluruh (HANRUH), ketenteraman awam, dan peranan belia dalam memelihara kedaulatan negara.",
+        icon: "fa-shield-halved",
+        iconColor: "text-blue-600",
+        bgColor: "bg-blue-50",
+        borderColor: "border-blue-100",
+        badgeColor: "bg-blue-100 text-blue-800",
+        url: "#"
+      },
+      {
+        id: 2,
+        code: "2.0",
+        title: "Persetiaan & Undang-Undang Pengakap",
+        category: "teras",
+        categoryName: "Kenegaraan & Prinsip",
+        desc: "Menghayati ikrar Persetiaan Pengakap serta mengamalkan 10 Undang-Undang Pengakap dalam kehidupan harian seorang ahli Kelana.",
+        icon: "fa-hand-peace",
+        iconColor: "text-purple-600",
+        bgColor: "bg-purple-50",
+        borderColor: "border-purple-100",
+        badgeColor: "bg-purple-100 text-purple-800",
+        url: "#"
+      },
+      {
+        id: 3,
+        code: "3.0",
+        title: "Tujuan Pergerakan Pengakap & Peranan Pengakap Kelana",
+        category: "teras",
+        categoryName: "Kepimpinan & Kelana",
+        desc: "Falsafah pengakap, cogan kata 'Berkhidmat', pembentukan sahsiah diri mahasiswa Politeknik dan tanggungjawab krew Kelana.",
+        icon: "fa-users-gear",
+        iconColor: "text-amber-600",
+        bgColor: "bg-amber-50",
+        borderColor: "border-amber-100",
+        badgeColor: "bg-amber-100 text-amber-800",
+        url: "#"
+      },
+      {
+        id: 4,
+        code: "4.0",
+        title: "Sejarah Pergerakan Pengakap di Malaysia & Antarabangsa",
+        category: "teras",
+        categoryName: "Sejarah & Warisan",
+        desc: "Menelusuri sejarah Lord Baden-Powell, Pulau Brownsea 1907, penubuhan pergerakan di Tanah Melayu dan Persekutuan Pengakap Malaysia (PPM).",
+        icon: "fa-landmark-dome",
+        iconColor: "text-emerald-600",
+        bgColor: "bg-emerald-50",
+        borderColor: "border-emerald-100",
+        badgeColor: "bg-emerald-100 text-emerald-800",
+        url: "#"
+      },
+      {
+        id: 5,
+        code: "5.0",
+        title: "Kaedah Mengikat & Menggunakan Simpulan Serta Ikatan",
+        category: "kemahiran",
+        categoryName: "Kemahiran Tali",
+        desc: "Kemahiran ikatan lencana keahlian: Buku Sila, Bunga Geti, Simpul Manuk, Tindih Kasih, Lilit Balak, Ikatan Seraya dan Ikatan Silang Gunting.",
+        icon: "fa-link",
+        iconColor: "text-rose-600",
+        bgColor: "bg-rose-50",
+        borderColor: "border-rose-100",
+        badgeColor: "bg-rose-100 text-rose-800",
+        url: "#"
+      },
+      {
+        id: 6,
+        code: "6.0",
+        title: "Amalan Ajaran Agama Masing-Masing",
+        category: "teras",
+        categoryName: "Nilai Kerohanian",
+        desc: "Kewajipan beragama dan kerohanian selaras dengan prinsip Kepercayaan Kepada Tuhan dan Undang-Undang Pengakap yang pertama.",
+        icon: "fa-hands-praying",
+        iconColor: "text-teal-600",
+        bgColor: "bg-teal-50",
+        borderColor: "border-teal-100",
+        badgeColor: "bg-teal-100 text-teal-800",
+        url: "#"
+      },
+      {
+        id: 7,
+        code: "7.0",
+        title: "Kerja-Kerja Amal Kepada Masyarakat Setempat",
+        category: "kemahiran",
+        categoryName: "Khidmat Komuniti",
+        desc: "Perancangan dan pelaksanaan projek khidmat masyarakat, pemeliharaan alam sekitar, bantuan bencana dan bakti sukarela komuniti.",
+        icon: "fa-hand-holding-heart",
+        iconColor: "text-pink-600",
+        bgColor: "bg-pink-50",
+        borderColor: "border-pink-100",
+        badgeColor: "bg-pink-100 text-pink-800",
+        url: "#"
+      },
+      {
+        id: 8,
+        code: "8.0",
+        title: "Istiadat Pelantikan Pengakap Kelana",
+        category: "teras",
+        categoryName: "Protokol & Istiadat",
+        desc: "Tatacara istiadat pemakaian epolet, penyampaian lencana keahlian, pembaharuan persetiaan serta etika perbarisan majlis rasmi.",
+        icon: "fa-certificate",
+        iconColor: "text-indigo-600",
+        bgColor: "bg-indigo-50",
+        borderColor: "border-indigo-100",
+        badgeColor: "bg-indigo-100 text-indigo-800",
+        url: "#"
+      },
+      {
+        id: 9,
+        code: "9.0",
+        title: "Kaedah Berkhemah Secara Teori dan Praktikal",
+        category: "kemahiran",
+        categoryName: "Kemahiran Luar",
+        desc: "Pemilihan tapak perkhemahan, keselamatan khemah, sanitasi, gajet perkhemahan asas, memasak survival dan undang-undang perkhemahan.",
+        icon: "fa-campground",
+        iconColor: "text-amber-700",
+        bgColor: "bg-amber-50/70",
+        borderColor: "border-amber-200",
+        badgeColor: "bg-amber-100 text-amber-900",
+        url: "#"
+      },
+      {
+        id: 10,
+        code: "10.0",
+        title: "Projek Perintis (Pioneering)",
+        category: "kemahiran",
+        categoryName: "Kejuruteraan Pengakap",
+        desc: "Merekabentuk dan membina struktur kayu dan tali seperti menara peninjau, jambatan monyet, rakit dan pintu gerbang kemah berpiawaian.",
+        icon: "fa-cubes-stacked",
+        iconColor: "text-cyan-700",
+        bgColor: "bg-cyan-50",
+        borderColor: "border-cyan-100",
+        badgeColor: "bg-cyan-100 text-cyan-800",
+        url: "#"
+      },
+      {
+        id: 11,
+        code: "11.0",
+        title: "Cara Kawad Kaki Pengakap",
+        category: "taktikal",
+        categoryName: "Disiplin & Formasi",
+        desc: "Arahan hukuman kawad statik, kawad berjalan, hormat pengakap, tatacara baris tongkat, dan formasi perbarisan istiadat kontinjen Kelana.",
+        icon: "fa-person-marching",
+        iconColor: "text-slate-700",
+        bgColor: "bg-slate-100",
+        borderColor: "border-slate-200",
+        badgeColor: "bg-slate-200 text-slate-800",
+        url: "#"
+      },
+      {
+        id: 12,
+        code: "12.0",
+        title: "Pandu Arah (Orienteering & Kompas)",
+        category: "taktikal",
+        categoryName: "Navigasi & Kompas",
+        desc: "Penggunaan kompas prisma, membaca peta topografi, menentukan bearing kompas (azimuth), grid reference, dan navigasi pandu arah di hutan.",
+        icon: "fa-map-location-dot",
+        iconColor: "text-emerald-700",
+        bgColor: "bg-emerald-50",
+        borderColor: "border-emerald-100",
+        badgeColor: "bg-emerald-100 text-emerald-800",
+        url: "#"
+      }
+    ];
+
+    // State management
+    let modules = [];
+    let completedModules = new Set();
+    let currentFilter = 'semua';
+    let activeModuleId = null;
+
+    // Load from LocalStorage
+    function initData() {
+      // Load saved custom URLs
+      const savedUrls = localStorage.getItem('mpu24381_urls');
+      let urlMap = {};
+      if (savedUrls) {
+        try {
+          urlMap = JSON.parse(savedUrls);
+        } catch(e) {
+          console.error(e);
+        }
+      }
+
+      modules = DEFAULT_MODULES.map(m => ({
+        ...m,
+        url: urlMap[m.id] || `sites/modul-${m.id}.html` // Default internal link fallback
+      }));
+
+      // Load completed modules
+      const savedDone = localStorage.getItem('mpu24381_progress');
+      if (savedDone) {
+        try {
+          completedModules = new Set(JSON.parse(savedDone));
+        } catch(e) {
+          completedModules = new Set();
+        }
+      }
+
+      renderModules();
+      updateProgressStats();
+    }
+
+    function renderModules() {
+      const container = document.getElementById('modulesContainer');
+      const emptyState = document.getElementById('emptyState');
+      const searchQuery = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+
+      container.innerHTML = '';
+
+      const filtered = modules.filter(mod => {
+        const matchesCat = (currentFilter === 'semua') || (mod.category === currentFilter);
+        const matchesQuery = mod.title.toLowerCase().includes(searchQuery) ||
+                             mod.code.toLowerCase().includes(searchQuery) ||
+                             mod.desc.toLowerCase().includes(searchQuery) ||
+                             mod.categoryName.toLowerCase().includes(searchQuery);
+        return matchesCat && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+      }
+
+      filtered.forEach(mod => {
+        const isDone = completedModules.has(mod.id);
+        const card = document.createElement('div');
+        card.className = `card-hover relative bg-white rounded-3xl p-6 border ${isDone ? 'border-emerald-400 bg-emerald-50/20' : 'border-slate-200'} flex flex-col justify-between shadow-sm`;
+
+        card.innerHTML = `
+          <div>
+            <!-- Top Card Header -->
+            <div class="flex items-start justify-between gap-3 mb-4">
+              <div class="w-12 h-12 rounded-2xl ${mod.bgColor} ${mod.borderColor} border flex items-center justify-center ${mod.iconColor} text-xl shadow-inner">
+                <i class="fa-solid ${mod.icon}"></i>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="text-[11px] font-bold px-2.5 py-1 rounded-full ${mod.badgeColor}">
+                  MODUL ${mod.code}
+                </span>
+                <button 
+                  onclick="toggleDone(${mod.id}, event)" 
+                  class="w-8 h-8 rounded-full flex items-center justify-center transition-all ${isDone ? 'bg-emerald-500 text-white shadow-sm' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}"
+                  title="${isDone ? 'Telah Selesai (Klik untuk batal)' : 'Tanda sebagai selesai'}"
+                >
+                  <i class="fa-solid fa-check text-xs"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Category & Title -->
+            <p class="text-xs font-semibold text-slate-400 tracking-wider uppercase mb-1">${mod.categoryName}</p>
+            <h3 class="text-base font-bold text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-2 mb-2">
+              ${mod.title}
+            </h3>
+
+            <!-- Description -->
+            <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed mb-6">
+              ${mod.desc}
+            </p>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div class="pt-4 border-t border-slate-100 flex items-center gap-2">
+            <!-- Open Detail / Info Modal Button -->
+            <button 
+              onclick="showDetail(${mod.id})" 
+              class="flex-1 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5"
+            >
+              <i class="fa-regular fa-circle-question"></i>
+              <span>Info & Silibus</span>
+            </button>
+
+            <!-- Direct Launch Button (Opens the linked site) -->
+            <a 
+              href="${escapeHtml(mod.url)}" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-md shadow-emerald-700/20 transition-all flex items-center justify-center gap-1.5 text-center group"
+            >
+              <span>Buka Laman</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-80 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+            </a>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function setFilter(cat) {
+      currentFilter = cat;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-filter') === cat) {
+          btn.className = "filter-btn active-filter px-3.5 py-2 rounded-xl bg-emerald-800 text-white transition-all whitespace-nowrap shadow-sm";
+        } else {
+          btn.className = "filter-btn px-3.5 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all whitespace-nowrap";
+        }
+      });
+      renderModules();
+    }
+
+    function filterModules() {
+      renderModules();
+    }
+
+    function toggleDone(id, event) {
+      if (event) event.stopPropagation();
+      if (completedModules.has(id)) {
+        completedModules.delete(id);
+        showToast("Modul ditandakan sebagai belum selesai.", "info");
+      } else {
+        completedModules.add(id);
+        showToast("Tahniah! Modul telah ditandakan selesai.", "success");
+      }
+      localStorage.setItem('mpu24381_progress', JSON.stringify([...completedModules]));
+      renderModules();
+      updateProgressStats();
+    }
+
+    function updateProgressStats() {
+      const count = completedModules.size;
+      const total = modules.length;
+      const percent = Math.round((count / total) * 100);
+
+      document.getElementById('completedCount').innerText = `${count} / ${total}`;
+      document.getElementById('progressPercent').innerText = `${percent}%`;
+      document.getElementById('progressBar').style.width = `${percent}%`;
+    }
+
+    function resetAllProgress() {
+      if (completedModules.size === 0) {
+        showToast("Tiada kemajuan yang direkodkan lagi.", "info");
+        return;
+      }
+      completedModules.clear();
+      localStorage.removeItem('mpu24381_progress');
+      renderModules();
+      updateProgressStats();
+      showToast("Semua rekod kemajuan telah diset semula.", "info");
+    }
+
+    function showDetail(id) {
+      activeModuleId = id;
+      const mod = modules.find(m => m.id === id);
+      if (!mod) return;
+
+      document.getElementById('modalNumber').innerText = `MODUL ${mod.code}`;
+      document.getElementById('modalTitle').innerText = mod.title;
+      document.getElementById('modalCategory').innerText = mod.categoryName;
+      document.getElementById('modalDesc').innerText = mod.desc;
+      document.getElementById('modalUrlText').innerText = mod.url;
+
+      const isDone = completedModules.has(id);
+      const doneText = document.getElementById('modalDoneText');
+      const toggleBtn = document.getElementById('modalToggleDoneBtn');
+      if (isDone) {
+        doneText.innerText = "Batal Selesai";
+        toggleBtn.classList.add('bg-emerald-50', 'text-emerald-700', 'border-emerald-300');
+      } else {
+        doneText.innerText = "Tanda Selesai";
+        toggleBtn.classList.remove('bg-emerald-50', 'text-emerald-700', 'border-emerald-300');
+      }
+
+      document.getElementById('detailModal').classList.remove('hidden');
+    }
+
+    function closeDetailModal() {
+      document.getElementById('detailModal').classList.add('hidden');
+      activeModuleId = null;
+    }
+
+    function launchModule() {
+      if (!activeModuleId) return;
+      const mod = modules.find(m => m.id === activeModuleId);
+      if (mod) {
+        window.open(mod.url, '_blank');
+      }
+    }
+
+    function toggleCurrentModuleDone() {
+      if (!activeModuleId) return;
+      toggleDone(activeModuleId);
+      showDetail(activeModuleId); // Refresh modal state
+    }
+
+    function quickEditLink() {
+      if (!activeModuleId) return;
+      closeDetailModal();
+      openConfigModal();
+      // Highlight the corresponding input in config modal
+      setTimeout(() => {
+        const input = document.getElementById(`url-input-${activeModuleId}`);
+        if (input) {
+          input.focus();
+          input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 200);
+    }
+
+    function openConfigModal() {
+      const listContainer = document.getElementById('configList');
+      listContainer.innerHTML = '';
+
+      modules.forEach(m => {
+        const item = document.createElement('div');
+        item.className = "p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col gap-2";
+        item.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-800">${m.code} ${m.title}</span>
+            <span class="text-[10px] text-slate-500 font-mono">ID #${m.id}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-link"></i></span>
+            <input 
+              type="text" 
+              id="url-input-${m.id}" 
+              value="${escapeHtml(m.url)}" 
+              placeholder="https://sites.google.com/..." 
+              class="flex-1 text-xs px-3 py-2 bg-white border border-slate-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            >
+            <button onclick="testLink(${m.id})" class="px-2.5 py-1.5 text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg">
+              Uji
+            </button>
+          </div>
+        `;
+        listContainer.appendChild(item);
+      });
+
+      document.getElementById('configModal').classList.remove('hidden');
+    }
+
+    function closeConfigModal() {
+      document.getElementById('configModal').classList.add('hidden');
+    }
+
+    function testLink(id) {
+      const input = document.getElementById(`url-input-${id}`);
+      if (input && input.value) {
+        window.open(input.value, '_blank');
+      }
+    }
+
+    function saveCustomLinks() {
+      const urlMap = {};
+      modules.forEach(m => {
+        const input = document.getElementById(`url-input-${m.id}`);
+        if (input) {
+          const val = input.value.trim() || `sites/modul-${m.id}.html`;
+          m.url = val;
+          urlMap[m.id] = val;
+        }
+      });
+
+      localStorage.setItem('mpu24381_urls', JSON.stringify(urlMap));
+      closeConfigModal();
+      renderModules();
+      showToast("Pautan pautan laman berjaya dikemaskini!", "success");
+    }
+
+    function resetDefaultLinks() {
+      localStorage.removeItem('mpu24381_urls');
+      modules.forEach(m => {
+        m.url = `sites/modul-${m.id}.html`;
+      });
+      openConfigModal(); // Re-render input values
+      renderModules();
+      showToast("Pautan telah dikembalikan ke tetapan asal.", "info");
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      const toastIcon = document.getElementById('toastIcon');
+
+      toastMsg.innerText = message;
+
+      if (type === 'success') {
+        toastIcon.className = "fa-solid fa-circle-check text-emerald-400";
+      } else if (type === 'info') {
+        toastIcon.className = "fa-solid fa-circle-info text-blue-400";
+      } else {
+        toastIcon.className = "fa-solid fa-triangle-exclamation text-amber-400";
+      }
+
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 2800);
+    }
+
+    function escapeHtml(string) {
+      if (!string) return '';
+      return String(string)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Close modals when clicking backdrop
+    window.addEventListener('click', (e) => {
+      const detailModal = document.getElementById('detailModal');
+      const configModal = document.getElementById('configModal');
+      if (e.target === detailModal) closeDetailModal();
+      if (e.target === configModal) closeConfigModal();
+    });
+
+    // Close on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeDetailModal();
+        closeConfigModal();
+      }
+    });
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', initData);
+  </script>
+</body>
+</html>
