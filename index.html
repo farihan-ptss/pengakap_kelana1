@@ -283,7 +283,7 @@
         bgColor: "bg-blue-50",
         borderColor: "border-blue-100",
         badgeColor: "bg-blue-100 text-blue-800",
-        url: "#"
+        url: "https://farihan-ptss.github.io/pengakap_kelana1/topic1.html"
       },
       {
         id: 2,
@@ -297,7 +297,7 @@
         bgColor: "bg-purple-50",
         borderColor: "border-purple-100",
         badgeColor: "bg-purple-100 text-purple-800",
-        url: "#"
+        url: "https://farihan-ptss.github.io/pengakap_kelana1/topic2.html"
       },
       {
         id: 3,
@@ -311,7 +311,7 @@
         bgColor: "bg-amber-50",
         borderColor: "border-amber-100",
         badgeColor: "bg-amber-100 text-amber-800",
-        url: "#"
+        url: "https://farihan-ptss.github.io/pengakap_kelana1/topic3.html"
       },
       {
         id: 4,
@@ -460,10 +460,16 @@
         }
       }
 
-      modules = DEFAULT_MODULES.map(m => ({
-        ...m,
-        url: urlMap[m.id] || `sites/modul-${m.id}.html` // Default internal link fallback
-      }));
+      modules = DEFAULT_MODULES.map(m => {
+        const customUrl = urlMap[m.id];
+        return {
+          ...m,
+          // Prioritize saved custom URL if valid, otherwise use default defined URL
+          url: (customUrl && !customUrl.startsWith('sites/modul-') && customUrl !== '#') 
+            ? customUrl 
+            : (m.url !== '#' ? m.url : `sites/modul-${m.id}.html`)
+        };
+      });
 
       // Load completed modules
       const savedDone = localStorage.getItem('mpu24381_progress');
@@ -745,7 +751,8 @@
     function resetDefaultLinks() {
       localStorage.removeItem('mpu24381_urls');
       modules.forEach(m => {
-        m.url = `sites/modul-${m.id}.html`;
+        const defaultMod = DEFAULT_MODULES.find(d => d.id === m.id);
+        m.url = defaultMod ? defaultMod.url : `sites/modul-${m.id}.html`;
       });
       openConfigModal(); // Re-render input values
       renderModules();

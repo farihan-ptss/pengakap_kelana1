@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hub Pembelajaran: Pengakap Kelana</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            scout: {
+              green: '#1b4332',
+              forest: '#2d6a4f',
+              gold: '#d4af37',
+              red: '#8b0000',
+              cream: '#f9f7f1',
+              dark: '#0f241a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f4f6f0;
+    }
+    .scout-title {
+      font-family: 'Cinzel', serif;
+    }
+    .card-flip {
+      perspective: 1000px;
+    }
+    .card-flip-inner {
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .card-flip.flipped .card-flip-inner {
+      transform: rotateY(180deg);
+    }
+    .card-front, .card-back {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .card-back {
+      transform: rotateY(180deg);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- Header & Navigasi Atas -->
+  <header class="bg-scout-dark text-white border-b-4 border-scout-gold sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo & Tajuk -->
+        <div class="flex items-center space-x-3">
+          <div class="w-12 h-12 rounded-full bg-scout-gold/20 border-2 border-scout-gold flex items-center justify-center text-scout-gold">
+            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+              <!-- Fleur-de-lis / Scouting Emblem Inspired -->
+              <path d="M12 2L10 8C9.5 9.5 8 10 6 9C4 8 2.5 9 2 11C1.5 13 3 14 5 14C7 14 8.5 13 9 14.5L9.5 17C8.5 17 7 17.5 7 19C7 20.5 8.5 21 10 21C11.5 21 12 19.5 12 18C12 19.5 12.5 21 14 21C15.5 21 17 20.5 17 19C17 17.5 15.5 17 14.5 17L15 14.5C15.5 13 17 14 19 14C21 14 22.5 13 22 11C21.5 9 20 8 18 9C16 10 14.5 9.5 14 8L12 2Z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-widest text-amber-300 font-semibold">Modul 3.0 Kepengakapan</div>
+            <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white flex items-center gap-2">
+              Tujuan & Peranan Pengakap Kelana
+            </h1>
+          </div>
+        </div>
+
+        <!-- Cogan Kata Badge -->
+        <div class="hidden md:flex items-center space-x-3">
+          <div class="px-3 py-1 bg-scout-red/90 text-white text-xs font-bold rounded-full tracking-wider uppercase border border-red-400 flex items-center gap-1.5 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-yellow-300 animate-ping"></span>
+            Cogan Kata: "BERKHIDMAT"
+          </div>
+          <div class="text-right">
+            <div class="text-xs text-slate-400">Kemajuan Pembelajaran</div>
+            <div class="w-28 bg-slate-700 h-2.5 rounded-full overflow-hidden mt-1">
+              <div id="overallProgress" class="bg-scout-gold h-full rounded-full transition-all duration-500" style="width: 15%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sub-Navbar Navigasi Tab -->
+    <nav class="bg-scout-green border-t border-emerald-900/60 text-emerald-100 overflow-x-auto custom-scrollbar">
+      <div class="max-w-7xl mx-auto px-4 flex space-x-1 sm:space-x-2 py-2">
+        <button onclick="switchTab('tab-utama')" id="btn-tab-utama" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg bg-emerald-800/90 text-white flex items-center gap-2 whitespace-nowrap transition-all">
+          <span>🏛️</span> Pengenalan & Asas
+        </button>
+        <button onclick="switchTab('tab-tujuan')" id="btn-tab-tujuan" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg hover:bg-emerald-800/60 text-emerald-200 flex items-center gap-2 whitespace-nowrap transition-all">
+          <span>🎯</span> Tujuan Pengakap
+        </button>
+        <button onclick="switchTab('tab-kelana')" id="btn-tab-kelana" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg hover:bg-emerald-800/60 text-emerald-200 flex items-center gap-2 whitespace-nowrap transition-all">
+          <span>⚜️</span> Peranan Pengakap Kelana
+        </button>
+        <button onclick="switchTab('tab-kad')" id="btn-tab-kad" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg hover:bg-emerald-800/60 text-emerald-200 flex items-center gap-2 whitespace-nowrap transition-all">
+          <span>🎴</span> Kad Imbasan (Flashcard)
+        </button>
+        <button onclick="switchTab('tab-simulator')" id="btn-tab-simulator" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg hover:bg-emerald-800/60 text-emerald-200 flex items-center gap-2 whitespace-nowrap transition-all">
+          <span>🧭</span> Bilik Gerakan: Senario
+        </button>
+        <button onclick="switchTab('tab-kuiz')" id="btn-tab-kuiz" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg hover:bg-emerald-800/60 text-emerald-200 flex items-center gap-2 whitespace-nowrap transition-all">
+          <span>🏆</span> Kuiz & Sijil Lencana
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Kandungan Utama Mengikut Tab -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ============================================== -->
+    <!-- TAB 1: PENGENALAN & LATAR BELAKANG             -->
+    <!-- ============================================== -->
+    <div id="tab-utama" class="tab-content block space-y-8 animate-fadeIn">
+      <!-- Hero Banner -->
+      <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-scout-dark via-scout-green to-emerald-900 text-white p-8 sm:p-12 shadow-xl border border-emerald-800">
+        <div class="relative z-10 max-w-3xl">
+          <span class="inline-block px-3 py-1 bg-amber-400/20 text-amber-300 text-xs font-bold rounded-full mb-4 border border-amber-400/30">
+            PERSEKUTUAN PENGAKAP MALAYSIA (PPM) & WOSM
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-4">
+            Membina Watak, Memimpin Khidmat Remaja & Belia
+          </h2>
+          <p class="text-emerald-100 text-base sm:text-lg leading-relaxed mb-6">
+            Selamat datang ke <strong>Hub Pembelajaran Interaktif Pengakap Kelana</strong>. Terokai intipati penubuhan pergerakan Pengakap sedunia dan hayati bagaimana unit Pengakap Kelana (Rover Scout) bertindak sebagai peneraju khidmat, teladan kepimpinan, serta jambatan ke alam kedewasaan yang bertanggungjawab.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <button onclick="switchTab('tab-tujuan')" class="px-5 py-2.5 rounded-lg bg-scout-gold text-slate-900 font-bold hover:bg-amber-300 transition-all shadow-md flex items-center gap-2">
+              Mula Terokai Tujuan Pengakap &rarr;
+            </button>
+            <button onclick="switchTab('tab-kelana')" class="px-5 py-2.5 rounded-lg bg-emerald-800/80 text-white font-semibold hover:bg-emerald-700 border border-emerald-600 transition-all">
+              Kenali Pengakap Kelana
+            </button>
+          </div>
+        </div>
+        <!-- Corak Latar Belakang -->
+        <div class="absolute -right-10 -bottom-10 opacity-10 text-white pointer-events-none">
+          <svg class="w-96 h-96" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L15 9H21L16 13L18 20L12 16L6 20L8 13L3 9H9L12 2Z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Kad Metrik Pantas -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-start space-x-4">
+          <div class="p-3 bg-emerald-100 text-emerald-800 rounded-xl text-2xl font-bold">18+</div>
+          <div>
+            <h3 class="font-bold text-slate-800 text-base">Peringkat Umur Kelana</h3>
+            <p class="text-slate-600 text-sm mt-1">Dikhaskan untuk belia berumur 18 hingga 26 tahun (atau peringkat tertiary/terbuka) sebagai transisi ke alam masyarakat.</p>
+          </div>
+        </div>
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-start space-x-4">
+          <div class="p-3 bg-red-100 text-scout-red rounded-xl text-2xl font-bold">🤝</div>
+          <div>
+            <h3 class="font-bold text-slate-800 text-base">Cogan Kata Suci</h3>
+            <p class="text-slate-600 text-sm mt-1"><strong>"Berkhidmat"</strong> — Mempraktikkan kesukarelawanan aktif tanpa mengharapkan ganjaran atau kemasyhuran.</p>
+          </div>
+        </div>
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-start space-x-4">
+          <div class="p-3 bg-amber-100 text-amber-800 rounded-xl text-2xl font-bold">📜</div>
+          <div>
+            <h3 class="font-bold text-slate-800 text-base">Baden-Powell (1922)</h3>
+            <p class="text-slate-600 text-sm mt-1">Diasaskan berpandukan buku falsafah unggul <em>"Rovering to Success"</em> untuk melayari batu karang kehidupan.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gambaran Ringkas: Struktur Seksyen Pengakap -->
+      <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+        <div class="border-b pb-4 mb-6">
+          <span class="text-xs font-bold text-scout-forest uppercase tracking-wider">Kesinambungan Kepengakapan</span>
+          <h3 class="text-xl font-bold text-slate-900 mt-1">Di Manakah Kedudukan Pengakap Kelana?</h3>
+          <p class="text-slate-600 text-sm">Pengakap Kelana merupakan tahap kemuncak dalam perkembangan pendidikan kepengakapan sebelum memikul peranan pemimpin dewasa.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 opacity-70">
+            <span class="text-xs font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800">Umur 9 - 12</span>
+            <h4 class="font-bold text-slate-800 mt-2">Pengakap Kanak-Kanak</h4>
+            <p class="text-xs text-slate-500 mt-1">Menanam minat asas, disiplin awal, bermain sambil belajar di sekolah rendah.</p>
+          </div>
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 opacity-70">
+            <span class="text-xs font-bold px-2 py-0.5 rounded bg-green-100 text-green-800">Umur 13 - 15</span>
+            <h4 class="font-bold text-slate-800 mt-2">Pengakap Muda</h4>
+            <p class="text-xs text-slate-500 mt-1">Kemahiran berkhemah, ikatan, kepimpinan sistem patrol dan eksplorasi alam.</p>
+          </div>
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 opacity-70">
+            <span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">Umur 16 - 17.5</span>
+            <h4 class="font-bold text-slate-800 mt-2">Pengakap Remaja</h4>
+            <p class="text-xs text-slate-500 mt-1">Ekspedisi tinggi, inisiatif, penyelesaian masalah kendiri, & Anugerah Pengakap Raja.</p>
+          </div>
+          <div class="p-4 rounded-xl border-2 border-scout-forest bg-emerald-50 relative shadow-sm">
+            <span class="absolute -top-2.5 right-3 text-[10px] font-extrabold uppercase px-2 py-0.5 bg-scout-red text-white rounded-full">Fokus Modul</span>
+            <span class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-200 text-emerald-900">Umur 18 - 26</span>
+            <h4 class="font-bold text-scout-dark mt-2">Pengakap Kelana</h4>
+            <p class="text-xs text-slate-700 mt-1">Persaudaraan belia, perkhidmatan masyarakat sebenar, kepimpinan kendiri & Anugerah B-P.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- TAB 2: TUJUAN PERGERAKAN PENGAKAP              -->
+    <!-- ============================================== -->
+    <div id="tab-tujuan" class="tab-content hidden space-y-8 animate-fadeIn">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase mb-2">
+            Perlembagaan WOSM & PPM
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Apakah Sebenarnya Tujuan Pergerakan Pengakap?</h2>
+          <p class="text-slate-600 mt-2 text-base leading-relaxed">
+            Pergerakan Pengakap diasaskan oleh Lord Baden-Powell pada tahun 1907. Ia merupakan satu <strong>pergerakan sukarela, bebas daripada pengaruh politik, dan terbuka kepada semua individu</strong> tanpa mengira jantina, asal usul, bangsa, mahupun agama.
+          </p>
+        </div>
+
+        <!-- Matlamat Utama (Pendidikan Tidak Formal) -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-6">
+            <div class="w-10 h-10 rounded-lg bg-scout-forest text-white flex items-center justify-center font-bold text-lg mb-4">
+              1
+            </div>
+            <h3 class="text-lg font-bold text-scout-dark mb-2">Pendidikan Sepanjang Hayat (JERIS)</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Menyumbang kepada perkembangan potensi individu muda secara menyeluruh dari segi:
+            </p>
+            <ul class="mt-3 space-y-2 text-sm text-slate-700">
+              <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-600"></span><strong>Jasmani (Fizikal):</strong> Kesihatan, ketahanan & kemahiran lasak.</li>
+              <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-600"></span><strong>Emosi:</strong> Kawalan diri, kematangan, dan keyakinan diri.</li>
+              <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-600"></span><strong>Rohani:</strong> Pegangan agama & nilai moral murni.</li>
+              <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-600"></span><strong>Intelek:</strong> Pemikiran kritis, kreatif & inovasi.</li>
+              <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-600"></span><strong>Sosial:</strong> Hubungan sesama insan, empati & toleransi.</li>
+            </ul>
+          </div>
+
+          <div class="bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-xl p-6">
+            <div class="w-10 h-10 rounded-lg bg-amber-600 text-white flex items-center justify-center font-bold text-lg mb-4">
+              2
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">Membentuk Warganegara Berintegriti</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              Melahirkan individu yang berdisiplin, berhemah tinggi, berdikari, dan sentiasa bersedia menyumbang bakti kepada:
+            </p>
+            <div class="mt-4 space-y-3">
+              <div class="p-3 bg-white/80 rounded-lg border border-amber-100 flex items-center gap-3">
+                <span class="text-xl">🏡</span>
+                <div class="text-xs sm:text-sm font-medium text-slate-700"><strong>Masyarakat Tempatan:</strong> Prihatin kebajikan jiran dan komuniti setempat.</div>
+              </div>
+              <div class="p-3 bg-white/80 rounded-lg border border-amber-100 flex items-center gap-3">
+                <span class="text-xl">🇲🇾</span>
+                <div class="text-xs sm:text-sm font-medium text-slate-700"><strong>Negara:</strong> Menumpahkan taat setia kepada Raja dan Negara (Rukun Negara).</div>
+              </div>
+              <div class="p-3 bg-white/80 rounded-lg border border-amber-100 flex items-center gap-3">
+                <span class="text-xl">🌍</span>
+                <div class="text-xs sm:text-sm font-medium text-slate-700"><strong>Dunia Sejagat:</strong> Menjalin persaudaraan antarabangsa demi keamanan sejagat.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tiga Prinsip Asas Kepengakapan (Interactive Explorer) -->
+        <div class="mt-10 pt-8 border-t border-slate-200">
+          <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <span>⚖️</span> Tiga Prinsip Asas Pergerakan Pengakap
+          </h3>
+          <p class="text-sm text-slate-600 mb-6">Klik pada mana-mana prinsip untuk memahami aplikasi praktikalnya:</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div onclick="selectPrinsip(1)" id="card-p1" class="cursor-pointer p-5 rounded-xl border-2 border-emerald-600 bg-emerald-50/50 transition-all hover:shadow-md">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase text-emerald-800 bg-emerald-200/60 px-2 py-0.5 rounded">Prinsip 1</span>
+                <span class="text-emerald-700 text-xl font-bold">01</span>
+              </div>
+              <h4 class="font-bold text-slate-900 mt-3 text-base">Tanggungjawab Terhadap Tuhan</h4>
+              <p class="text-xs text-slate-600 mt-1">Kepercayaan kepada ajaran agama masing-masing serta menghayati nilai rohani.</p>
+            </div>
+
+            <div onclick="selectPrinsip(2)" id="card-p2" class="cursor-pointer p-5 rounded-xl border-2 border-slate-200 bg-white transition-all hover:shadow-md">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase text-slate-700 bg-slate-100 px-2 py-0.5 rounded">Prinsip 2</span>
+                <span class="text-slate-400 text-xl font-bold">02</span>
+              </div>
+              <h4 class="font-bold text-slate-900 mt-3 text-base">Tanggungjawab Terhadap Masyarakat & Alam Sekitar</h4>
+              <p class="text-xs text-slate-600 mt-1">Kesetiaan kepada negara, memelihara keamanan, dan kelestarian alam sekitar.</p>
+            </div>
+
+            <div onclick="selectPrinsip(3)" id="card-p3" class="cursor-pointer p-5 rounded-xl border-2 border-slate-200 bg-white transition-all hover:shadow-md">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase text-slate-700 bg-slate-100 px-2 py-0.5 rounded">Prinsip 3</span>
+                <span class="text-slate-400 text-xl font-bold">03</span>
+              </div>
+              <h4 class="font-bold text-slate-900 mt-3 text-base">Tanggungjawab Terhadap Diri Sendiri</h4>
+              <p class="text-xs text-slate-600 mt-1">Bertanggungjawab mempertingkatkan potensi diri dan integriti peribadi.</p>
+            </div>
+          </div>
+
+          <!-- Dynamic Detail Box -->
+          <div id="prinsipDetailBox" class="mt-6 p-5 rounded-xl bg-slate-900 text-white border-l-4 border-scout-gold">
+            <div class="flex items-center gap-2 text-amber-300 text-xs font-bold uppercase">
+              <span id="pDetailLabel">Huraian Terperinci Prinsip 1</span>
+            </div>
+            <h4 id="pDetailTitle" class="text-lg font-bold text-white mt-1">Tanggungjawab Terhadap Tuhan (Duty to God)</h4>
+            <p id="pDetailDesc" class="text-slate-300 text-sm mt-2 leading-relaxed">
+              Memegang teguh kepada ajaran agama yang dianuti, menzahirkan rasa syukur, dan mengamalkan prinsip moral yang tinggi dalam tingkah laku seharian. Ini menjadi asas utama pembinaan kompas moral seseorang pengakap.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- TAB 3: PERANAN PENGAKAP KELANA                  -->
+    <!-- ============================================== -->
+    <div id="tab-kelana" class="tab-content hidden space-y-8 animate-fadeIn">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-slate-200">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-100 text-scout-red text-xs font-bold uppercase mb-2">
+              Seksyen Belia Dewasa
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Peranan & Amanah Pengakap Kelana</h2>
+            <p class="text-slate-600 mt-1 text-sm max-w-2xl">
+              Pengakap Kelana bukan sekadar peserta aktiviti lasak, tetapi penggerak perkhidmatan dan kepimpinan sebenar dalam krew, komuniti dan persekutuan.
+            </p>
+          </div>
+
+          <!-- Kad Cogan Kata -->
+          <div class="p-4 bg-gradient-to-r from-scout-red to-red-900 text-white rounded-xl shadow-md flex items-center gap-4">
+            <div class="text-3xl">🤝</div>
+            <div>
+              <div class="text-xs uppercase tracking-wider text-red-200 font-semibold">Teras Utama Kelana</div>
+              <div class="text-xl font-black tracking-widest">"BERKHIDMAT"</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Tiang Peranan Utama (Grid Interaktif) -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Peranan 1 -->
+          <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/60 hover:bg-emerald-50/40 hover:border-emerald-300 transition-all">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-lg">
+                1
+              </div>
+              <h3 class="text-lg font-bold text-slate-950">Khidmat Masyarakat yang Berimpak</h3>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Menjadi benteng sukarelawan barisan hadapan ketika kecemasan, bencana alam (seperti banjir), program derma darah, serta membantu golongan yang memerlukan tanpa mengharap imbuhan.
+            </p>
+            <div class="mt-4 p-3 bg-white rounded-lg border border-slate-200 text-xs text-slate-700">
+              <strong>Contoh Praktikal:</strong> Misi Bantuan Pasca Banjir Pengakap, sanitasi komuniti, bantuan persekolahan anak yatim.
+            </div>
+          </div>
+
+          <!-- Peranan 2 -->
+          <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/60 hover:bg-amber-50/40 hover:border-amber-300 transition-all">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold text-lg">
+                2
+              </div>
+              <h3 class="text-lg font-bold text-slate-950">Mentor & Pembimbing Adik-Adik</h3>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Membantu Pemimpin Unit mengendalikan aktiviti Pengakap Kanak-Kanak, Muda dan Remaja. Kelana bertindak sebagai 'abang/kakak' yang memindahkan ilmu kemahiran kepengakapan, ikatan, dan disiplin.
+            </p>
+            <div class="mt-4 p-3 bg-white rounded-lg border border-slate-200 text-xs text-slate-700">
+              <strong>Contoh Praktikal:</strong> Menjadi jurulatih simpulan/ikatan, pengadil perkhemahan atau pembantu teknikal semasa jambori daerah.
+            </div>
+          </div>
+
+          <!-- Peranan 3 -->
+          <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/60 hover:bg-blue-50/40 hover:border-blue-300 transition-all">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
+                3
+              </div>
+              <h3 class="text-lg font-bold text-slate-950">Pembangunan Sahsiah & Kerjaya Diri</h3>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Memperkasa diri dengan kemahiran hidup (soft skills), pengurusan kewangan, komunikasi, protokol, dan kepimpinan organisasi krew agar bersedia melangkah ke alam kerjaya profesional.
+            </p>
+            <div class="mt-4 p-3 bg-white rounded-lg border border-slate-200 text-xs text-slate-700">
+              <strong>Contoh Praktikal:</strong> Menguruskan bajet Krew Kelana, menjalin kerjasama dengan agensi kerajaan atau NGO.
+            </div>
+          </div>
+
+          <!-- Peranan 4 -->
+          <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50/60 hover:bg-purple-50/40 hover:border-purple-300 transition-all">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center font-bold text-lg">
+                4
+              </div>
+              <h3 class="text-lg font-bold text-slate-950">Duta Persaudaraan & Kelestarian Sejagat</h3>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Menghubungkan persahabatan tanpa sempadan melalui Rover Moot peringkat kebangsaan dan antarabangsa (World Scout Moot), serta menyokong Matlamat Pembangunan Mampan (SDG / Scouts for SDGs).
+            </p>
+            <div class="mt-4 p-3 bg-white rounded-lg border border-slate-200 text-xs text-slate-700">
+              <strong>Contoh Praktikal:</strong> Projek penanaman pokok bakau, pembersihan pantai, dan jaringan persahabatan krew antarabangsa.
+            </div>
+          </div>
+        </div>
+
+        <!-- Bahagian: Anugerah Baden-Powell (B-P Award) & 5 Batu Karang Baden-Powell -->
+        <div class="mt-10 pt-8 border-t border-slate-200">
+          <div class="bg-gradient-to-r from-slate-900 to-scout-dark text-white rounded-2xl p-6 sm:p-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-300">Puncak Kecemerlangan Kelana</span>
+                <h3 class="text-2xl font-bold text-white mt-1">Anugerah Baden-Powell (B-P Award)</h3>
+              </div>
+              <span class="inline-block px-3 py-1 bg-scout-gold/20 text-scout-gold border border-scout-gold/40 text-xs font-bold rounded-full">
+                Epolet Merah Berjalur Kuning Emas
+              </span>
+            </div>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              Anugerah tertinggi bagi Pengakap Kelana yang diperakui oleh Ketua Pengakap Negara. Calon perlu melengkapkan pelbagai lencana kemahiran, projek perkhidmatan komuniti berskala besar, ekspedisi berdikari, serta penglibatan aktif dalam Krew Kelana.
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-center">
+              <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+                <div class="text-xs font-bold text-amber-300">Kembara</div>
+                <div class="text-[11px] text-slate-400 mt-1">Ekspedisi Berdikari</div>
+              </div>
+              <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+                <div class="text-xs font-bold text-amber-300">Khidmat</div>
+                <div class="text-[11px] text-slate-400 mt-1">Projek Komuniti</div>
+              </div>
+              <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+                <div class="text-xs font-bold text-amber-300">Kepimpinan</div>
+                <div class="text-[11px] text-slate-400 mt-1">Tadbir Krew</div>
+              </div>
+              <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+                <div class="text-xs font-bold text-amber-300">Vokasional</div>
+                <div class="text-[11px] text-slate-400 mt-1">Kemahiran Diri</div>
+              </div>
+              <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700 col-span-2 sm:col-span-1">
+                <div class="text-xs font-bold text-amber-300">Hubungan Luar</div>
+                <div class="text-[11px] text-slate-400 mt-1">Moot / Antarabangsa</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- TAB 4: KAD IMBASAN INTERAKTIF (FLASHCARDS)      -->
+    <!-- ============================================== -->
+    <div id="tab-kad" class="tab-content hidden space-y-6 animate-fadeIn">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900">Kad Imbasan Ulangkaji Pantas</h2>
+            <p class="text-slate-600 text-sm mt-1">Klik pada kad untuk mendedahkan jawapan dan fakta utama.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="flashcardCounter" class="text-xs font-bold px-3 py-1 bg-slate-100 text-slate-700 rounded-full border">Kad 1 / 6</span>
+          </div>
+        </div>
+
+        <!-- Flashcard Viewport -->
+        <div class="max-w-xl mx-auto py-8">
+          <div id="flashcard" onclick="flipCard()" class="card-flip w-full h-72 cursor-pointer select-none">
+            <div class="card-flip-inner relative w-full h-full rounded-2xl shadow-lg border-2 border-scout-forest">
+              <!-- Depan (Front) -->
+              <div class="card-front absolute inset-0 bg-gradient-to-br from-white to-emerald-50 rounded-2xl p-8 flex flex-col justify-between items-center text-center">
+                <span class="text-xs font-bold px-3 py-1 bg-emerald-100 text-scout-forest rounded-full uppercase tracking-wider">Soalan / Konsep</span>
+                <p id="cardFrontText" class="text-xl sm:text-2xl font-bold text-slate-800 px-4">
+                  Apakah cogan kata rasmi bagi Pengakap Kelana?
+                </p>
+                <span class="text-xs text-slate-400 flex items-center gap-1">
+                  🔄 Klik kad untuk pusing balik
+                </span>
+              </div>
+              <!-- Belakang (Back) -->
+              <div class="card-back absolute inset-0 bg-gradient-to-br from-scout-dark to-scout-green text-white rounded-2xl p-8 flex flex-col justify-between items-center text-center">
+                <span class="text-xs font-bold px-3 py-1 bg-amber-400 text-slate-900 rounded-full uppercase tracking-wider">Jawapan & Huraian</span>
+                <p id="cardBackText" class="text-base sm:text-lg font-medium text-emerald-100 px-2 leading-relaxed">
+                  <strong>"BERKHIDMAT"</strong>.<br/>Pengakap Kelana menekankan sifat berbakti kepada masyarakat, unit bawahan dan negara tanpa mengharapkan balasan.
+                </p>
+                <span class="text-xs text-emerald-300">
+                  Tahniah atas ulangkaji!
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Butang Navigasi Kad -->
+          <div class="flex items-center justify-center gap-4 mt-6">
+            <button onclick="prevFlashcard()" class="px-5 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition-all flex items-center gap-1">
+              &larr; Kad Sebelum
+            </button>
+            <button onclick="flipCard()" class="px-5 py-2 rounded-lg bg-scout-forest hover:bg-emerald-700 text-white font-semibold text-sm transition-all">
+              Pusing Kad 🔄
+            </button>
+            <button onclick="nextFlashcard()" class="px-5 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition-all flex items-center gap-1">
+              Kad Seterusnya &rarr;
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- TAB 5: BILIK GERAKAN: SIMULATOR SENARIO        -->
+    <!-- ============================================== -->
+    <div id="tab-simulator" class="tab-content hidden space-y-8 animate-fadeIn">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold uppercase mb-2">
+            Simulasi Kepimpinan Lapangan
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Bilik Gerakan: Dilema Pengakap Kelana</h2>
+          <p class="text-slate-600 mt-2 text-sm leading-relaxed">
+            Sebagai seorang Pengakap Kelana, anda sering dihadapkan dengan situasi membuat keputusan berasaskan Persetiaan Pengakap dan cogan kata <em>"Berkhidmat"</em>. Selesaikan senario di bawah:
+          </p>
+        </div>
+
+        <!-- Kotak Senario Interaktif -->
+        <div id="scenarioContainer" class="mt-8 bg-slate-50 border-2 border-slate-200 rounded-2xl p-6 sm:p-8">
+          <div class="flex items-center justify-between mb-4">
+            <span id="scenarioTag" class="px-3 py-1 bg-scout-red text-white text-xs font-bold rounded-full uppercase">Senario 1 daripada 3</span>
+            <span class="text-xs text-slate-500 font-medium">Ujian Sikap & Pertimbangan</span>
+          </div>
+
+          <h3 id="scenarioTitle" class="text-xl font-bold text-slate-900 mb-3">
+            Bantuan Kecemasan: Banjir Kilat di Kampung Sebelah
+          </h3>
+          <p id="scenarioDesc" class="text-slate-700 text-sm leading-relaxed mb-6">
+            Krew Kelana anda baru sahaja selesai merancang percutian santai hujung minggu. Tiba-tiba anda menerima panggilan daripada Pesuruhjaya Daerah memaklumkan banjir kilat melanda kawasan penempatan berhampiran dan pusat pemindahan sementara (PPS) memerlukan bantuan logistik segera untuk mengagihkan makanan dan mendirikan khemah.
+          </p>
+
+          <div class="space-y-3" id="scenarioOptions">
+            <!-- Pilihan Dimasukkan secara Dinamik oleh JS -->
+          </div>
+
+          <!-- Maklum Balas Keputusan -->
+          <div id="scenarioFeedback" class="mt-6 p-4 rounded-xl hidden">
+            <!-- Dimuatkan menerusi fungsi pilihJawapanSenario() -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- TAB 6: KUIZ PENGUKUHAN & PENSIJILAN            -->
+    <!-- ============================================== -->
+    <div id="tab-kuiz" class="tab-content hidden space-y-8 animate-fadeIn">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Ujian Kefahaman Pengakap Kelana</h2>
+            <p class="text-slate-600 text-sm mt-1">Uji kefahaman anda mengenai Tajuk 3.0. Dapatkan skor 80% ke atas untuk membuka Sijil Digital!</p>
+          </div>
+          <div class="bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-xl text-right">
+            <span class="text-xs text-emerald-800 font-semibold block">Skor Semasa</span>
+            <span id="quizScoreText" class="text-xl font-black text-scout-forest">0 / 5</span>
+          </div>
+        </div>
+
+        <!-- Kontena Soalan Kuiz -->
+        <div id="quizContainer" class="py-6 space-y-8">
+          <!-- Soalan-soalan dijana oleh JavaScript -->
+        </div>
+
+        <!-- Butang Semak Jawapan / Reset -->
+        <div class="pt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
+          <button onclick="resetQuiz()" class="px-5 py-2.5 rounded-lg border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-100 transition-all">
+            Ulang Semula Kuiz
+          </button>
+          <button onclick="submitQuiz()" id="btnSubmitQuiz" class="px-6 py-2.5 rounded-lg bg-scout-forest hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition-all flex items-center gap-2">
+            Hantar & Nilai Keputusan
+          </button>
+        </div>
+
+        <!-- Sijil / Pengiktirafan Digital (Tersembunyi asalnya) -->
+        <div id="certificateBox" class="mt-10 p-8 rounded-2xl border-4 border-scout-gold bg-gradient-to-b from-amber-50/50 via-white to-amber-50/30 hidden text-center relative overflow-hidden shadow-xl">
+          <div class="max-w-2xl mx-auto">
+            <div class="w-16 h-16 mx-auto mb-3 text-scout-gold">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L15 9H21L16 13L18 20L12 16L6 20L8 13L3 9H9L12 2Z"/>
+              </svg>
+            </div>
+            <span class="text-xs tracking-widest uppercase font-bold text-scout-red">Perakuan Kelayakan Teori</span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 scout-title">Lencana Kecekapan Teori Kelana</h3>
+            <p class="text-sm text-slate-600 mt-2">
+              Dianugerahkan kepada pembelajar yang berjaya menguasai topik:
+            </p>
+            <div class="my-4 p-3 bg-white border border-amber-200 rounded-xl inline-block font-bold text-scout-dark text-base sm:text-lg shadow-sm">
+              3.0 Tujuan Pergerakan Pengakap & Peranan Pengakap Kelana
+            </div>
+            <p class="text-xs text-slate-500">
+              Disahkan memenuhi kriteria pemahaman asas Falsafah WOSM, PPM dan Cogan Kata "Berkhidmat".
+            </p>
+
+            <div class="mt-6 flex justify-center gap-3">
+              <button onclick="window.print()" class="px-4 py-2 bg-slate-800 text-white text-xs font-bold rounded-lg hover:bg-slate-700 transition-all">
+                Cetak Sijil / Simpan PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-scout-dark text-slate-400 py-6 border-t border-emerald-950 mt-12 text-sm">
+    <div class="max-w-7xl mx-auto px-4 text-center sm:flex sm:justify-between sm:items-center">
+      <div class="flex items-center justify-center sm:justify-start gap-2 text-white font-semibold">
+        <span>⚜️</span> Hub Pembelajaran Interaktif Pengakap Kelana
+      </div>
+      <p class="mt-2 sm:mt-0 text-xs text-slate-400">
+        Disusun berasaskan Sukatan Latihan Persekutuan Pengakap Malaysia (PPM) & WOSM.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ============================================== -->
+  <!-- SKRIP LOGIK APLIKASI INTERAKTIF                -->
+  <!-- ============================================== -->
+  <script>
+    // ----------------------------------------------
+    // 1. PENGURUSAN TAB NAVIGASI
+    // ----------------------------------------------
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('block');
+      });
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-emerald-800/90', 'text-white');
+        btn.classList.add('text-emerald-200');
+      });
+
+      const activeContent = document.getElementById(tabId);
+      if (activeContent) {
+        activeContent.classList.remove('hidden');
+        activeContent.classList.add('block');
+      }
+
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-emerald-800/90', 'text-white');
+        activeBtn.classList.remove('text-emerald-200');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      updateProgress();
+    }
+
+    // ----------------------------------------------
+    // 2. TIGA PRINSIP ASAS PENGAKAP (TAB TUJUAN)
+    // ----------------------------------------------
+    const dataPrinsip = {
+      1: {
+        label: "Huraian Terperinci Prinsip 1",
+        title: "Tanggungjawab Terhadap Tuhan (Duty to God)",
+        desc: "Memegang teguh kepada ajaran agama yang dianuti, menzahirkan rasa syukur, dan mengamalkan prinsip moral yang tinggi dalam tingkah laku seharian. Ini menjadi asas utama pembinaan kompas moral seseorang pengakap."
+      },
+      2: {
+        label: "Huraian Terperinci Prinsip 2",
+        title: "Tanggungjawab Terhadap Masyarakat & Alam Sekitar (Duty to Others)",
+        desc: "Kesetiaan kepada negara, mendokong keharmonian sosial, memelihara keamanan dunia serta melindungi alam semulajadi secara aktif melalui inisiatif kemampanan (Scouts for SDGs)."
+      },
+      3: {
+        label: "Huraian Terperinci Prinsip 3",
+        title: "Tanggungjawab Terhadap Diri Sendiri (Duty to Self)",
+        desc: "Bertanggungjawab secara berterusan bagi membina keperibadian, meningkatkan ilmu kemahiran hidup, menjaga kesihatan fizikal & emosi agar mampu menjadi insan yang bermanfaat kepada orang lain."
+      }
+    };
+
+    function selectPrinsip(num) {
+      for (let i = 1; i <= 3; i++) {
+        const card = document.getElementById(`card-p${i}`);
+        if (i === num) {
+          card.className = "cursor-pointer p-5 rounded-xl border-2 border-emerald-600 bg-emerald-50/50 transition-all shadow-sm";
+        } else {
+          card.className = "cursor-pointer p-5 rounded-xl border-2 border-slate-200 bg-white transition-all hover:shadow-md";
+        }
+      }
+      const data = dataPrinsip[num];
+      document.getElementById('pDetailLabel').textContent = data.label;
+      document.getElementById('pDetailTitle').textContent = data.title;
+      document.getElementById('pDetailDesc').textContent = data.desc;
+    }
+
+    // ----------------------------------------------
+    // 3. KAD IMBASAN (FLASHCARDS)
+    // ----------------------------------------------
+    const flashcardsData = [
+      {
+        q: "Apakah cogan kata rasmi bagi unit Pengakap Kelana?",
+        a: "<strong>'BERKHIDMAT'</strong>.<br/>Pengakap Kelana menekankan sifat berbakti kepada masyarakat, unit bawahan dan negara tanpa mengharapkan balasan."
+      },
+      {
+        q: "Berapakah julat umur bagi ahli Pengakap Kelana di Malaysia?",
+        a: "<strong>18 tahun hingga 26 tahun</strong>.<br/>Merupakan fasa peralihan penting daripada alam remaja kepada alam kedewasaan dan kerjaya profesional."
+      },
+      {
+        q: "Apakah matlamat utama Pergerakan Pengakap menurut WOSM?",
+        a: "Menyumbang kepada <strong>pembangunan individu muda dari segi JERIS</strong> (Jasmani, Emosi, Rohani, Intelek & Sosial) agar menjadi warganegara yang berguna dan bertanggungjawab."
+      },
+      {
+        q: "Apakah tajuk buku karangan Lord Baden-Powell yang menjadi rujukan Pengakap Kelana?",
+        a: "Buku <strong>'Rovering to Success' (1922)</strong> yang membincangkan panduan mengatasi '5 Batu Karang' (Rocks) dalam pelayaran hidup anak muda."
+      },
+      {
+        q: "Apakah anugerah tertinggi yang boleh dicapai dalam Pengakap Kelana?",
+        a: "<strong>Anugerah Baden-Powell (B-P Award)</strong>.<br/>Dianugerahkan bersama epolet merah khas dengan jalur emas setelah menyempurnakan projek khidmat & lencana wajib."
+      },
+      {
+        q: "Apakah dua peranan terpenting Pengakap Kelana terhadap unit pengakap kanak-kanak/muda?",
+        a: "Bertindak sebagai <strong>Mentor & Pembantu Pemimpin</strong>.<br/>Menyumbang kemahiran teknikal seperti simpulan, pertolongan cemas, dan kawalan disiplin aktiviti luar."
+      }
+    ];
+
+    let currentCardIndex = 0;
+    function updateCardView() {
+      const cardEl = document.getElementById('flashcard');
+      cardEl.classList.remove('flipped');
+      setTimeout(() => {
+        document.getElementById('cardFrontText').innerHTML = flashcardsData[currentCardIndex].q;
+        document.getElementById('cardBackText').innerHTML = flashcardsData[currentCardIndex].a;
+        document.getElementById('flashcardCounter').textContent = `Kad ${currentCardIndex + 1} / ${flashcardsData.length}`;
+      }, 150);
+    }
+
+    function flipCard() {
+      const cardEl = document.getElementById('flashcard');
+      cardEl.classList.toggle('flipped');
+    }
+
+    function nextFlashcard() {
+      currentCardIndex = (currentCardIndex + 1) % flashcardsData.length;
+      updateCardView();
+    }
+
+    function prevFlashcard() {
+      currentCardIndex = (currentCardIndex - 1 + flashcardsData.length) % flashcardsData.length;
+      updateCardView();
+    }
+
+    // ----------------------------------------------
+    // 4. BILIK GERAKAN: SIMULATOR SENARIO KEPIMPINAN
+    // ----------------------------------------------
+    const scenarios = [
+      {
+        title: "Bantuan Kecemasan: Banjir Kilat di Daerah Berdekatan",
+        tag: "Senario 1 daripada 3",
+        desc: "Krew Kelana anda baru sahaja selesai merancang program percutian hujung minggu. Tiba-tiba anda menerima panggilan kecemasan daripada Pesuruhjaya Daerah: Sebuah kampung dilanda banjir kilat dan PPS memerlukan sukarelawan untuk agihan bekalan serta bantuan logistik mangsa banjir.",
+        options: [
+          {
+            text: "A. Meneruskan percutian kerana wang deposit aktiviti telah dibayar dan krew berhak berhibur.",
+            correct: false,
+            feedback: "Kurang Tepat. Walaupun percutian telah dirancang, teras Pengakap Kelana ialah 'BERKHIDMAT'. Situasi bencana menuntut keutamaan empati dan bantuan kecemasan."
+          },
+          {
+            text: "B. Membatalkan percutian serta-merta, mengumpulkan aset krew, dan melapor diri di Bilik Gerakan Bencana Daerah untuk bertugas.",
+            correct: true,
+            feedback: "Cemerlang! Ini menepati cogan kata 'Berkhidmat' dan Persetiaan Pengakap kedua: Menolong orang pada setiap masa."
+          },
+          {
+            text: "C. Menghantar ucapan simpati dan doa sahaja di media sosial tanpa turun padang membantu.",
+            correct: false,
+            feedback: "Tidak Memadai. Pengakap Kelana ialah ejen tindakan (action-oriented), bukan sekadar penonton pasif."
+          }
+        ]
+      },
+      {
+        title: "Dilema Bimbingan: Perkhemahan Pengakap Kanak-Kanak",
+        tag: "Senario 2 daripada 3",
+        desc: "Anda dijemput sebagai fasilitator kem kraf kayu bagi murid tahun 5. Seorang murid sering gagal mengikat ikatan seraya (square lashing) sehingga menangis dan berputus asa ingin keluar daripada perkhemahan.",
+        options: [
+          {
+            text: "A. Mengambil kayu tersebut dan menyiapkan ikatan untuknya agar masa aktiviti tidak terbuang.",
+            correct: false,
+            feedback: "Tidak Tepat. Pendekatan Pengakap ialah 'Learning by Doing'. Menyiapkan tugasan untuknya tidak membina kemahiran mahupun keyakinan murid tersebut."
+          },
+          {
+            text: "B. Menegur murid di hadapan patrolnya bahawa menangis itu tanda kelemahan seorang pengakap.",
+            correct: false,
+            feedback: "Salah. Tindakan ini merosakkan emosi dan melanggar prinsip kepemimpinan prihatin seorang Kelana."
+          },
+          {
+            text: "C. Duduk bersamanya, memberi kata perangsang, dan membimbing langkah demi langkah simpulan sehingga dia berjaya melakukannya sendiri.",
+            correct: true,
+            feedback: "Tepat Sekali! Peranan Kelana sebagai mentor adalah membina daya tahan (resilience) dan memotivasikan adik-adik dengan sabar."
+          }
+        ]
+      },
+      {
+        title: "Integriti Pengurusan: Tajaan Krew Kelana",
+        tag: "Senario 3 daripada 3",
+        desc: "Sebuah syarikat minuman keras atau tembakau menawarkan tajaan bernilai RM15,000 dengan syarat logo syarikat diletakkan di jersi krew dan sepanduk projek khidmat komuniti anda.",
+        options: [
+          {
+            text: "A. Menolak tawaran tajaan secara sopan kerana bercanggah dengan Dasar Polisi Pengakap dan nilai moral Baden-Powell.",
+            correct: true,
+            feedback: "Tepat & Berprinsip! Menurut buku 'Rovering to Success', pengaruh arak/tembakau merupakan antara 'Batu Karang' yang mesti dielakkan dalam memelihara imej Pengakap."
+          },
+          {
+            text: "B. Menerima tajaan tersebut asalkan wang itu digunakan untuk membantu orang miskin.",
+            correct: false,
+            feedback: "Salah. Matlamat tidak menghalalkan cara. Pergerakan Pengakap tertakluk kepada etika dan polisi perlindungan belia WOSM/PPM."
+          }
+        ]
+      }
+    ];
+
+    let currentScenario = 0;
+
+    function renderScenario() {
+      const s = scenarios[currentScenario];
+      document.getElementById('scenarioTag').textContent = s.tag;
+      document.getElementById('scenarioTitle').textContent = s.title;
+      document.getElementById('scenarioDesc').textContent = s.desc;
+
+      const optsContainer = document.getElementById('scenarioOptions');
+      optsContainer.innerHTML = '';
+
+      s.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-4 rounded-xl border border-slate-300 bg-white hover:border-scout-forest hover:bg-emerald-50/50 transition-all text-sm font-medium text-slate-800 shadow-sm";
+        btn.textContent = opt.text;
+        btn.onclick = () => handleScenarioChoice(opt);
+        optsContainer.appendChild(btn);
+      });
+
+      const fb = document.getElementById('scenarioFeedback');
+      fb.classList.add('hidden');
+      fb.innerHTML = '';
+    }
+
+    function handleScenarioChoice(opt) {
+      const fb = document.getElementById('scenarioFeedback');
+      fb.classList.remove('hidden');
+
+      if (opt.correct) {
+        fb.className = "mt-6 p-4 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-sm";
+        fb.innerHTML = `
+          <div class="flex items-start gap-2">
+            <span class="text-xl">✅</span>
+            <div>
+              <div class="font-bold">Keputusan Yang Tepat!</div>
+              <p class="mt-1">${opt.feedback}</p>
+              ${currentScenario < scenarios.length - 1 ? 
+                `<button onclick="nextScenarioStep()" class="mt-3 px-4 py-1.5 bg-scout-forest text-white rounded-lg text-xs font-bold hover:bg-emerald-700">Senario Berikutnya &rarr;</button>` :
+                `<div class="mt-3 text-xs font-bold text-scout-forest">🎉 Anda telah melengkapkan kesemua senario kepimpinan!</div>`
+              }
+            </div>
+          </div>
+        `;
+        confetti({ particleCount: 40, spread: 60, origin: { y: 0.7 } });
+      } else {
+        fb.className = "mt-6 p-4 rounded-xl bg-red-100 border border-red-300 text-red-900 text-sm";
+        fb.innerHTML = `
+          <div class="flex items-start gap-2">
+            <span class="text-xl">⚠️</span>
+            <div>
+              <div class="font-bold">Pertimbangan Kurang Sesuai</div>
+              <p class="mt-1">${opt.feedback}</p>
+              <div class="mt-2 text-xs font-semibold text-red-800">Sila cuba buat keputusan sekali lagi.</div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function nextScenarioStep() {
+      currentScenario++;
+      renderScenario();
+    }
+
+    // ----------------------------------------------
+    // 5. KUIZ PENGUKUHAN DENGAN SISTEM SIJIL
+    // ----------------------------------------------
+    const quizData = [
+      {
+        q: "1. Apakah tujuan utama pergerakan pengakap dari aspek perkembangan individu muda?",
+        options: [
+          "Melahirkan tentera sukarela untuk mempertahankan negara semasa darurat.",
+          "Membangunkan potensi jasmani, emosi, rohani, intelek dan sosial (JERIS) sebagai warganegara bertanggungjawab.",
+          "Mengumpul lencana kemahiran sebanyak mungkin untuk persaingan peribadi.",
+          "Menggantikan sistem pendidikan formal di sekolah rendah dan menengah."
+        ],
+        correct: 1
+      },
+      {
+        q: "2. Cogan kata keramat bagi Pengakap Kelana ialah:",
+        options: [
+          "'Selalu Sedia' (Be Prepared)",
+          "'Buat Sehabis Baik' (Do Your Best)",
+          "'Pandang Luas' (Look Wide)",
+          "'Berkhidmat' (Service)"
+        ],
+        correct: 3
+      },
+      {
+        q: "3. Tiga Prinsip Asas Pergerakan Pengakap merangkumi Tanggungjawab terhadap...",
+        options: [
+          "Tuhan, Masyarakat/Alam Sekitar, dan Diri Sendiri.",
+          "Keluarga, Sekolah, dan Kelab Sukan.",
+          "Undang-Undang, Mahkamah, dan Polis.",
+          "Pemimpin Krew, Penaja Kewangan, dan Sahabat Handai."
+        ],
+        correct: 0
+      },
+      {
+        q: "4. Manakah antara berikut BUKAN peranan lazim seorang Pengakap Kelana?",
+        options: [
+          "Menjadi mentor kemahiran kepengakapan kepada Pengakap Kanak-Kanak.",
+          "Melaksanakan misi bantuan sukarelawan bencana dan komuniti.",
+          "Membelakangkan aktiviti kebajikan demi memfokuskan keuntungan komersial krew semata-mata.",
+          "Meningkatkan kemahiran kepimpinan dan kebolehpasaran diri menjelang alam pekerjaan."
+        ],
+        correct: 2
+      },
+      {
+        q: "5. Anugerah tertinggi bagi peringkat Pengakap Kelana di Malaysia dinamakan sempena pengasas pengakap, iaitu:",
+        options: [
+          "Anugerah Manikayu 4 Butir",
+          "Anugerah Baden-Powell (B-P Award)",
+          "Anugerah Rimba Raja",
+          "Anugerah Perkhidmatan Cemerlang (APC)"
+        ],
+        correct: 1
+      }
+    ];
+
+    let userAnswers = {};
+
+    function renderQuiz() {
+      const container = document.getElementById('quizContainer');
+      container.innerHTML = '';
+
+      quizData.forEach((item, qIdx) => {
+        const qBlock = document.createElement('div');
+        qBlock.className = "p-5 rounded-xl border border-slate-200 bg-slate-50/70";
+        qBlock.innerHTML = `
+          <h4 class="font-bold text-slate-900 text-base mb-3">${item.q}</h4>
+          <div class="space-y-2">
+            ${item.options.map((opt, optIdx) => `
+              <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-white hover:bg-emerald-50/40 cursor-pointer transition-all text-sm text-slate-700">
+                <input type="radio" name="q_${qIdx}" value="${optIdx}" onchange="selectAnswer(${qIdx}, ${optIdx})" class="text-scout-forest focus:ring-emerald-500 w-4 h-4">
+                <span>${opt}</span>
+              </label>
+            `).join('')}
+          </div>
+          <div id="quizFeedback_${qIdx}" class="mt-3 text-xs font-semibold hidden"></div>
+        `;
+        container.appendChild(qBlock);
+      });
+    }
+
+    function selectAnswer(qIdx, optIdx) {
+      userAnswers[qIdx] = optIdx;
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      quizData.forEach((item, qIdx) => {
+        const feedbackEl = document.getElementById(`quizFeedback_${qIdx}`);
+        feedbackEl.classList.remove('hidden');
+
+        if (userAnswers[qIdx] === item.correct) {
+          score++;
+          feedbackEl.className = "mt-3 text-xs font-bold text-emerald-700 flex items-center gap-1";
+          feedbackEl.innerHTML = `<span>✓ Tepat sekali!</span>`;
+        } else {
+          feedbackEl.className = "mt-3 text-xs font-bold text-red-600 flex items-center gap-1";
+          feedbackEl.innerHTML = `<span>✗ Kurang tepat. Jawapan betul: "${item.options[item.correct]}"</span>`;
+        }
+      });
+
+      document.getElementById('quizScoreText').textContent = `${score} / ${quizData.length}`;
+
+      const certBox = document.getElementById('certificateBox');
+      if (score >= 4) {
+        certBox.classList.remove('hidden');
+        confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+      } else {
+        certBox.classList.add('hidden');
+        alert(`Skor anda: ${score}/${quizData.length}. Anda perlukan sekurang-kurangnya 4/5 untuk membuka Sijil Kelana. Sila semak jawapan dan cuba lagi!`);
+      }
+      updateProgress();
+    }
+
+    function resetQuiz() {
+      userAnswers = {};
+      document.getElementById('quizScoreText').textContent = `0 / ${quizData.length}`;
+      document.getElementById('certificateBox').classList.add('hidden');
+      renderQuiz();
+    }
+
+    // ----------------------------------------------
+    // 6. PENJEJAK KEMAJUAN (PROGRESS TRACKER)
+    // ----------------------------------------------
+    function updateProgress() {
+      // Skor anggaran berdasarkan lawatan tab & kuiz
+      const progressEl = document.getElementById('overallProgress');
+      const score = Object.keys(userAnswers).length;
+      let pct = 30 + (score * 14);
+      if (pct > 100) pct = 100;
+      progressEl.style.width = pct + '%';
+    }
+
+    // Inisialisasi awal semasa DOM sedia
+    window.addEventListener('DOMContentLoaded', () => {
+      updateCardView();
+      renderScenario();
+      renderQuiz();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hub Pembelajaran Interaktif: Persetiaan & Undang-Undang Pengakap</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Canvas Confetti for Achievements -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            scout: {
+              purple: '#4B1E6D',
+              darkPurple: '#2E0854',
+              gold: '#F59E0B',
+              amber: '#D97706',
+              green: '#1E3F20',
+              cream: '#FDFBF7'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes pulse-slow {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+    .animate-pulse-slow {
+      animation: pulse-slow 3s infinite ease-in-out;
+    }
+    .card-flip {
+      perspective: 1000px;
+    }
+    .card-inner {
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .card-flip.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+    .card-front, .card-back {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .card-back {
+      transform: rotateY(180deg);
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c7a7e3;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #7732a8;
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FA] text-slate-800 min-h-screen flex flex-col font-sans antialiased selection:bg-purple-200">
+
+  <!-- Top Navigation Bar -->
+  <header class="bg-scout-purple text-white shadow-lg sticky top-0 z-40 border-b-4 border-scout-gold">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        
+        <!-- Logo & Title -->
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('persetiaan')">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-scout-gold/20 border-2 border-scout-gold flex items-center justify-center text-scout-gold shadow-inner">
+            <!-- Fleur-de-lis SVG Icon -->
+            <svg class="w-6 h-6 sm:w-8 sm:h-8 fill-current" viewBox="0 0 24 24">
+              <path d="M12 2C11.5 5 10 7 7.5 8C8.5 9 10 9.5 10 11C10 13 8 13.5 6 13C6.5 14.5 7.5 15.5 9 16C7 17 5 16 3 15C4 18 6.5 20 9 20C10.5 20 11.5 19 12 17C12.5 19 13.5 20 15 20C17.5 20 20 18 21 15C19 16 17 17 15 16C16.5 15.5 17.5 14.5 18 13C16 13.5 14 13 14 11C14 9.5 15.5 9 16.5 8C14 7 12.5 5 12 2M11 21H13V22H11V21Z"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-base sm:text-xl font-bold tracking-tight text-white">
+              Pengakap Malaysia
+            </h1>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium overflow-x-auto py-1">
+          <button onclick="switchTab('persetiaan')" id="nav-persetiaan" class="tab-btn px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 bg-white/20 text-white shadow-sm font-semibold">
+            <span>📜</span>
+            <span class="hidden md:inline">Persetiaan</span>
+          </button>
+          <button onclick="switchTab('undang')" id="nav-undang" class="tab-btn px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 text-purple-200 hover:bg-white/10 hover:text-white">
+            <span>⚜️</span>
+            <span class="hidden md:inline">10 Undang-Undang</span>
+          </button>
+          <button onclick="switchTab('aktiviti')" id="nav-aktiviti" class="tab-btn px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 text-purple-200 hover:bg-white/10 hover:text-white">
+            <span>🧩</span>
+            <span class="hidden md:inline">Cabaran Susun Kata</span>
+          </button>
+          <button onclick="switchTab('kuiz')" id="nav-kuiz" class="tab-btn px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 text-purple-200 hover:bg-white/10 hover:text-white">
+            <span>🏆</span>
+            <span class="hidden md:inline">Ujian Lencana</span>
+          </button>
+        </nav>
+
+        <!-- Sound Toggle -->
+        <button id="soundToggle" onclick="toggleAudioFx()" class="p-2 rounded-lg bg-scout-darkPurple text-scout-gold hover:bg-black/30 border border-scout-gold/40 transition-colors" title="Buka/Tutup Bunyi">
+          <svg id="soundIconOn" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+          <svg id="soundIconOff" class="w-5 h-5 hidden text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+    <!-- Hero Ribbon -->
+    <div class="relative overflow-hidden bg-gradient-to-r from-scout-purple via-indigo-900 to-scout-purple rounded-2xl p-6 sm:p-8 text-white shadow-xl mb-8 border border-purple-500/30">
+      <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+        <svg class="w-72 h-72 fill-white" viewBox="0 0 24 24">
+          <path d="M12 2C11.5 5 10 7 7.5 8C8.5 9 10 9.5 10 11C10 13 8 13.5 6 13C6.5 14.5 7.5 15.5 9 16C7 17 5 16 3 15C4 18 6.5 20 9 20C10.5 20 11.5 19 12 17C12.5 19 13.5 20 15 20C17.5 20 20 18 21 15C19 16 17 17 15 16C16.5 15.5 17.5 14.5 18 13C16 13.5 14 13 14 11C14 9.5 15.5 9 16.5 8C14 7 12.5 5 12 2Z"/>
+        </svg>
+      </div>
+
+      <div class="relative z-10">
+        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+          Modul 2.0 : Persetiaan & Undang-Undang Pengakap
+        </h2>
+        <p class="text-purple-200 mt-2 max-w-2xl text-sm sm:text-base leading-relaxed">
+          Terokai prinsip asas jati diri seorang pengakap. Kuasai bacaan ikrar, fahami makna di sebalik 3 jari isyarat, dan hayati 10 undang-undang dalam amalan harian.
+        </p>
+      </div>
+    </div>
+
+    <!-- TAB 1: PERSETIAAN & ISYARAT PENGAKAP -->
+    <section id="section-persetiaan" class="tab-content transition-all duration-300">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left: Lafaz Persetiaan Card -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 sm:p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-purple-50 rounded-bl-full -z-0 pointer-events-none"></div>
+
+            <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="text-2xl">📜</span>
+                <h3 class="text-xl font-bold text-slate-800">Lafaz Persetiaan Pengakap</h3>
+              </div>
+              <button onclick="playRecitationSpeech()" id="speechBtn" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-scout-purple hover:bg-purple-800 text-white text-xs font-semibold shadow transition-all active:scale-95">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                <span id="speechBtnText">Dengar Lafaz</span>
+              </button>
+            </div>
+
+            <!-- Teks Persetiaan dengan highlight interaktif -->
+            <div class="bg-amber-50/70 border-l-4 border-scout-gold p-5 rounded-r-xl my-4 text-slate-800 space-y-3 font-serif text-base sm:text-lg leading-relaxed shadow-inner">
+              <p class="italic text-slate-600 font-medium">"Bahawa dengan sesungguhnya, saya berjanji dan bersetia, yang saya, dengan seberapa daya upaya saya, akan:"</p>
+              
+              <div id="promise-point-1" onclick="highlightPill(1)" class="promise-item p-3 rounded-lg border border-amber-200/60 bg-white/70 hover:bg-amber-100/60 cursor-pointer transition-all flex items-start gap-3">
+                <span class="w-7 h-7 rounded-full bg-scout-purple text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</span>
+                <div>
+                  <span class="font-bold text-scout-purple">Taat kepada Tuhan, Raja dan Negara;</span>
+                </div>
+              </div>
+
+              <div id="promise-point-2" onclick="highlightPill(2)" class="promise-item p-3 rounded-lg border border-amber-200/60 bg-white/70 hover:bg-amber-100/60 cursor-pointer transition-all flex items-start gap-3">
+                <span class="w-7 h-7 rounded-full bg-scout-purple text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</span>
+                <div>
+                  <span class="font-bold text-scout-purple">Menolong orang pada setiap masa;</span>
+                </div>
+              </div>
+
+              <div id="promise-point-3" onclick="highlightPill(3)" class="promise-item p-3 rounded-lg border border-amber-200/60 bg-white/70 hover:bg-amber-100/60 cursor-pointer transition-all flex items-start gap-3">
+                <span class="w-7 h-7 rounded-full bg-scout-purple text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</span>
+                <div>
+                  <span class="font-bold text-scout-purple">Menurut undang-undang pengakap.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interaktif: Tekan untuk mengesahkan hafalan -->
+            <div class="mt-6 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+              <span class="text-xs text-slate-500">Adakah anda sudah menghafal teks ini?</span>
+              <button onclick="markPersetiaanMastered()" id="btnMasterPersetiaan" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs sm:text-sm flex items-center gap-2 shadow transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <span>Tanda: Saya Dah Hafal!</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Penjelasan 3 Teras Utama -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+              <div class="w-10 h-10 mx-auto rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-lg mb-2">👑</div>
+              <h4 class="font-bold text-sm text-slate-800">Teras 1</h4>
+              <p class="text-xs text-slate-500 mt-1">Kewajipan kepada Tuhan, Raja & Tanah Air</p>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+              <div class="w-10 h-10 mx-auto rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-lg mb-2">🤝</div>
+              <h4 class="font-bold text-sm text-slate-800">Teras 2</h4>
+              <p class="text-xs text-slate-500 mt-1">Kewajipan kepada Masyarakat & Orang Lain</p>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+              <div class="w-10 h-10 mx-auto rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg mb-2">🧭</div>
+              <h4 class="font-bold text-sm text-slate-800">Teras 3</h4>
+              <p class="text-xs text-slate-500 mt-1">Kewajipan kepada Diri Sendiri (Undang-Undang)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Isyarat & Hormat Pengakap Simulation -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                <span>✋</span> Isyarat & Hormat Pengakap
+              </h3>
+              <span class="text-xs bg-purple-100 text-scout-purple font-bold px-2 py-0.5 rounded">Tiga Jari</span>
+            </div>
+            <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+              Isyarat Pengakap digunakan semasa melafazkan Persetiaan Pengakap, memberi salam pengakap, dan majlis istiadat perbarisan atau pelantikan.
+            </p>
+
+            <!-- Interactive Hand Anatomy SVG -->
+            <div class="bg-gradient-to-b from-purple-50/50 to-white rounded-xl border border-purple-100 p-4 flex flex-col items-center justify-center relative">
+              
+              <!-- SVG Isyarat Tangan -->
+              <svg class="w-48 h-64 drop-shadow-md transition-transform duration-300 hover:scale-105" viewBox="0 0 200 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Palm & Wrist Base -->
+                <path d="M60 260 L60 210 C50 180 50 150 55 130 C60 110 70 100 80 100 L120 100 C130 100 140 110 145 130 C150 150 150 180 140 210 L140 260 Z" fill="#F8C8A0" stroke="#8C4E2D" stroke-width="3"/>
+                
+                <!-- Telunjuk (Index Finger) - Teras 1 -->
+                <g id="finger-index" class="cursor-pointer group" onclick="highlightPill(1)">
+                  <rect x="62" y="30" width="22" height="90" rx="11" fill="#FFD9B8" stroke="#8C4E2D" stroke-width="3" class="group-hover:fill-amber-200 transition-colors"/>
+                  <line x1="66" y1="60" x2="80" y2="60" stroke="#CCA07E" stroke-width="2"/>
+                  <line x1="66" y1="85" x2="80" y2="85" stroke="#CCA07E" stroke-width="2"/>
+                  <text x="73" y="20" font-size="12" font-weight="bold" fill="#4B1E6D" text-anchor="middle">1</text>
+                </g>
+
+                <!-- Hantu (Middle Finger) - Teras 2 -->
+                <g id="finger-middle" class="cursor-pointer group" onclick="highlightPill(2)">
+                  <rect x="89" y="15" width="22" height="105" rx="11" fill="#FFD9B8" stroke="#8C4E2D" stroke-width="3" class="group-hover:fill-amber-200 transition-colors"/>
+                  <line x1="93" y1="50" x2="107" y2="50" stroke="#CCA07E" stroke-width="2"/>
+                  <line x1="93" y1="80" x2="107" y2="80" stroke="#CCA07E" stroke-width="2"/>
+                  <text x="100" y="10" font-size="12" font-weight="bold" fill="#4B1E6D" text-anchor="middle">2</text>
+                </g>
+
+                <!-- Manis (Ring Finger) - Teras 3 -->
+                <g id="finger-ring" class="cursor-pointer group" onclick="highlightPill(3)">
+                  <rect x="116" y="32" width="22" height="88" rx="11" fill="#FFD9B8" stroke="#8C4E2D" stroke-width="3" class="group-hover:fill-amber-200 transition-colors"/>
+                  <line x1="120" y1="62" x2="134" y2="62" stroke="#CCA07E" stroke-width="2"/>
+                  <line x1="120" y1="87" x2="134" y2="87" stroke="#CCA07E" stroke-width="2"/>
+                  <text x="127" y="22" font-size="12" font-weight="bold" fill="#4B1E6D" text-anchor="middle">3</text>
+                </g>
+
+                <!-- Kelingking dibengkokkan (Pinky folded) -->
+                <path d="M140 135 C150 145 145 170 120 170 C110 170 105 165 105 160" fill="#E8B896" stroke="#8C4E2D" stroke-width="3"/>
+                
+                <!-- Ibu Jari di atas Kelingking (Thumb over Pinky) -->
+                <g id="thumb-over-pinky" class="cursor-pointer group" onclick="explainThumbCircle()">
+                  <path d="M55 150 C55 140 70 140 90 150 C115 160 125 165 125 175 C125 185 105 185 85 180 C70 175 55 165 55 150 Z" fill="#FFD9B8" stroke="#8C4E2D" stroke-width="3" class="group-hover:fill-amber-300 transition-colors"/>
+                  <circle cx="110" cy="170" r="16" fill="none" stroke="#D97706" stroke-width="2" stroke-dasharray="3,3" class="animate-spin" style="animation-duration: 6s;"/>
+                </g>
+
+                <text x="100" y="245" font-size="11" fill="#4B1E6D" font-weight="bold" text-anchor="middle">Sentuh bahagian jari untuk fahami</text>
+              </svg>
+
+              <!-- Interactive Explanation Box -->
+              <div id="fingerExplanationBox" class="mt-4 p-3 bg-white rounded-lg border border-purple-200 text-xs w-full transition-all">
+                <span class="font-bold text-scout-purple flex items-center gap-1.5 mb-1">
+                  <span>💡</span> Info Isyarat:
+                </span>
+                <p id="fingerExplanationText" class="text-slate-600">
+                  Klik mana-mana bahagian 3 jari di atas atau bulatan ibu jari/kelingking untuk melihat makna lambang persaudaraan.
+                </p>
+              </div>
+
+            </div>
+
+            <!-- Hormat Pengakap Note -->
+            <div class="mt-4 p-3 bg-amber-50 rounded-lg border border-amber-200 text-xs text-amber-900 flex items-start gap-2">
+              <span class="text-base">📌</span>
+              <div>
+                <strong>Cara Melakukan Hormat:</strong> Angkat tangan kanan dengan isyarat tiga jari rapat ke tepi kening mata kanan (atau tepi visor topi pengakap jika beruniform lengkap).
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 2: 10 UNDANG-UNDANG PENGAKAP -->
+    <section id="section-undang" class="tab-content hidden transition-all duration-300">
+      
+      <!-- Filter & Search Bar -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 mb-6">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <span>⚜️</span> 10 Undang-Undang Pengakap Malaysia
+            </h3>
+            <p class="text-xs text-slate-500 mt-1">Setiap pengakap diwajibkan memahami, menghafal, dan mengamalkan 10 prinsip ini. Klik kad untuk baca contoh situasi harian.</p>
+          </div>
+          
+          <!-- Category Quick Filters -->
+          <div class="flex items-center gap-2 text-xs">
+            <button onclick="filterLaws('all')" id="filter-all" class="law-filter-btn px-3 py-1.5 rounded-lg bg-scout-purple text-white font-semibold shadow-sm">Semua (10)</button>
+            <button onclick="flipAllCards()" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition">Balikkan Semua</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 Laws Grid -->
+      <div id="lawsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <!-- Will be populated by JS or Static HTML below for high performance & interactivity -->
+      </div>
+
+    </section>
+
+    <!-- TAB 3: AKTIVITI SUSUN KATA PERSETIAAN -->
+    <section id="section-aktiviti" class="tab-content hidden transition-all duration-300">
+      <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
+        
+        <div class="text-center mb-6">
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-scout-purple uppercase mb-2">Permainan Interaktif</span>
+          <h3 class="text-2xl font-black text-slate-800">Cabaran Susun Frasa Persetiaan</h3>
+          <p class="text-xs sm:text-sm text-slate-500 max-w-lg mx-auto mt-1">
+            Klik atau seret frasa-frasa di bawah mengikut urutan yang betul untuk menyempurnakan lafaz Persetiaan Pengakap!
+          </p>
+        </div>
+
+        <!-- Target Placement Area -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-600 uppercase tracking-wider">Ruang Ikrar Pengakap:</span>
+            <span id="scrambleFeedback" class="text-xs font-semibold text-slate-400">Pilih frasa mengikut urutan</span>
+          </div>
+
+          <div id="dropZone" class="min-h-[140px] bg-slate-50 border-2 border-dashed border-purple-300 rounded-xl p-4 flex flex-wrap gap-2.5 items-center content-start transition-all">
+            <!-- Selected chips go here -->
+          </div>
+        </div>
+
+        <!-- Source Phrase Chips (Shuffled) -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Pilihan Frasa (Klik untuk masukkan):</span>
+            <button onclick="resetScrambleGame()" class="text-xs text-scout-purple hover:underline font-semibold flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+              Susun Semula
+            </button>
+          </div>
+          
+          <div id="phrasePool" class="min-h-[90px] bg-purple-50/50 border border-purple-100 rounded-xl p-4 flex flex-wrap gap-2.5">
+            <!-- Shuffled interactive chips generated dynamically -->
+          </div>
+        </div>
+
+        <!-- Action / Verification Button -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100">
+          <div class="flex items-center gap-2 text-xs text-slate-500">
+            <span>⏱️ Masa Percubaan: <strong id="scrambleTimer" class="text-slate-700">0s</strong></span>
+            <span>•</span>
+            <span>Cubaan: <strong id="scrambleAttempts" class="text-slate-700">0</strong></span>
+          </div>
+
+          <div class="flex items-center gap-3 w-full sm:w-auto">
+            <button onclick="clearDropZone()" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold transition">
+              Kosongkan
+            </button>
+            <button onclick="verifyScrambleSolution()" id="btnSemakSusun" class="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-scout-purple hover:bg-scout-darkPurple text-white text-xs sm:text-sm font-bold shadow-md transition-all active:scale-95 flex items-center justify-center gap-2">
+              <span>Semak Jawapan</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 4: KUIZ LENCANA KEAHLIAN PENGAKAP -->
+    <section id="section-kuiz" class="tab-content hidden transition-all duration-300">
+      <div class="max-w-3xl mx-auto">
+        
+        <!-- Quiz Main Screen -->
+        <div id="quizContainer" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
+          
+          <!-- Quiz Header -->
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+            <div>
+              <span class="text-xs font-bold text-scout-purple bg-purple-100 px-2.5 py-1 rounded-md">Lencana Keahlian</span>
+              <h3 class="text-xl font-bold text-slate-800 mt-1">Ujian Kefahaman Persetiaan & Undang-Undang</h3>
+            </div>
+            <div class="text-right">
+              <span class="text-xs text-slate-400">Soalan</span>
+              <div class="text-lg font-black text-scout-purple" id="quizQuestionTracker">1 / 5</div>
+            </div>
+          </div>
+
+          <!-- Question Prompt -->
+          <div class="mb-6">
+            <h4 id="quizQuestionText" class="text-base sm:text-lg font-bold text-slate-800 leading-snug">
+              Memuatkan soalan...
+            </h4>
+            <p id="quizQuestionContext" class="text-xs text-slate-500 mt-1 italic"></p>
+          </div>
+
+          <!-- Options Grid -->
+          <div id="quizOptionsContainer" class="space-y-3 mb-6">
+            <!-- Dynamic multiple choice buttons -->
+          </div>
+
+          <!-- Instant Explanation Alert Box -->
+          <div id="quizExplanationBox" class="hidden p-4 rounded-xl text-xs sm:text-sm font-medium mb-6 transition-all"></div>
+
+          <!-- Quiz Action Footer -->
+          <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+            <div class="text-xs text-slate-500">
+              Markah Semasa: <span id="quizCurrentScore" class="font-bold text-scout-purple">0</span> mata
+            </div>
+            <button id="quizNextBtn" onclick="nextQuizQuestion()" class="hidden px-5 py-2.5 bg-scout-purple hover:bg-scout-darkPurple text-white rounded-xl text-xs sm:text-sm font-bold shadow transition flex items-center gap-1.5">
+              <span>Soalan Seterusnya</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Quiz Completion Screen (Result & Certificate) -->
+        <div id="quizResultContainer" class="hidden bg-white rounded-2xl shadow-xl border border-slate-200 p-6 sm:p-8 text-center">
+          <div class="w-20 h-20 mx-auto rounded-full bg-amber-100 text-scout-gold flex items-center justify-center text-4xl mb-4 border-4 border-amber-300 animate-bounce">
+            🎖️
+          </div>
+          <h3 class="text-2xl font-black text-slate-800">Tahniah, Saudara Pengakap!</h3>
+          <p class="text-sm text-slate-600 mt-1 max-w-md mx-auto">
+            Anda telah berjaya menyelesaikan Ujian Penguasaan Persetiaan & Undang-Undang Pengakap.
+          </p>
+
+          <div class="my-6 p-4 bg-purple-50 rounded-xl inline-block border border-purple-200">
+            <div class="text-xs text-purple-700 font-semibold uppercase">Keputusan Akhir</div>
+            <div class="text-4xl font-extrabold text-scout-purple my-1" id="finalQuizScore">5 / 5</div>
+            <div class="text-xs font-medium text-slate-600" id="finalQuizFeedback">Cemerlang! Anda memahami nilai Pengakap sejati.</div>
+          </div>
+
+          <!-- User Certificate Input -->
+          <div class="max-w-md mx-auto bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6 text-left">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Nama Penuh Pengakap:</label>
+            <input type="text" id="certUserName" placeholder="cth: Ahmad Danial bin Rosli" class="w-full px-3 py-2 border rounded-lg text-sm mb-3 focus:ring-2 focus:ring-purple-400 outline-none">
+            
+            <label class="block text-xs font-bold text-slate-700 mb-1">Kumpulan / Sekolah / Daerah:</label>
+            <input type="text" id="certUserSchool" placeholder="cth: Kumpulan Pengakap Ke-12 Langkawi" class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-purple-400 outline-none">
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <button onclick="generateDigitalCertificate()" class="px-5 py-2.5 bg-scout-gold hover:bg-amber-600 text-slate-900 font-bold rounded-xl text-sm shadow transition flex items-center gap-2">
+              <span>🖨️ Jana Sijil Digital</span>
+            </button>
+            <button onclick="restartQuiz()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition">
+              Ulang Semula Kuiz
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Certificate Modal Popup -->
+  <div id="certificateModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl border-8 border-scout-purple print:m-0 print:border-4">
+      
+      <!-- Close Button -->
+      <button onclick="closeCertModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+
+      <!-- Printable Certificate Canvas Area -->
+      <div id="printableCert" class="border-4 border-double border-scout-gold p-6 text-center bg-[#FFFCF5] relative overflow-hidden rounded-lg">
+        
+        <!-- Watermark -->
+        <div class="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+          <svg class="w-80 h-80 fill-purple-900" viewBox="0 0 24 24"><path d="M12 2C11.5 5 10 7 7.5 8C8.5 9 10 9.5 10 11C10 13 8 13.5 6 13C6.5 14.5 7.5 15.5 9 16C7 17 5 16 3 15C4 18 6.5 20 9 20C10.5 20 11.5 19 12 17C12.5 19 13.5 20 15 20C17.5 20 20 18 21 15C19 16 17 17 15 16C16.5 15.5 17.5 14.5 18 13C16 13.5 14 13 14 11C14 9.5 15.5 9 16.5 8C14 7 12.5 5 12 2Z"/></svg>
+        </div>
+
+        <div class="relative z-10">
+          <div class="flex justify-center mb-2">
+            <div class="w-14 h-14 rounded-full bg-scout-purple flex items-center justify-center text-scout-gold border-2 border-scout-gold">
+              ⚜️
+            </div>
+          </div>
+          <h2 class="text-xl sm:text-2xl font-serif font-black tracking-wide text-scout-purple uppercase">Sijil Pencapaian Pengakap</h2>
+          <p class="text-xs uppercase tracking-widest text-scout-amber font-semibold mt-1">Persekutuan Pengakap Malaysia</p>
+          
+          <div class="my-5">
+            <p class="text-xs text-slate-500 italic">Dengan ini diperakui bahawa</p>
+            <h3 id="certDisplayCandidate" class="text-xl sm:text-2xl font-bold text-slate-800 underline decoration-scout-gold decoration-2 my-1">
+              Nama Pengakap
+            </h3>
+            <p id="certDisplaySchool" class="text-xs font-medium text-slate-600">Unit Pengakap Sekolah</p>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-700 max-w-lg mx-auto leading-relaxed">
+            Telah berjaya menyelesaikan dan menghafal <strong>Persetiaan Pengakap</strong> serta membuktikan penguasaan terhadap <strong>10 Undang-Undang Pengakap</strong> dengan markah cemerlang dalam Modul Interaktif 2.0.
+          </p>
+
+          <div class="mt-8 pt-4 border-t border-slate-300/80 flex items-end justify-between px-4 text-left">
+            <div>
+              <p class="text-[10px] text-slate-400 uppercase font-mono" id="certIssueDate">Tarikh: 30 September 2026</p>
+              <p class="text-xs font-bold text-slate-700">Status: LULUS PENGUASAAN</p>
+            </div>
+            <div class="text-center">
+              <div class="w-20 border-b border-slate-700 mx-auto mb-1"></div>
+              <p class="text-[10px] text-slate-500 font-semibold uppercase">Pemimpin Pengakap</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action buttons -->
+      <div class="mt-4 flex justify-end gap-2 print:hidden">
+        <button onclick="window.print()" class="px-4 py-2 bg-scout-purple text-white text-xs font-bold rounded-lg hover:bg-scout-darkPurple transition">
+          Cetak Sijil
+        </button>
+        <button onclick="closeCertModal()" class="px-4 py-2 bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg hover:bg-slate-300 transition">
+          Tutup
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-slate-500 text-xs text-center">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex flex-wrap items-center justify-center gap-4 mb-2 font-medium">
+        <span class="text-scout-purple font-bold">Sekali Berpengakap, Selamanya Berpengakap! (Once a Scout, Always a Scout)</span>
+      </div>
+      <p>Bahan Pembelajaran Interaktif Skim Lencana Keahlian Pengakap Malaysia. Disediakan untuk kemudahan pembelajaran murid & guru pemimpin.</p>
+    </div>
+  </footer>
+
+  <script>
+    /* =========================================================================
+       1. DATA STRUCTURES: 10 UNDANG-UNDANG PENGAKAP & KUIZ
+       ========================================================================= */
+    const LAWS_DATA = [
+      {
+        num: 1,
+        title: "Dipercayai",
+        quote: "Pengakap adalah seorang yang sentiasa dipercayai maruah dan kejujuran dirinya.",
+        icon: "🛡️",
+        example: "Bercakap benar walaupun susah, memulangkan barang yang dijumpai, tidak menipu dalam peperiksaan atau perkhemahan."
+      },
+      {
+        num: 2,
+        title: "Taat",
+        quote: "Pengakap adalah seorang yang taat kepada Yang Dipertuan Agong, Raja, pemimpin, ibu bapa dan negaranya.",
+        icon: "👑",
+        example: "Mematuhi arahan pemimpin patrol, menghormati ibu bapa di rumah, serta berdiri tegak semasa lagu Negaraku berkumandang."
+      },
+      {
+        num: 3,
+        title: "Berguna",
+        quote: "Pengakap adalah seorang yang berguna dan sentiasa menolong orang pada setiap masa.",
+        icon: "🤝",
+        example: "Membantu warga emas melintas jalan, membersihkan kawasan sekolah, dan menawarkan bantuan tanpa menunggu disuruh."
+      },
+      {
+        num: 4,
+        title: "Bersaudara",
+        quote: "Pengakap adalah sahabat kepada semua orang dan bersaudara kepada semua pengakap lain tanpa mengira bangsa atau darjat.",
+        icon: "🌍",
+        example: "Menyambut rakan dari kaum atau negara lain dengan senyuman dan salam pengakap (bersalaman tangan kiri)."
+      },
+      {
+        num: 5,
+        title: "Berbudi",
+        quote: "Pengakap adalah seorang yang baik budi pekertinya dan sentiasa menunjukkan kesopanan.",
+        icon: "✨",
+        example: "Mengucapkan 'terima kasih', memberi salam ketika bersua, dan bertutur dengan lemah-lembut serta beradab sopan."
+      },
+      {
+        num: 6,
+        title: "Kasihkan Binatang",
+        quote: "Pengakap adalah seorang yang kasihkan binatang dan memelihara alam sekitar.",
+        icon: "🐾",
+        example: "Tidak menganiaya kucing/anjing, memberi makan haiwan terbiar, serta menjaga kebersihan hutan semasa aktiviti perkhemahan."
+      },
+      {
+        num: 7,
+        title: "Menurut Perintah",
+        quote: "Pengakap adalah seorang yang menurut perintah ibu bapa, pemimpin atau ketua patrolnya tanpa bantahan.",
+        icon: "📢",
+        example: "Melaksanakan tugasan giliran memasak atau berkawal di khemah dengan penuh tanggungjawab dan disiplin pantas."
+      },
+      {
+        num: 8,
+        title: "Tabah Hati",
+        quote: "Pengakap adalah seorang yang sentiasa sabar, manis mukanya semasa kesusahan dan tidak mudah putus asa.",
+        icon: "😊",
+        example: "Tetap tersenyum dan menyanyikan lagu pengakap semasa khemah dibasahi hujan lebat dan terus mencari penyelesaian."
+      },
+      {
+        num: 9,
+        title: "Berjimat",
+        quote: "Pengakap adalah seorang yang berjimat cermat dan tidak membazirkan wang atau masa.",
+        icon: "💰",
+        example: "Menabung wang saku, menjaga peralatan kraf kayu dengan elok agar tahan lama, dan menggunakan masa dengan berfaedah."
+      },
+      {
+        num: 10,
+        title: "Suci Fikiran, Perkataan & Perbuatan",
+        quote: "Pengakap adalah seorang yang suci fikirannya, suci perkataannya dan suci perbuatannya.",
+        icon: "🤍",
+        example: "Menjauhi kata-kata kesat/lucah, berfikiran positif terhadap orang lain, dan tidak melakukan perkara yang merosakkan maruah diri."
+      }
+    ];
+
+    const SCRAMBLE_WORDS = [
+      { id: 1, text: "Bahawa dengan sesungguhnya," },
+      { id: 2, text: "saya berjanji dan bersetia," },
+      { id: 3, text: "yang saya," },
+      { id: 4, text: "dengan seberapa daya upaya saya," },
+      { id: 5, text: "akan:" },
+      { id: 6, text: "Taat kepada Tuhan, Raja dan Negara;" },
+      { id: 7, text: "Menolong orang pada setiap masa;" },
+      { id: 8, text: "Menurut undang-undang pengakap." }
+    ];
+
+    const QUIZ_QUESTIONS = [
+      {
+        q: "Berapakah jumlah teras utama yang terkandung dalam lafaz Persetiaan Pengakap?",
+        context: "Teras ini disimbolkan oleh tiga jari tegak dalam Isyarat Pengakap.",
+        options: ["2 Teras", "3 Teras", "5 Teras", "10 Teras"],
+        correct: 1,
+        explanation: "Terdapat 3 Teras: (1) Taat Tuhan, Raja & Negara, (2) Menolong orang, (3) Menurut undang-undang pengakap."
+      },
+      {
+        q: "Apakah maksud simbolik apabila ibu jari menindih jari kelingking dalam Isyarat Pengakap?",
+        context: "Perhatikan kedudukan dua jari yang bersilang di bahagian bawah tapak tangan.",
+        options: [
+          "Menunjukkan kepatuhan mutlak kepada ketua",
+          "Orang yang kuat melindungi orang yang lemah serta ikatan persaudaraan pengakap",
+          "Menandakan bahawa pengakap bersedia untuk berkhemah",
+          "Simbol mengunci rahsia patrol"
+        ],
+        correct: 1,
+        explanation: "Ibu jari diletakkan di atas kelingking melambangkan bahawa orang yang lebih kuat/dewasa melindungi yang lemah, dan bulatan tersebut melambangkan persaudaraan sejagat."
+      },
+      {
+        q: "Seorang ahli pengakap menjumpai dompet berisi wang tunai di tapak perkhemahan dan terus menyerahkannya kepada Pemimpin. Undang-undang manakah yang dipraktikkan?",
+        context: "Nilai ini berkaitan dengan maruah dan kejujuran.",
+        options: [
+          "Undang-Undang 1: Dipercayai",
+          "Undang-Undang 6: Kasihkan Binatang",
+          "Undang-Undang 8: Tabah Hati",
+          "Undang-Undang 9: Berjimat"
+        ],
+        correct: 0,
+        explanation: "Undang-undang Pertama menegaskan bahawa seorang Pengakap adalah sentiasa dipercayai maruah dan kejujuran dirinya."
+      },
+      {
+        q: "Apakah bunyi Undang-Undang Pengakap yang ke-5?",
+        context: "Berkait rapat dengan budi bahasa dan kesopanan.",
+        options: [
+          "Pengakap adalah seorang yang menurut perintah.",
+          "Pengakap adalah seorang yang berjimat cermat.",
+          "Pengakap adalah seorang yang berbudi.",
+          "Pengakap adalah seorang yang bersaudara."
+        ],
+        correct: 2,
+        explanation: "Undang-undang ke-5 ialah Berbudi (courteous/polite) - sentiasa menunjukkan kesopanan dan ketinggian akhlak."
+      },
+      {
+        q: "Semasa hujan lebat membasahi khemah ketika jambori, Ali tetap tersenyum, membantu rakan membaiki tali pancang, dan tidak mengeluh. Ini melambangkan:",
+        context: "Kekuatan mental dan ketabahan diri dalam situasi sukar.",
+        options: [
+          "Undang-Undang 7: Menurut Perintah",
+          "Undang-Undang 8: Tabah Hati",
+          "Undang-Undang 2: Taat",
+          "Undang-Undang 4: Bersaudara"
+        ],
+        correct: 1,
+        explanation: "Undang-Undang Ke-8 adalah 'Tabah Hati' - sentiasa tersenyum dan bersemangat semasa menghadapi kesusahan dan cabaran."
+      }
+    ];
+
+    /* =========================================================================
+       2. SOUND EFFECTS (Web Audio API - No external file dependencies)
+       ========================================================================= */
+    let audioContext = null;
+    let isSoundEnabled = true;
+
+    function initAudio() {
+      if (!audioContext) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioContext = new AudioContextClass();
+        }
+      }
+      if (audioContext && audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+    }
+
+    function playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.1) {
+      if (!isSoundEnabled) return;
+      try {
+        initAudio();
+        if (!audioContext) return;
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+        gain.gain.setValueAtTime(gainVal, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        osc.start();
+        osc.stop(audioContext.currentTime + duration);
+      } catch (e) {
+        console.warn('Audio play suppressed', e);
+      }
+    }
+
+    function soundClick() {
+      playTone(400, 'triangle', 0.08, 0.05);
+    }
+
+    function soundSuccess() {
+      if (!isSoundEnabled) return;
+      playTone(523.25, 'sine', 0.12, 0.1); // C5
+      setTimeout(() => playTone(659.25, 'sine', 0.15, 0.1), 100); // E5
+      setTimeout(() => playTone(783.99, 'sine', 0.25, 0.12), 200); // G5
+    }
+
+    function soundError() {
+      if (!isSoundEnabled) return;
+      playTone(220, 'sawtooth', 0.18, 0.1);
+      setTimeout(() => playTone(196, 'sawtooth', 0.25, 0.1), 150);
+    }
+
+    function soundFanfare() {
+      if (!isSoundEnabled) return;
+      const notes = [523.25, 523.25, 523.25, 659.25, 783.99, 1046.50];
+      const times = [0, 120, 240, 360, 480, 700];
+      notes.forEach((f, i) => {
+        setTimeout(() => playTone(f, 'triangle', 0.25, 0.12), times[i]);
+      });
+    }
+
+    function toggleAudioFx() {
+      isSoundEnabled = !isSoundEnabled;
+      const iconOn = document.getElementById('soundIconOn');
+      const iconOff = document.getElementById('soundIconOff');
+      if (isSoundEnabled) {
+        iconOn.classList.remove('hidden');
+        iconOff.classList.add('hidden');
+        soundSuccess();
+      } else {
+        iconOn.classList.add('hidden');
+        iconOff.classList.remove('hidden');
+      }
+    }
+
+    /* =========================================================================
+       3. NAVIGATION & PROGRESS SYSTEM
+       ========================================================================= */
+    const userProgress = {
+      persetiaanRead: false,
+      lawsExplored: new Set(),
+      scrambleDone: false,
+      quizScore: 0
+    };
+
+    function switchTab(tabId) {
+      soundClick();
+      // Hide all contents
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      // Deselect nav buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-white/20', 'text-white', 'shadow-sm', 'font-semibold');
+        btn.classList.add('text-purple-200');
+      });
+
+      // Show targeted
+      const targetSec = document.getElementById('section-' + tabId);
+      const targetNav = document.getElementById('nav-' + tabId);
+      if (targetSec && targetNav) {
+        targetSec.classList.remove('hidden');
+        targetNav.classList.add('bg-white/20', 'text-white', 'shadow-sm', 'font-semibold');
+        targetNav.classList.remove('text-purple-200');
+      }
+
+      if (tabId === 'aktiviti' && selectedDropChips.length === 0) {
+        initScrambleGame();
+      }
+    }
+
+    function updateMasteryBadge() {
+      let points = 0;
+      if (userProgress.persetiaanRead) points += 25;
+      points += Math.min(25, (userProgress.lawsExplored.size / 10) * 25);
+      if (userProgress.scrambleDone) points += 25;
+      if (userProgress.quizScore >= 4) points += 25;
+
+      const total = Math.round(points);
+      const percentEl = document.getElementById('overallBadgePercent');
+      const barEl = document.getElementById('overallProgressBar');
+      const statusEl = document.getElementById('overallStatusText');
+
+      if (percentEl) percentEl.innerText = `${total}%`;
+      if (barEl) barEl.style.width = `${total}%`;
+
+      if (statusEl) {
+        if (total >= 100) {
+          statusEl.innerText = 'Lencana Emas Siap!';
+          statusEl.className = 'text-sm font-bold text-amber-300';
+        } else if (total >= 50) {
+          statusEl.innerText = 'Pengakap Progresif';
+          statusEl.className = 'text-sm font-bold text-purple-100';
+        } else {
+          statusEl.innerText = 'Permulaan Baharu';
+          statusEl.className = 'text-sm font-bold text-white';
+        }
+      }
+    }
+
+    /* =========================================================================
+       4. PERSETIAAN & ISYARAT PENGAKAP CONTROLLER
+       ========================================================================= */
+    function highlightPill(index) {
+      soundClick();
+      // Remove prev highlights
+      for (let i = 1; i <= 3; i++) {
+        const item = document.getElementById(`promise-point-${i}`);
+        if (item) item.classList.remove('ring-2', 'ring-scout-purple', 'bg-purple-50');
+      }
+      const activeItem = document.getElementById(`promise-point-${index}`);
+      if (activeItem) {
+        activeItem.classList.add('ring-2', 'ring-scout-purple', 'bg-purple-50');
+        activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      const explanations = {
+        1: "JARI TELUNJUK (Teras 1): Kewajipan Taat kepada Tuhan, Raja dan Negara. Berpegang kepada agama dan perlembagaan persekutuan.",
+        2: "JARI HANTU (Teras 2): Menolong orang pada setiap masa. Sentiasa bersedia menghulurkan bakti kepada masyarakat (Do A Good Turn).",
+        3: "JARI MANIS (Teras 3): Menurut undang-undang pengakap. Memelihara disiplin dan perwatakan murni seorang ahli beruniform."
+      };
+
+      const box = document.getElementById('fingerExplanationText');
+      box.innerText = explanations[index];
+      box.parentElement.classList.add('bg-purple-50', 'border-scout-purple');
+    }
+
+    function explainThumbCircle() {
+      soundClick();
+      const box = document.getElementById('fingerExplanationText');
+      box.innerText = "IBU JARI MENINDIH KELINGKING: Bulatan ini melambangkan persaudaraan sejagat Pengakap seluruh dunia, dan ibu jari di atas kelingking melambangkan bahawa yang kuat/berkuasa berkewajipan melindungi dan menaungi yang lemah.";
+      box.parentElement.classList.add('bg-amber-50', 'border-amber-400');
+    }
+
+    function markPersetiaanMastered() {
+      soundSuccess();
+      userProgress.persetiaanRead = true;
+      const btn = document.getElementById('btnMasterPersetiaan');
+      btn.innerHTML = `
+        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+        <span>Telah Dikuasai!</span>
+      `;
+      btn.className = "px-4 py-2 rounded-lg bg-emerald-800 text-white font-medium text-xs sm:text-sm flex items-center gap-2 cursor-default";
+      updateMasteryBadge();
+      
+      confetti({
+        particleCount: 40,
+        spread: 50,
+        origin: { y: 0.7 }
+      });
+    }
+
+    let recitationAudio = null;
+
+    function playRecitationSpeech() {
+      const btnText = document.getElementById('speechBtnText');
+
+      if (!recitationAudio) {
+        recitationAudio = new Audio('persetiaan.mp3');
+
+        recitationAudio.addEventListener('ended', () => {
+          btnText.innerText = "Dengar Lafaz";
+        });
+
+        recitationAudio.addEventListener('error', () => {
+          btnText.innerText = "Dengar Lafaz";
+          console.warn("Fail persetiaan.mp3 tidak dapat dimuatkan. Pastikan fail berada dalam direktori yang sama.");
+        });
+      }
+
+      if (!recitationAudio.paused) {
+        recitationAudio.pause();
+        recitationAudio.currentTime = 0;
+        btnText.innerText = "Dengar Lafaz";
+      } else {
+        recitationAudio.play().then(() => {
+          btnText.innerText = "Berhenti Main";
+        }).catch(err => {
+          console.warn("Gagal memainkan audio:", err);
+          btnText.innerText = "Dengar Lafaz";
+        });
+      }
+    }
+
+    /* =========================================================================
+       5. 10 UNDANG-UNDANG PENGAKAP CARDS & FILTER
+       ========================================================================= */
+    function renderLaws() {
+      const container = document.getElementById('lawsGrid');
+      container.innerHTML = '';
+
+      LAWS_DATA.forEach(law => {
+        const card = document.createElement('div');
+        card.className = "card-flip h-72 cursor-pointer select-none";
+        card.id = `law-card-${law.num}`;
+        card.onclick = () => flipSingleCard(law.num);
+
+        card.innerHTML = `
+          <div class="card-inner relative w-full h-full rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+            
+            <!-- Front Card -->
+            <div class="card-front absolute inset-0 bg-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <span class="w-8 h-8 rounded-full bg-scout-purple text-white flex items-center justify-center font-bold text-xs">
+                    ${law.num}
+                  </span>
+                  <span class="text-2xl">${law.icon}</span>
+                </div>
+                <h4 class="text-lg font-black text-slate-800">${law.title}</h4>
+                <p class="text-xs text-slate-600 mt-2 font-serif italic line-clamp-4 leading-relaxed">
+                  "${law.quote}"
+                </p>
+              </div>
+
+              <div class="text-[11px] text-scout-purple font-bold flex items-center justify-between pt-3 border-t border-slate-100">
+                <span>Sentuh untuk situasi</span>
+                <span>↻</span>
+              </div>
+            </div>
+
+            <!-- Back Card -->
+            <div class="card-back absolute inset-0 bg-gradient-to-br from-scout-purple to-scout-darkPurple text-white rounded-2xl p-5 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between text-xs text-scout-gold font-bold mb-2">
+                  <span>Undang-Undang #${law.num}</span>
+                  <span>${law.icon}</span>
+                </div>
+                <h5 class="text-base font-bold text-white mb-2">${law.title}</h5>
+                <div class="text-xs text-purple-100 bg-white/10 p-3 rounded-xl border border-white/10 leading-relaxed">
+                  <strong class="text-scout-gold block mb-1">Contoh Amalan Harian:</strong>
+                  ${law.example}
+                </div>
+              </div>
+
+              <div class="text-[11px] text-purple-300 flex items-center justify-between pt-2">
+                <span>Klik untuk pusing balik</span>
+                <span>↺</span>
+              </div>
+            </div>
+
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function flipSingleCard(num) {
+      soundClick();
+      const card = document.getElementById(`law-card-${num}`);
+      if (card) {
+        card.classList.toggle('flipped');
+        userProgress.lawsExplored.add(num);
+        updateMasteryBadge();
+      }
+    }
+
+    let allFlipped = false;
+    function flipAllCards() {
+      soundClick();
+      allFlipped = !allFlipped;
+      LAWS_DATA.forEach(law => {
+        const card = document.getElementById(`law-card-${law.num}`);
+        if (card) {
+          if (allFlipped) {
+            card.classList.add('flipped');
+            userProgress.lawsExplored.add(law.num);
+          } else {
+            card.classList.remove('flipped');
+          }
+        }
+      });
+      updateMasteryBadge();
+    }
+
+    function filterLaws(type) {
+      soundClick();
+      // Render all cards
+      renderLaws();
+    }
+
+    /* =========================================================================
+       6. AKTIVITI SUSUN KATA PERSETIAAN
+       ========================================================================= */
+    let selectedDropChips = [];
+    let poolChips = [];
+    let scrambleStartTime = null;
+    let scrambleTimerInterval = null;
+    let scrambleAttemptsCount = 0;
+
+    function initScrambleGame() {
+      // Shuffle words
+      poolChips = [...SCRAMBLE_WORDS].sort(() => Math.random() - 0.5);
+      selectedDropChips = [];
+      scrambleAttemptsCount = 0;
+      document.getElementById('scrambleAttempts').innerText = scrambleAttemptsCount;
+      renderScramblePool();
+      renderDropZone();
+
+      // Reset feedback
+      const fb = document.getElementById('scrambleFeedback');
+      fb.innerText = "Pilih frasa mengikut urutan yang betul";
+      fb.className = "text-xs font-semibold text-slate-400";
+
+      // Start timer
+      clearInterval(scrambleTimerInterval);
+      scrambleStartTime = Date.now();
+      scrambleTimerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - scrambleStartTime) / 1000);
+        document.getElementById('scrambleTimer').innerText = `${elapsed}s`;
+      }, 1000);
+    }
+
+    function renderScramblePool() {
+      const container = document.getElementById('phrasePool');
+      container.innerHTML = '';
+      if (poolChips.length === 0) {
+        container.innerHTML = '<span class="text-xs text-slate-400 italic py-2">Semua frasa telah diletakkan di ruang atas. Sedia untuk menyemak!</span>';
+        return;
+      }
+
+      poolChips.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = "px-3.5 py-2 bg-white hover:bg-purple-100 text-slate-700 border border-purple-200 rounded-xl text-xs sm:text-sm font-medium shadow-sm transition active:scale-95 text-left";
+        btn.innerText = item.text;
+        btn.onclick = () => selectPhraseToDrop(item.id);
+        container.appendChild(btn);
+      });
+    }
+
+    function renderDropZone() {
+      const container = document.getElementById('dropZone');
+      container.innerHTML = '';
+      if (selectedDropChips.length === 0) {
+        container.innerHTML = '<span class="text-xs text-slate-400 italic m-auto">Klik butang frasa di bawah untuk membina ikrar mengikut turutan...</span>';
+        return;
+      }
+
+      selectedDropChips.forEach((item, idx) => {
+        const chip = document.createElement('div');
+        chip.className = "px-3 py-1.5 bg-scout-purple text-white rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-sm animate-fadeIn";
+        chip.innerHTML = `
+          <span>${idx + 1}. ${item.text}</span>
+          <button onclick="removePhraseFromDrop(${item.id})" class="text-purple-300 hover:text-white p-0.5" title="Keluarkan">✕</button>
+        `;
+        container.appendChild(chip);
+      });
+    }
+
+    function selectPhraseToDrop(id) {
+      soundClick();
+      const foundIdx = poolChips.findIndex(w => w.id === id);
+      if (foundIdx > -1) {
+        const [item] = poolChips.splice(foundIdx, 1);
+        selectedDropChips.push(item);
+        renderScramblePool();
+        renderDropZone();
+      }
+    }
+
+    function removePhraseFromDrop(id) {
+      soundClick();
+      const foundIdx = selectedDropChips.findIndex(w => w.id === id);
+      if (foundIdx > -1) {
+        const [item] = selectedDropChips.splice(foundIdx, 1);
+        poolChips.push(item);
+        renderScramblePool();
+        renderDropZone();
+      }
+    }
+
+    function clearDropZone() {
+      soundClick();
+      poolChips = [...poolChips, ...selectedDropChips];
+      selectedDropChips = [];
+      renderScramblePool();
+      renderDropZone();
+    }
+
+    function resetScrambleGame() {
+      soundClick();
+      initScrambleGame();
+    }
+
+    function verifyScrambleSolution() {
+      scrambleAttemptsCount++;
+      document.getElementById('scrambleAttempts').innerText = scrambleAttemptsCount;
+
+      if (selectedDropChips.length < SCRAMBLE_WORDS.length) {
+        soundError();
+        const fb = document.getElementById('scrambleFeedback');
+        fb.innerText = `Sila lengkapkan kesemua ${SCRAMBLE_WORDS.length} frasa terlebih dahulu!`;
+        fb.className = "text-xs font-bold text-rose-600";
+        return;
+      }
+
+      let isCorrect = true;
+      for (let i = 0; i < SCRAMBLE_WORDS.length; i++) {
+        if (selectedDropChips[i].id !== SCRAMBLE_WORDS[i].id) {
+          isCorrect = false;
+          break;
+        }
+      }
+
+      const fb = document.getElementById('scrambleFeedback');
+      if (isCorrect) {
+        clearInterval(scrambleTimerInterval);
+        soundSuccess();
+        fb.innerText = "Tahniah! Susunan Persetiaan Pengakap TEPAT dan SEMPURNA!";
+        fb.className = "text-xs font-bold text-emerald-600";
+
+        userProgress.scrambleDone = true;
+        updateMasteryBadge();
+
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      } else {
+        soundError();
+        fb.innerText = "Susunan kurang tepat. Sila semak urutan 3 teras persetiaan semula.";
+        fb.className = "text-xs font-bold text-amber-600";
+      }
+    }
+
+    /* =========================================================================
+       7. KUIZ LENCANA KEAHLIAN ENGINE
+       ========================================================================= */
+    let currentQuizIndex = 0;
+    let quizScore = 0;
+    let quizAnswered = false;
+
+    function loadQuizQuestion() {
+      quizAnswered = false;
+      const q = QUIZ_QUESTIONS[currentQuizIndex];
+      document.getElementById('quizQuestionTracker').innerText = `${currentQuizIndex + 1} / ${QUIZ_QUESTIONS.length}`;
+      document.getElementById('quizQuestionText').innerText = q.q;
+      document.getElementById('quizQuestionContext').innerText = q.context;
+
+      const optsContainer = document.getElementById('quizOptionsContainer');
+      optsContainer.innerHTML = '';
+
+      const explBox = document.getElementById('quizExplanationBox');
+      explBox.classList.add('hidden');
+      explBox.innerHTML = '';
+
+      document.getElementById('quizNextBtn').classList.add('hidden');
+
+      q.options.forEach((optText, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-4 rounded-xl border border-slate-200 hover:border-scout-purple hover:bg-purple-50/50 text-xs sm:text-sm font-medium text-slate-700 transition flex items-center gap-3";
+        btn.id = `quiz-opt-${idx}`;
+        btn.onclick = () => selectQuizAnswer(idx);
+
+        btn.innerHTML = `
+          <span class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center font-bold text-xs shrink-0">
+            ${String.fromCharCode(65 + idx)}
+          </span>
+          <span class="leading-relaxed">${optText}</span>
+        `;
+        optsContainer.appendChild(btn);
+      });
+    }
+
+    function selectQuizAnswer(selectedIndex) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+
+      const q = QUIZ_QUESTIONS[currentQuizIndex];
+      const isCorrect = (selectedIndex === q.correct);
+
+      // Disable all option buttons
+      q.options.forEach((_, idx) => {
+        const btn = document.getElementById(`quiz-opt-${idx}`);
+        if (btn) btn.disabled = true;
+      });
+
+      const selectedBtn = document.getElementById(`quiz-opt-${selectedIndex}`);
+      const correctBtn = document.getElementById(`quiz-opt-${q.correct}`);
+
+      if (isCorrect) {
+        soundSuccess();
+        quizScore++;
+        document.getElementById('quizCurrentScore').innerText = quizScore;
+        selectedBtn.classList.remove('border-slate-200', 'hover:border-scout-purple', 'hover:bg-purple-50/50');
+        selectedBtn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900', 'ring-2', 'ring-emerald-400');
+      } else {
+        soundError();
+        selectedBtn.classList.remove('border-slate-200');
+        selectedBtn.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-900');
+
+        // highlight the correct one
+        correctBtn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900');
+      }
+
+      // Display explanation
+      const explBox = document.getElementById('quizExplanationBox');
+      explBox.classList.remove('hidden');
+      if (isCorrect) {
+        explBox.className = "p-4 rounded-xl text-xs sm:text-sm font-medium mb-6 bg-emerald-50 text-emerald-900 border border-emerald-200";
+        explBox.innerHTML = `<strong>Jawapan Betul!</strong> ${q.explanation}`;
+      } else {
+        explBox.className = "p-4 rounded-xl text-xs sm:text-sm font-medium mb-6 bg-amber-50 text-amber-900 border border-amber-200";
+        explBox.innerHTML = `<strong>Kurang Tepat.</strong> ${q.explanation}`;
+      }
+
+      // Reveal Next Button
+      const nextBtn = document.getElementById('quizNextBtn');
+      nextBtn.classList.remove('hidden');
+      if (currentQuizIndex === QUIZ_QUESTIONS.length - 1) {
+        nextBtn.innerHTML = `<span>Lihat Keputusan</span>`;
+      }
+    }
+
+    function nextQuizQuestion() {
+      soundClick();
+      currentQuizIndex++;
+      if (currentQuizIndex < QUIZ_QUESTIONS.length) {
+        loadQuizQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function finishQuiz() {
+      soundFanfare();
+      userProgress.quizScore = quizScore;
+      updateMasteryBadge();
+
+      document.getElementById('quizContainer').classList.add('hidden');
+      const resultContainer = document.getElementById('quizResultContainer');
+      resultContainer.classList.remove('hidden');
+
+      document.getElementById('finalQuizScore').innerText = `${quizScore} / ${QUIZ_QUESTIONS.length}`;
+      const feedback = document.getElementById('finalQuizFeedback');
+
+      if (quizScore >= 4) {
+        feedback.innerText = "Tahniah! Anda telah menguasai intipati Persetiaan & Undang-Undang Pengakap dengan jayanya.";
+        confetti({
+          particleCount: 100,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
+      } else {
+        feedback.innerText = "Usaha yang baik! Cuba ulang kaji semula 10 undang-undang dan cuba sekali lagi untuk markah penuh.";
+      }
+    }
+
+    function restartQuiz() {
+      soundClick();
+      currentQuizIndex = 0;
+      quizScore = 0;
+      document.getElementById('quizCurrentScore').innerText = "0";
+      document.getElementById('quizContainer').classList.remove('hidden');
+      document.getElementById('quizResultContainer').classList.add('hidden');
+      loadQuizQuestion();
+    }
+
+    /* =========================================================================
+       8. SIJIL DIGITAL GENERATOR
+       ========================================================================= */
+    function generateDigitalCertificate() {
+      soundSuccess();
+      const nameInput = document.getElementById('certUserName').value.trim() || "Ahli Pengakap Muda";
+      const schoolInput = document.getElementById('certUserSchool').value.trim() || "Persekutuan Pengakap Malaysia";
+
+      document.getElementById('certDisplayCandidate').innerText = nameInput;
+      document.getElementById('certDisplaySchool').innerText = schoolInput;
+
+      // Current formatted date
+      const today = new Date();
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('certIssueDate').innerText = "Tarikh: " + today.toLocaleDateString('ms-MY', options);
+
+      document.getElementById('certificateModal').classList.remove('hidden');
+    }
+
+    function closeCertModal() {
+      soundClick();
+      document.getElementById('certificateModal').classList.add('hidden');
+    }
+
+    /* =========================================================================
+       9. INITIALIZATION ON LOAD
+       ========================================================================= */
+    window.addEventListener('DOMContentLoaded', () => {
+      renderLaws();
+      loadQuizQuestion();
+    });
+  </script>
+</body>
+</html>
