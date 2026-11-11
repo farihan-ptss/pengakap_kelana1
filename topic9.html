@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub Pembelajaran Pengakap Kelana: Topik 9 - Berkhemah</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti for quiz completion -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        scout: {
+                            red: '#D91B24',
+                            maroon: '#800000',
+                            gold: '#FFB800',
+                            green: '#1B5E20',
+                            forest: '#0D3813',
+                            khaki: '#E9D8A6',
+                            dark: '#0F172A',
+                            surface: '#1E293B',
+                            lightBg: '#F8FAFC'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth scrolling & custom scrollbar */
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .badge-gradient {
+            background: linear-gradient(135deg, #800000 0%, #D91B24 100%);
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #FFB800 0%, #F59E0B 100%);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand / Crest -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('dashboard')">
+                    <div class="w-10 h-10 rounded-xl badge-gradient flex items-center justify-center text-white shadow-md shadow-red-900/20">
+                        <i class="fa-solid fa-campground text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-red-700 block">Lencana Pengakap Kelana</span>
+                        <h1 class="text-lg font-extrabold text-slate-900 leading-tight">Topik 9: Berkhemah</h1>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Tabs -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-2">
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-item px-3 py-2 rounded-lg text-sm font-semibold text-red-700 bg-red-50 flex items-center gap-2 transition">
+                        <i class="fa-solid fa-compass"></i> Hub Modul
+                    </button>
+                    <button onclick="switchTab('modul')" id="nav-modul" class="nav-item px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-red-700 hover:bg-slate-100 flex items-center gap-2 transition">
+                        <i class="fa-solid fa-book-bookmark"></i> Nota Teori (A-H)
+                    </button>
+                    <button onclick="switchTab('logbuku')" id="nav-logbuku" class="nav-item px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-red-700 hover:bg-slate-100 flex items-center gap-2 transition">
+                        <i class="fa-solid fa-calendar-check"></i> Rekod 10 Malam
+                    </button>
+                    <button onclick="switchTab('survival')" id="nav-survival" class="nav-item px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-red-700 hover:bg-slate-100 flex items-center gap-2 transition">
+                        <i class="fa-solid fa-tents"></i> Khemah & Shelter
+                    </button>
+                    <button onclick="switchTab('kuiz')" id="nav-kuiz" class="nav-item px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-red-700 hover:bg-slate-100 flex items-center gap-2 transition">
+                        <i class="fa-solid fa-award"></i> Ujian Kendiri
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center md:hidden">
+                    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden border-t border-slate-200 bg-white px-4 pt-2 pb-4 space-y-1 shadow-lg">
+            <button onclick="switchTab('dashboard'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-red-50 hover:text-red-700 flex items-center gap-3">
+                <i class="fa-solid fa-compass text-red-600 w-5"></i> Hub Modul
+            </button>
+            <button onclick="switchTab('modul'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-red-50 hover:text-red-700 flex items-center gap-3">
+                <i class="fa-solid fa-book-bookmark text-red-600 w-5"></i> Nota Teori (Subtopik A - H)
+            </button>
+            <button onclick="switchTab('logbuku'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-red-50 hover:text-red-700 flex items-center gap-3">
+                <i class="fa-solid fa-calendar-check text-red-600 w-5"></i> Rekod 10 Malam Perkhemahan
+            </button>
+            <button onclick="switchTab('survival'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-red-50 hover:text-red-700 flex items-center gap-3">
+                <i class="fa-solid fa-tents text-red-600 w-5"></i> Khemah Kecil / Shelter Ikhtiar
+            </button>
+            <button onclick="switchTab('kuiz'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-red-50 hover:text-red-700 flex items-center gap-3">
+                <i class="fa-solid fa-award text-red-600 w-5"></i> Ujian Kendiri
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ================= SECTION 1: DASHBOARD ================= -->
+        <section id="tab-dashboard" class="tab-content transition-opacity duration-300">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-red-950 via-red-900 to-amber-900 text-white p-6 sm:p-10 mb-8 shadow-xl">
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-800/80 text-amber-300 border border-red-700 mb-4">
+                        <i class="fa-solid fa-shield-halved"></i> Skim Latihan Pengakap Kelana Malaysia
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+                        Penguasaan Teori & Praktikal Berkhemah
+                    </h2>
+                    <p class="text-slate-200 text-sm sm:text-base leading-relaxed mb-6">
+                        Panduan komprehensif mengikut kurikulum rasmi Persekutuan Pengakap Malaysia (PPM). Menggariskan kompetensi pentadbiran, kemahiran kraf khemah, gejet, sanitasi serta syarat wajib lulus skim penarafan.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="switchTab('modul')" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition shadow-lg flex items-center gap-2">
+                            <i class="fa-solid fa-book-open"></i> Mulakan Ulangkaji Teori
+                        </button>
+                        <button onclick="switchTab('logbuku')" class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm backdrop-blur-sm border border-white/20 transition flex items-center gap-2">
+                            <i class="fa-solid fa-file-pen"></i> Log 10 Malam Perkhemahan
+                        </button>
+                    </div>
+                </div>
+                <!-- Decorative SVG / Background Graphic -->
+                <div class="absolute -right-12 -bottom-12 opacity-15 text-white text-[240px] pointer-events-none select-none">
+                    <i class="fa-solid fa-campground"></i>
+                </div>
+            </div>
+
+            <!-- Syarat Mandatori Box -->
+            <div class="mb-8 p-5 sm:p-6 bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300/80 rounded-2xl shadow-sm">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500 text-slate-900 flex-shrink-0 flex items-center justify-center text-xl shadow-md">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-lg font-bold text-amber-950">Syarat Wajib Calon Pengakap Kelana (Topik 9):</h3>
+                        <p class="text-xs sm:text-sm text-amber-900 mt-1">Setiap calon <strong>MESTI</strong> menyempurnakan dua tugasan praktikal mandatori sebelum layak diuji atau dianugerahkan lencana:</p>
+                        <div class="grid sm:grid-cols-2 gap-3 mt-3">
+                            <div class="bg-white/90 p-3 rounded-xl border border-amber-200 flex items-center gap-3">
+                                <i class="fa-solid fa-moon text-indigo-700 text-lg"></i>
+                                <span class="text-xs sm:text-sm font-semibold text-slate-800">
+                                    Berkhemah <strong>minima 10 malam</strong> dalam siri perkhemahan & sediakan laporan lengkap.
+                                </span>
+                            </div>
+                            <div class="bg-white/90 p-3 rounded-xl border border-amber-200 flex items-center gap-3">
+                                <i class="fa-solid fa-tree text-green-700 text-lg"></i>
+                                <span class="text-xs sm:text-sm font-semibold text-slate-800">
+                                    Mendirikan <strong>khemah kecil / pondok perlindungan</strong> (bivouac / shelter).
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Matrix of Topics (a to h) -->
+            <div class="mb-4 flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900">Silibus 8 Subtopik Pembelajaran</h3>
+                    <p class="text-xs sm:text-sm text-slate-500">Klik mana-mana modul di bawah untuk mendalami teori dan rujukan amali.</p>
+                </div>
+                <button onclick="switchTab('modul')" class="text-xs sm:text-sm font-bold text-red-700 hover:text-red-800 flex items-center gap-1">
+                    Buka Semua <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <!-- Card a -->
+                <div onclick="openTopicDetail('a')" class="group bg-white p-5 rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-md cursor-pointer transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-red-100 text-red-700 font-bold text-xs flex items-center justify-center">A</span>
+                        <i class="fa-solid fa-clipboard-check text-slate-400 group-hover:text-red-600 transition"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm group-hover:text-red-700 transition">Pengurusan & Pentadbiran</h4>
+                    <p class="text-xs text-slate-500 mt-1 line-clamp-2">Kertas kerja, jawatankuasa, surat kebenaran PDRM/JBTN, anggaran bajet.</p>
+                </div>
+
+                <!-- Card b -->
+                <div onclick="openTopicDetail('b')" class="group bg-white p-5 rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-md cursor-pointer transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 font-bold text-xs flex items-center justify-center">B</span>
+                        <i class="fa-solid fa-list-check text-slate-400 group-hover:text-amber-600 transition"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm group-hover:text-red-700 transition">Persediaan 3 Fasa</h4>
+                    <p class="text-xs text-slate-500 mt-1 line-clamp-2">Tindakan rapi sebelum ekspedisi, protokol semasa dan pasca-perkhemahan.</p>
+                </div>
+
+                <!-- Card c -->
+                <div onclick="openTopicDetail('c')" class="group bg-white p-5 rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-md cursor-pointer transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-green-100 text-green-800 font-bold text-xs flex items-center justify-center">C</span>
+                        <i class="fa-solid fa-map-location-dot text-slate-400 group-hover:text-green-600 transition"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm group-hover:text-red-700 transition">Pemilihan Tapak & Bekalan</h4>
+                    <p class="text-xs text-slate-500 mt-1 line-clamp-2">Kriteria keselamatan tapak, punca air, menu seimbang & pembahagian alatan.</p>
+                </div>
+
+                <!-- Card d -->
+                <div onclick="openTopicDetail('d')" class="group bg-white p-5 rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-md cursor-pointer transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-blue-100 text-blue-800 font-bold text-xs flex items-center justify-center">D</span>
+                        <i class="fa-solid fa-tents text-slate-400 group-hover:text-blue-600 transition"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm group-hover:text-red-700 transition">Jenis Khemah & Kaedah Pasang</h4>
+                    <p class="text-xs text-slate-500 mt-1 line-clamp-2">Dome, Ridge, Frame, Geodesic. Teknik pancang 45°, tali penegang & parit hujan.</p>
+                </div>
+
+                <!-- Card e -->
+                <div onclick="openTopicDetail('e')" class="group bg-white p-5 rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-md cursor-pointer transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-orange-100 text-orange-800 font-bold text-xs flex items-center justify-center">E</span>
+                        <i class="fa-solid fa-fire-burner text-slate-400 group-hover:text-orange-600 transition"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm group-hover:text-red-700 transition">Dapur, Alatan & Gejet</h4>
+                    <p class="text-xs text-slate-500 mt-1 line-clamp-2">Dapur kayu/gas, rak kasut, meja makan, pintu gerbang & ikatan seraya/silang.</p>
+                </div>
+
+                <!-- Card f -->
+                <div onclick="openTopicDetail('f')" class="group bg-white p-5 rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-md cursor-pointer transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-purple-100 text-purple-800 font-bold text-xs flex items-center justify-center">F</span>
+                        <i class="fa-solid fa-compass-drafting text-slate-400 group-hover:text-purple-600 transition"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm group-hover:text-red-700 transition">Aktiviti & Jadual Program</h4>
+                    <p class="text-xs text-slate-500 mt-1 line-clamp-2">Pengembaraan pandu arah, malam kebudayaan, khidmat masyarakat, kembara lasak.</p>
+                </div>
+
+                <!-- Card g -->
+                <div onclick="openTopicDetail('g')" class="group bg-white p-5 rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-md cursor-pointer transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center">G</span>
+                        <i class="fa-solid fa-hand-holding-medical text-slate-400 group-hover:text-teal-600 transition"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm group-hover:text-red-700 transition">Kesihatan & Kebersihan</h4>
+                    <p class="text-xs text-slate-500 mt-1 line-clamp-2">First Aid Kit, lubang basah/kering, tandas medan (latrine), pencegahan haiwan.</p>
+                </div>
+
+                <!-- Card h -->
+                <div onclick="openTopicDetail('h')" class="group bg-white p-5 rounded-2xl border border-slate-200 hover:border-red-300 hover:shadow-md cursor-pointer transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="w-7 h-7 rounded-lg bg-rose-100 text-rose-800 font-bold text-xs flex items-center justify-center">H</span>
+                        <i class="fa-solid fa-flag text-slate-400 group-hover:text-rose-600 transition"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm group-hover:text-red-700 transition">Aturan Penutupan Perkhemahan</h4>
+                    <p class="text-xs text-slate-500 mt-1 line-clamp-2">Konsep 'Leave No Trace', peleraian gejet, pemeriksaan akhir, istiadat rasmi.</p>
+                </div>
+            </div>
+
+            <!-- Interactive Widget: Prinsip Susun Atur Tapak Perkhemahan (Interactive Simulator) -->
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+                <div class="flex flex-col lg:flex-row gap-6 items-start justify-between mb-6">
+                    <div>
+                        <span class="text-xs font-bold text-red-700 uppercase tracking-wider">Simulasi Interaktif</span>
+                        <h3 class="text-xl font-bold text-slate-900 mt-1">Susun Atur Standard Tapak Perkhemahan (Layout Plan)</h3>
+                        <p class="text-xs sm:text-sm text-slate-500">Klik elemen di bawah untuk melihat piawaian jarak dan arah angin yang betul mengikut standard kepengakapan.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                            <i class="fa-solid fa-wind"></i> Arah Angin: Kiri ke Kanan
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Diagram Display -->
+                <div class="relative bg-emerald-950/5 border border-emerald-900/10 rounded-2xl p-6 min-h-[340px] flex flex-col justify-between overflow-hidden">
+                    <!-- Top Zone (Main Entry & Admin) -->
+                    <div class="flex justify-between items-center z-10">
+                        <button onclick="inspectLayout('gate')" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-archway"></i> Pintu Gerbang & Kawalan
+                        </button>
+                        <button onclick="inspectLayout('quartermaster')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-box-archive"></i> Khemah QM (Alatan/Logistik)
+                        </button>
+                    </div>
+
+                    <!-- Middle Zone (Camp Centre & Tents) -->
+                    <div class="flex flex-wrap items-center justify-around gap-4 my-6 z-10">
+                        <button onclick="inspectLayout('female_tents')" class="p-3 sm:p-4 bg-purple-700 hover:bg-purple-800 text-white rounded-2xl text-xs sm:text-sm font-bold shadow-md transition flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-person-shelter text-xl"></i> Khemah Peserta Wanita
+                            <span class="text-[10px] text-purple-200 font-normal">Zon Privasi</span>
+                        </button>
+
+                        <button onclick="inspectLayout('flagpole')" class="p-4 bg-red-700 hover:bg-red-800 text-white rounded-full text-xs sm:text-sm font-bold shadow-lg transition flex flex-col items-center justify-center w-28 h-28 border-4 border-amber-400">
+                            <i class="fa-solid fa-flag text-lg mb-1"></i>
+                            <span>Tiang Bendera</span>
+                            <span class="text-[9px] text-red-200">Pusat Tapak</span>
+                        </button>
+
+                        <button onclick="inspectLayout('male_tents')" class="p-3 sm:p-4 bg-indigo-700 hover:bg-indigo-800 text-white rounded-2xl text-xs sm:text-sm font-bold shadow-md transition flex flex-col items-center gap-1">
+                            <i class="fa-solid fa-campground text-xl"></i> Khemah Peserta Lelaki
+                            <span class="text-[10px] text-indigo-200 font-normal">Zon Terasing</span>
+                        </button>
+                    </div>
+
+                    <!-- Bottom Zone (Kitchen, Fire & Latrine downwind) -->
+                    <div class="flex justify-between items-center z-10 pt-4 border-t border-slate-300">
+                        <button onclick="inspectLayout('kitchen')" class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-utensils"></i> Dapur & Lubang Sisa
+                        </button>
+                        <button onclick="inspectLayout('campfire')" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-fire"></i> Bulatan Unggun Api
+                        </button>
+                        <button onclick="inspectLayout('latrine')" class="px-4 py-2 bg-stone-700 hover:bg-stone-800 text-white rounded-xl text-xs font-bold shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-restroom"></i> Tandas / Latrine
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Info Modal / Box for Layout Component -->
+                <div id="layoutInfoBox" class="mt-4 p-4 rounded-xl bg-slate-100 border border-slate-200 flex items-start gap-3">
+                    <i class="fa-solid fa-circle-info text-red-700 text-lg mt-0.5"></i>
+                    <div>
+                        <h4 id="layoutInfoTitle" class="text-sm font-bold text-slate-800">Petua Susun Atur Perkhemahan:</h4>
+                        <p id="layoutInfoDesc" class="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                            Pilih mana-mana zon di atas untuk membaca analisis saintifik kedudukan mengikut arah angin, sanitasi dan aspek keselamatan Kelana.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: MODUL TEORI LENGKAP (A - H) ================= -->
+        <section id="tab-modul" class="tab-content hidden transition-opacity duration-300">
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Sidebar Subtopic Navigator -->
+                <div class="w-full md:w-80 flex-shrink-0">
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 sticky top-24 shadow-sm">
+                        <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider mb-3 px-2 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ol text-red-700"></i> Senarai Subtopik
+                        </h3>
+                        <div class="space-y-1">
+                            <button onclick="loadModulContent('a')" id="btn-sub-a" class="w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-red-700 bg-red-50 flex items-center gap-2 transition">
+                                <span class="w-6 h-6 rounded-md bg-red-700 text-white flex items-center justify-center text-xs">A</span>
+                                <span>Pengurusan & Pentadbiran</span>
+                            </button>
+                            <button onclick="loadModulContent('b')" id="btn-sub-b" class="w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2 transition">
+                                <span class="w-6 h-6 rounded-md bg-slate-200 text-slate-700 flex items-center justify-center text-xs">B</span>
+                                <span>Persediaan Tiga Fasa</span>
+                            </button>
+                            <button onclick="loadModulContent('c')" id="btn-sub-c" class="w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2 transition">
+                                <span class="w-6 h-6 rounded-md bg-slate-200 text-slate-700 flex items-center justify-center text-xs">C</span>
+                                <span>Tapak, Alatan & Makanan</span>
+                            </button>
+                            <button onclick="loadModulContent('d')" id="btn-sub-d" class="w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2 transition">
+                                <span class="w-6 h-6 rounded-md bg-slate-200 text-slate-700 flex items-center justify-center text-xs">D</span>
+                                <span>Jenis Khemah & Kaedah</span>
+                            </button>
+                            <button onclick="loadModulContent('e')" id="btn-sub-e" class="w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2 transition">
+                                <span class="w-6 h-6 rounded-md bg-slate-200 text-slate-700 flex items-center justify-center text-xs">E</span>
+                                <span>Dapur, Alatan & Gejet</span>
+                            </button>
+                            <button onclick="loadModulContent('f')" id="btn-sub-f" class="w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2 transition">
+                                <span class="w-6 h-6 rounded-md bg-slate-200 text-slate-700 flex items-center justify-center text-xs">F</span>
+                                <span>Aktiviti & Jadual Program</span>
+                            </button>
+                            <button onclick="loadModulContent('g')" id="btn-sub-g" class="w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2 transition">
+                                <span class="w-6 h-6 rounded-md bg-slate-200 text-slate-700 flex items-center justify-center text-xs">G</span>
+                                <span>Kesihatan & Kebersihan</span>
+                            </button>
+                            <button onclick="loadModulContent('h')" id="btn-sub-h" class="w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2 transition">
+                                <span class="w-6 h-6 rounded-md bg-slate-200 text-slate-700 flex items-center justify-center text-xs">H</span>
+                                <span>Aturan Penutupan</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Modul View Container -->
+                <div class="flex-grow bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+                    <div id="modulDisplayArea">
+                        <!-- Content dynamically loaded via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: REKOD 10 MALAM (MANDATORI) ================= -->
+        <section id="tab-logbuku" class="tab-content hidden transition-opacity duration-300">
+            <!-- Header with progress counter -->
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 mb-6 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800 mb-2">
+                            <i class="fa-solid fa-stamp"></i> Keperluan Mandatori Penarafan Kelana
+                        </span>
+                        <h2 class="text-2xl font-black text-slate-900">Buku Log 10 Malam Perkhemahan</h2>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
+                            Syarat rasmi: Calon Pengakap Kelana wajib berkhemah seminima 10 malam di dalam siri perkhemahan dan menyediakan laporan perkhemahan bertulis yang disahkan oleh Pemimpin Krew.
+                        </p>
+                    </div>
+
+                    <!-- Progress Gauge -->
+                    <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200 flex-shrink-0">
+                        <div class="relative w-16 h-16 flex items-center justify-center">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-slate-200" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path id="progressCircle" class="text-red-700 transition-all duration-500" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <span id="progressText" class="absolute text-sm font-black text-slate-900">0/10</span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block">Pencapaian Malam</span>
+                            <span id="progressStatus" class="text-sm font-extrabold text-amber-600">Perlu 10 Malam Lagi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <button onclick="toggleCampModal(true)" class="px-5 py-2.5 rounded-xl bg-red-700 hover:bg-red-800 text-white font-bold text-sm shadow transition flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Tambah Rekod Siri Perkhemahan
+                    </button>
+                    <button onclick="exportCampLog()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm border border-slate-300 transition flex items-center gap-2">
+                        <i class="fa-solid fa-print"></i> Cetak / Salin Ringkasan Laporan
+                    </button>
+                    <button onclick="resetDefaultCamps()" class="px-3 py-2.5 rounded-xl text-slate-500 hover:text-slate-800 text-xs font-semibold">
+                        <i class="fa-solid fa-rotate-left"></i> Pulihkan Contoh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table of Logged Camps -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-200 flex items-center justify-between">
+                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-list text-red-700"></i> Jadual Siri Perkhemahan Calon
+                    </h3>
+                    <span class="text-xs text-slate-500">Maksimum siri digalakkan: 2-4 siri ekspedisi</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm">
+                        <thead class="bg-slate-50 text-slate-600 font-bold uppercase tracking-wider border-b border-slate-200">
+                            <tr>
+                                <th class="py-3.5 px-4">Nama Siri Perkhemahan</th>
+                                <th class="py-3.5 px-4">Lokasi & Negeri</th>
+                                <th class="py-3.5 px-4">Tarikh</th>
+                                <th class="py-3.5 px-4 text-center">Bil. Malam</th>
+                                <th class="py-3.5 px-4">Jawatan / Peranan</th>
+                                <th class="py-3.5 px-4 text-center">Tindakan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="campTableBody" class="divide-y divide-slate-200 text-slate-700">
+                            <!-- Injected by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Panduan Format Laporan Perkhemahan Kelana -->
+            <div class="mt-6 bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-6 sm:p-8 shadow-sm">
+                <h4 class="text-base sm:text-lg font-bold text-amber-400 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-file-contract"></i> Panduan Standard Penyediaan Buku Laporan Perkhemahan
+                </h4>
+                <div class="grid md:grid-cols-3 gap-4 text-xs text-slate-300 leading-relaxed">
+                    <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700">
+                        <strong class="text-white block mb-1 text-sm font-semibold">1. Butiran Pentadbiran</strong>
+                        Mestilah mengandungi Kertas Kerja asal, senarai nama kontinjen, rekod surat kebenaran PDRM/Jabatan Perhutanan, jadual aktiviti harian dan belanjawan kos perbelanjaan.
+                    </div>
+                    <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700">
+                        <strong class="text-white block mb-1 text-sm font-semibold">2. Pelan Tapak & Lakaran Gejet</strong>
+                        Sertakan peta lakar tapak perkhemahan bertaraf grid, kedudukan khemah QM, tandas, arah angin serta lakaran terperinci sekurang-kurangnya 3 gejet utama berserta jenis ikatan.
+                    </div>
+                    <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700">
+                        <strong class="text-white block mb-1 text-sm font-semibold">3. Catatan Diari & Pengesahan</strong>
+                        Log harian (dari jam ke jam), menu makanan yang dimasak, laporan cuaca, ulasan muhasabah diri serta ruangan tandatangan rasmi Pemimpin Pengakap Kelana bertauliah.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: KHEMAH KECIL & PONDOK IKHTIAR HIDUP ================= -->
+        <section id="tab-survival" class="tab-content hidden transition-opacity duration-300">
+            <!-- Requirement Banner -->
+            <div class="bg-emerald-900 text-white rounded-3xl p-6 sm:p-8 mb-6 shadow-md relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-800 text-emerald-200 border border-emerald-700 mb-3">
+                        <i class="fa-solid fa-tree"></i> Syarat Praktikal Mandatori 2
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-black">Mendirikan Khemah Kecil / Pondok Perlindungan</h2>
+                    <p class="text-xs sm:text-sm text-emerald-100 mt-2 max-w-3xl leading-relaxed">
+                        Calon Pengakap Kelana wajib menguasai kebolehan membina shelter perlindungan ikhtiar hidup (bivouac / lean-to / A-frame tarp) menggunakan alatan minimum seperti ponco, flysheet, tali parakord dan bahan semulajadi di hutan.
+                    </p>
+                </div>
+                <div class="absolute -right-8 -bottom-8 opacity-15 text-white text-[180px] pointer-events-none">
+                    <i class="fa-solid fa-person-shelter"></i>
+                </div>
+            </div>
+
+            <!-- Interactive Shelter Selector -->
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Selector List -->
+                <div class="space-y-3">
+                    <button onclick="selectShelter('a-frame')" id="btn-shelter-a-frame" class="shelter-btn w-full text-left p-4 rounded-2xl border-2 border-red-700 bg-red-50 text-slate-900 transition flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-red-700 text-white flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-triangle"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm">Pondok A-Frame (Flysheet)</h4>
+                                <span class="text-xs text-slate-500">Perlindungan angin & hujan lebat</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-red-700"></i>
+                    </button>
+
+                    <button onclick="selectShelter('lean-to')" id="btn-shelter-lean-to" class="shelter-btn w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-900 transition flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-900 flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-slash"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm">Pondok Sandar (Lean-To)</h4>
+                                <span class="text-xs text-slate-500">Haba pantulan unggun api</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-400"></i>
+                    </button>
+
+                    <button onclick="selectShelter('debris-hut')" id="btn-shelter-debris-hut" class="shelter-btn w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-900 transition flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-green-700 text-white flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-leaf"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm">Pondok Daun Hutan (Debris Hut)</h4>
+                                <span class="text-xs text-slate-500">Ikhtiar tanpa tali / kanvas</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-400"></i>
+                    </button>
+
+                    <button onclick="selectShelter('hammock-bivouac')" id="btn-shelter-hammock-bivouac" class="shelter-btn w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-900 transition flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-blue-700 text-white flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-bandage"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm">Bivouac Gantung (Hammock)</h4>
+                                <span class="text-xs text-slate-500">Elak binatang berbisa & tanah basah</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-400"></i>
+                    </button>
+                </div>
+
+                <!-- Shelter Specification Display -->
+                <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+                    <div id="shelterDetailBox">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 5: KUIZ & UJIAN KENDIRI ================= -->
+        <section id="tab-kuiz" class="tab-content hidden transition-opacity duration-300">
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm text-center">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 mb-2">
+                        <i class="fa-solid fa-feather-pointed"></i> Penilaian Teori Topik 9
+                    </span>
+                    <h2 class="text-2xl font-black text-slate-900">Ujian Diagnostik Pengetahuan Berkhemah</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-lg mx-auto">
+                        Uji pemahaman anda merangkumi 8 subtopik (A - H). Markah kelulusan minima ialah 80% untuk layak menjana Perakuan Digital Ulangkaji.
+                    </p>
+
+                    <!-- Quiz Play Screen -->
+                    <div id="quizContainer" class="mt-8 text-left">
+                        <div class="flex justify-between items-center text-xs font-bold text-slate-500 mb-2">
+                            <span id="quizCounter">Soalan 1 daripada 8</span>
+                            <span id="quizScoreTracker" class="text-red-700">Skor: 0</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-6">
+                            <div id="quizProgressBar" class="bg-red-700 h-full w-[12.5%] transition-all duration-300"></div>
+                        </div>
+
+                        <!-- Question Card -->
+                        <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 mb-6">
+                            <span id="quizTopicTag" class="text-[11px] font-extrabold uppercase px-2.5 py-1 bg-red-100 text-red-700 rounded-md">Subtopik A</span>
+                            <h3 id="quizQuestionText" class="text-base sm:text-lg font-bold text-slate-900 mt-3">
+                                Apakah dokumen utama yang wajib dihantar kepada pihak Balai Polis berhampiran sebelum sesuatu ekspedisi perkhemahan dijalankan?
+                            </h3>
+                        </div>
+
+                        <!-- Options -->
+                        <div id="quizOptionsContainer" class="space-y-3">
+                            <!-- Injected by script -->
+                        </div>
+
+                        <!-- Explanation alert (hidden initially) -->
+                        <div id="quizFeedbackBox" class="mt-5 p-4 rounded-xl border text-xs sm:text-sm hidden">
+                            <!-- Injected feedback -->
+                        </div>
+
+                        <!-- Next Button -->
+                        <div class="mt-6 flex justify-end">
+                            <button id="quizNextBtn" onclick="nextQuestion()" class="hidden px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm transition items-center gap-2">
+                                Soalan Seterusnya <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Result & Digital Cert Card -->
+                    <div id="quizResultContainer" class="hidden mt-8 text-center py-6">
+                        <div class="w-20 h-20 rounded-full mx-auto flex items-center justify-center text-3xl mb-4 bg-emerald-100 text-emerald-600" id="resultIcon">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <h3 id="resultTitle" class="text-2xl font-black text-slate-900">Tahniah! Anda Lulus Cemerlang</h3>
+                        <p id="resultSubtitle" class="text-sm text-slate-600 mt-1 max-w-md mx-auto">Anda menunjukkan kecekapan teori yang sangat kukuh dalam topik pengurusan perkhemahan Kelana.</p>
+                        
+                        <div class="my-6 inline-block bg-slate-50 border border-slate-200 rounded-2xl p-6 text-center">
+                            <span class="text-xs uppercase font-bold text-slate-500">Skor Akhir Anda</span>
+                            <div class="text-4xl font-extrabold text-red-700 mt-1" id="finalScoreDisplay">100%</div>
+                            <span class="text-xs font-semibold text-slate-600 mt-1 block" id="finalFractionDisplay">(8 / 8 soalan betul)</span>
+                        </div>
+
+                        <!-- Digital Badge / Slip -->
+                        <div class="p-6 rounded-2xl bg-gradient-to-r from-red-900 to-amber-950 text-white text-left max-w-lg mx-auto shadow-lg border border-amber-400/30">
+                            <div class="flex items-center justify-between border-b border-red-800/80 pb-3 mb-3">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-shield-halved text-amber-400"></i>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-amber-300">Slip Pengesahan Teori</span>
+                                </div>
+                                <span class="text-[10px] text-slate-300">PPM Kelana Hub</span>
+                            </div>
+                            <p class="text-xs text-slate-200">Adalah disahkan calon telah meneliti dan melepasi ujian kefahaman kendiri bagi <strong>Topik 9: Pengetahuan dan Kebolehan Berkhemah</strong>.</p>
+                            <div class="mt-4 flex justify-between items-end text-[11px] text-amber-300">
+                                <div>
+                                    <span class="text-[9px] text-slate-400 block">Status:</span>
+                                    <strong>KOMPETEN TEORI</strong>
+                                </div>
+                                <div>
+                                    <span class="text-[9px] text-slate-400 block">Tarikh:</span>
+                                    <span id="certDate"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 flex justify-center gap-3">
+                            <button onclick="restartQuiz()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow transition flex items-center gap-2">
+                                <i class="fa-solid fa-rotate-right"></i> Uji Semula
+                            </button>
+                            <button onclick="switchTab('dashboard')" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm transition">
+                                Kembali ke Modul
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal: Tambah Rekod Siri Perkhemahan -->
+    <div id="campModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+                <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-campground text-red-700"></i> Daftar Siri Perkhemahan
+                </h3>
+                <button onclick="toggleCampModal(false)" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="campForm" onsubmit="saveCampRecord(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Nama Perkhemahan / Ekspedisi</label>
+                    <input type="text" id="modalCampName" required placeholder="Cth: Perkhemahan Ujian Kelana Daerah Kinta" class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-700">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Lokasi Perkhemahan</label>
+                        <input type="text" id="modalCampLocation" required placeholder="Cth: Kem Rekreasi Ulu Bendul" class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-700">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Tarikh Mula</label>
+                        <input type="date" id="modalCampDate" required class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-700">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Bilangan Malam</label>
+                        <input type="number" id="modalCampNights" min="1" max="10" required value="3" class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-700">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Jawatan / Tugas</label>
+                        <select id="modalCampRole" class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-red-700">
+                            <option value="Ketua Patrol / Ekspedisi">Ketua Patrol / Ekspedisi</option>
+                            <option value="Kuartermaster Alatan (QM)">Kuartermaster Alatan (QM)</option>
+                            <option value="Kuartermaster Makanan">Kuartermaster Makanan</option>
+                            <option value="Pegawai Kebajikan & First Aid">Pegawai First Aid</option>
+                            <option value="Peserta / Ahli Krew">Peserta / Ahli Krew</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-3">
+                    <button type="button" onclick="toggleCampModal(false)" class="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-red-700 hover:bg-red-800 text-white shadow">Simpan Log Siri</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-xl border border-slate-700 flex items-center gap-3 text-xs sm:text-sm">
+        <i id="toastIcon" class="fa-solid fa-check text-emerald-400 text-base"></i>
+        <span id="toastMsg">Tindakan berjaya.</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg badge-gradient flex items-center justify-center text-white font-bold">
+                    <i class="fa-solid fa-campground"></i>
+                </div>
+                <div>
+                    <span class="text-white font-bold block">Hub Pembelajaran Interaktif Pengakap Kelana</span>
+                    <span>Topik 9: Pengetahuan dan Kebolehan Berkhemah</span>
+                </div>
+            </div>
+            <p class="text-center md:text-right text-slate-400">
+                Direka khas untuk bimbingan calon Lencana & Penarafan Pengakap Kelana Malaysia.
+            </p>
+        </div>
+    </footer>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // Global State & Data Store
+        const topicsData = {
+            'a': {
+                letter: 'A',
+                title: 'Pengurusan dan Pentadbiran Perkhemahan',
+                icon: 'fa-clipboard-check',
+                badgeColor: 'bg-red-100 text-red-700',
+                description: 'Pentadbiran sistematik menjamin keselamatan, kelancaran logistik dan kepatuhan perundangan dalam penganjuran ekspedisi perkhemahan Kelana.',
+                sections: [
+                    {
+                        title: '1. Kertas Kerja & Kelulusan Rasmi',
+                        content: 'Penyediaan kertas kerja terperinci merangkumi objektif, tarikh, lokasi, anggaran belanjawan, senarai nama peserta, jadual aktiviti dan analisis risiko. Kertas kerja mesti disahkan oleh Pemimpin Krew Kelana dan Pesuruhjaya Daerah sebelum dikemukakan.'
+                    },
+                    {
+                        title: '2. Surat Makluman & Kebenaran Pihak Berkuasa',
+                        content: 'Wajib menghantar surat pemberitahuan rasmi sekurang-kurangnya 2 hingga 4 minggu awal kepada: (a) Balai Polis berhampiran (keselamatan & rondaan), (b) Jabatan Perhutanan / Renjer (permit masuk hutan simpan), (c) Klinik Kesihatan / Hospital terdekat, dan (d) Pemilik tanah / Pihak Pengurusan Tapak.'
+                    },
+                    {
+                        title: '3. Struktur Jawatankuasa Pengelola (AJK)',
+                        content: 'Pengagihan tugas kepimpinan Kelana: Kem Komandan (keseluruhan kem), Kuartermaster Alatan (QM Alatan), Kuartermaster Makanan (QM Makanan), Pegawai Keselamatan & Pertolongan Cemas, Pegawai Disiplin & Program, serta Bendahari.'
+                    },
+                    {
+                        title: '4. Polisi Insurans & Surat Kebenaran Waris',
+                        content: 'Setiap peserta wajib dilindungi insurans kelompok tahunan PPM (Persekutuan Pengakap Malaysia) yang aktif dan mengisi borang deklarasi kesihatan serta kebenaran waris yang sah.'
+                    }
+                ],
+                checklist: [
+                    'Kertas kerja diluluskan oleh Pesuruhjaya Daerah',
+                    'Surat makluman PDRM dihantar & dicop terima',
+                    'Permit Jabatan Perhutanan diperolehi',
+                    'Deklarasi kesihatan & rekod alahan dikumpul',
+                    'Insurans PPM semua peserta aktif'
+                ]
+            },
+            'b': {
+                letter: 'B',
+                title: 'Persediaan Sebelum, Semasa dan Selepas Perkhemahan',
+                icon: 'fa-list-check',
+                badgeColor: 'bg-amber-100 text-amber-800',
+                description: 'Fasa persediaan berstruktur membina disiplin tinggi dan mengelakkan sebarang kecuaian kritikal di lapangan.',
+                sections: [
+                    {
+                        title: '1. Fasa Sebelum (Pra-Perkhemahan)',
+                        content: 'Meninjau tapak (rekaan awal/recce) untuk memastikan laluan selamat dan sumber air bersih. Menguji alatan berkhemah (memeriksa khemah bocor, tali reput, parang tajam). Merangka menu seimbang mengikut kiraan kalori ekspedisi. Menyediakan First Aid Kit lengkap.'
+                    },
+                    {
+                        title: '2. Fasa Semasa (Pelaksanaan)',
+                        content: 'Pemeriksaan kehadiran dan taklimat keselamatan sebaik tiba. Mendirikan khemah sebelum waktu senja tiba. Membina sistem sanitasi (lubang sampah & latrine) serta gejet penting. Mengadakan perhimpunan pagi (Morning Inspection) serta kawalan malam (Night Sentry).'
+                    },
+                    {
+                        title: '3. Fasa Selepas (Pasca-Perkhemahan)',
+                        content: 'Meleraikan tapak mengikut prinsip "Leave No Trace" (LNT). Mengeringkan khemah sebelum dilipat rapi untuk elak kulat/reput. Mengira semula stok alatan QM dan membersihkan peralatan tajam (minyakkan parang/cangkul). Menyediakan laporan kewangan dan laporan penuh bertulis.'
+                    }
+                ],
+                checklist: [
+                    'Recce tapak awal dilakukan (akses kenderaan/air)',
+                    'Ujian pasang khemah sebelum bawa ke tapak',
+                    'Jadual sentri malam (pengawal keselamatan) disusun',
+                    'Khemah diangin kering sebelum disimpan',
+                    'Laporan bertulis diserahkan dalam tempoh 14 hari'
+                ]
+            },
+            'c': {
+                letter: 'C',
+                title: 'Pemilihan Tempat & Tapak, Alatan dan Makanan',
+                icon: 'fa-map-location-dot',
+                badgeColor: 'bg-green-100 text-green-800',
+                description: 'Kefahaman geografi dan pengurusan nutrisi di lapangan menentukan daya tahan mental dan fizikal ahli patrol.',
+                sections: [
+                    {
+                        title: '1. Kriteria Pemilihan Tapak Khemah Selamat',
+                        content: 'Pilih tanah rata beralas rumput dengan saliran baik (elak lopak air). Jangan berkhemah di bawah dahan pokok mati (deadfalls / widow-makers), di laluan kepala air sungai, tebing curam berisiko tanah runtuh, atau denai binatang liar. Jarak minimum tapak dari punca air ialah 50-60 meter untuk mengelakkan banjir kilat dan serangga.'
+                    },
+                    {
+                        title: '2. Pengurusan Bekalan Alatan Patrol & Peribadi',
+                        content: 'Alatan Patrol: Khemah, flysheet, cangkul, parang, gergaji lipat, lampu storm/gas, tali rami, kuali medan. Alatan Peribadi: Beg galas (haversack berlapik plastik kedap air), sleeping bag, pakaian persalinan, mess tin, wisel, lampu suluh kepala (headlamp) dan ubatan peribadi.'
+                    },
+                    {
+                        title: '3. Perancangan Makanan & Nutrisi',
+                        content: 'Pilih makanan tidak mudah basi untuk hari terawal. Sediakan karbohidrat kompleks (beras, oat, mee kering), protein tahan lasak (ikan bilis, telur, sardin dalam tin), garam mineral dan air minuman secukupnya (minima 3-4 liter/hari bagi setiap pengakap aktif).'
+                    }
+                ],
+                checklist: [
+                    'Bukan di bawah dahan reput (widow-maker)',
+                    'Lebih 50 meter dari tebing sungai yang berarus liar',
+                    'Alatan tajam disimpan dalam sarung keselamatan',
+                    'Makanan disimpan kedap udara daripada gangguan monyet/babi hutan',
+                    'Bekalan air minuman disteril (dididih/guna tablet pembersih)'
+                ]
+            },
+            'd': {
+                letter: 'D',
+                title: 'Jenis Khemah dan Cara Mendirikannya',
+                icon: 'fa-tents',
+                badgeColor: 'bg-blue-100 text-blue-800',
+                description: 'Kemahiran teknikal memasang khemah dengan tegang dan selamat menghadapi pelbagai anomali cuaca hutan tropika.',
+                sections: [
+                    {
+                        title: '1. Klasifikasi Jenis Khemah Moden & Klasik',
+                        content: '• Dome Tent: Ringan, mudah dipasang dengan pole fiberglass saling menyilang, kalis angin sederhana.\n• Ridge Tent (A-Shape): Khemah klasik berpokok pancang tengah dan tali sisi, ruang pengudaraan baik.\n• Frame / Cabin Tent: Struktur berat berkerangka besi, luas untuk khemah urus setia / QM.\n• Geodesic / Semi-Geodesic: Reka bentuk melengkung teguh khas untuk altitud tinggi atau angin kencang.'
+                    },
+                    {
+                        title: '2. Kaedah Langkah Demi Langkah Mendirikan Khemah',
+                        content: 'Langkah 1: Bersihkan tapak daripada batu tajam, ranting dan tunggul.\nLangkah 2: Bentangkan ground-sheet dan badan dalam khemah (inner tent).\nLangkah 3: Sambung dan masukkan pole mengikut alur silang (sleeves/clips).\nLangkah 4: Tegakkan tiang dan pancang pasak (peg) pada sudut 45 darjah menentang tarikan tali.\nLangkah 5: Pasang flysheet dan pastikan ia TIDAK bersentuhan dengan inner tent (elak kondensasi air).\nLangkah 6: Ketatkan tali penegang (guy lines) menggunakan ikatan Pengikat Khemah (Tent Guyline Hitch / Taut-line).'
+                    },
+                    {
+                        title: '3. Penggalian Parit Hujan (Trenching)',
+                        content: 'Jika berkhemah semasa monsun pada khemah tanpa lantai bathtub kalis air, gali parit sedalam 10-15 cm di sekeliling titisan flysheet dengan cerun saliran keluar mengarah ke lereng rendah.'
+                    }
+                ],
+                checklist: [
+                    'Pancang dipacak condong 45° bertentangan punca tarikan',
+                    'Flysheet tidak menyentuh dinding khemah dalam',
+                    'Tali penegang menggunakan ikatan Taut-line hitch',
+                    'Pintu khemah membelakangi arah hembusan angin kencang',
+                    'Parit saliran bersih daripada daun tersumbat'
+                ]
+            },
+            'e': {
+                letter: 'E',
+                title: 'Dapur, Alatan dan Gejet serta Kegunaannya',
+                icon: 'fa-fire-burner',
+                badgeColor: 'bg-orange-100 text-orange-800',
+                description: 'Kraf kayu (pioneering) dan susun atur dapur medan mencerminkan kecekapan dan kreativiti patrol Pengakap Kelana.',
+                sections: [
+                    {
+                        title: '1. Pengurusan Dapur Medan',
+                        content: 'Dapur mesti didirikan di kawasan berteduh pada kedudukan searah angin di bawah khemah tidur (downwind) supaya asap tidak masuk ke khemah. Sediakan pemadam api mudah alih atau sekurang-kurangnya baldi air dan baldi pasir sebagai langkah keselamatan kecemasan api.'
+                    },
+                    {
+                        title: '2. Pembinaan Gejet-Gejet Asas Tapak Khemah',
+                        content: '• Rak Kasut: Menjaga kebersihan dan memastikan kasut sentiasa kering serta bebas serangga berbisa.\n• Meja Makan & Bangku: Memupuk semangat persaudaraan patrol semasa makan secara teratur.\n• Rak Alatan Dapur & Tempat Basuhan: Memastikan pinggan dan kuali tidak bersentuhan dengan tanah.\n• Pintu Gerbang & Pagar Patrol: Menandakan sempadan kawalan patrol dan mempamerkan kraf ikatan Kelana.'
+                    },
+                    {
+                        title: '3. Ikatan & Simpulan Gejet yang Wajib Digunakan',
+                        content: '• Ikatan Seraya (Square Lashing): Menyambung dua kayu bersilang sudut tepat (meja/rak).\n• Ikatan Silang Gunting (Shear Lashing): Membuat kaki dua / tripod tiang bendera.\n• Ikatan Silang Tungku (Tripod Lashing): Membuat meja dapur berkaki tiga.\n• Simpul Manuk (Clove Hitch): Memulakan dan mematikan kebanyakan ikatan kraf kayu.'
+                    }
+                ],
+                checklist: [
+                    'Semua gejet menggunakan kayu mati / buluh yang sah',
+                    'Ikatan kemas, ketat dan dipatuk (frapping) dengan betul',
+                    'Dapur mempunyai alas abu jika menggunakan kayu api di atas tanah',
+                    'Baldi pasir & air tersedia bersebelahan dapur',
+                    'Pisau dan parang diletakkan pada rak gejet khas yang berkancing'
+                ]
+            },
+            'f': {
+                letter: 'F',
+                title: 'Aktiviti dan Program Perkhemahan',
+                icon: 'fa-compass-drafting',
+                badgeColor: 'bg-purple-100 text-purple-800',
+                description: 'Program perkhemahan yang dirancang rapi membina ketahanan mental, kepimpinan serta ukhuwah pengakap.',
+                sections: [
+                    {
+                        title: '1. Pengembaraan Pandu Arah & Orientasi (Orienteering)',
+                        content: 'Latihan menggunakan kompas prisma/silva dan peta topografi untuk menavigasi hutan simpan. Penetapan bearing kompas, pembacaan kontur bumi, dan kaedah mencari titik kawalan (checkpoints).'
+                    },
+                    {
+                        title: '2. Malam Kebudayaan & Unggun Api (Campfire)',
+                        content: 'Acara kerohanian dan pengukuhan persaudaraan Pengakap Kelana. Menepati adat istiadat unggun api: Yell patrol, persembahan sketsa bermesej teladan, lagu tradisional pengakap dan doa penutup.'
+                    },
+                    {
+                        title: '3. Khidmat Masyarakat & Kelestarian Alam',
+                        content: 'Sebagai Pengakap Kelana, amalan berkhidmat kepada masyarakat setempat adalah teras (Motto: "Berkhidmat"). Mengadakan gotong-royong pembersihan komuniti, membaik pulih surau kampung, atau program menanam anak pokok hutan.'
+                    },
+                    {
+                        title: '4. Kembara Masakan Rimba (Backwoods Cooking)',
+                        content: 'Memasak tanpa perkakas dapur konvensional: Membakar roti lilit pada ranting, memanggang ikan dalam daun pisang, memasak nasi dalam ruas buluh (lemang pulut/beras) dan telur dalam kentang.'
+                    }
+                ],
+                checklist: [
+                    'Jadual aktiviti mempunyai pelan kontingensi cuaca buruk',
+                    'Sistem buddy (berdua-duaan) dilaksanakan sepanjang kembara',
+                    'Acara unggun api mematuhi batas adab sopan & etika pengakap',
+                    'Bahan masakan rimba bebas daripada tumbuhan beracun'
+                ]
+            },
+            'g': {
+                letter: 'G',
+                title: 'Kesihatan dan Kebersihan (Sanitasi Perkhemahan)',
+                icon: 'fa-hand-holding-medical',
+                badgeColor: 'bg-teal-100 text-teal-800',
+                description: 'Sanitasi yang sempurna adalah benteng pertahanan utama bagi mengelakkan wabak keracunan dan ancaman serangga/haiwan liar.',
+                sections: [
+                    {
+                        title: '1. Lubang Pelupusan Sisa Basah & Kering',
+                        content: '• Lubang Sisa Basah (Sullage Pit): Sisa makanan ditapis sebelum cecair dibuang. Lapisi tanah dengan rumput kering atau abu untuk kurangkan bau dan elak lalat.\n• Lubang Sisa Kering: Mengumpul tin, plastik dan bahan tidak reput untuk dibawa pulang ke pusat kitar semula.'
+                    },
+                    {
+                        title: '2. Pembinaan Tandas Medan (Camp Latrine)',
+                        content: 'Jika tiada tandas kekal, gali lubang tandas cetek (cat hole untuk perseorangan 15-20cm dalam) atau trench latrine untuk kumpulan. Jarak minima tandas ialah 100 meter dari khemah dan sekurang-kurangnya 60 meter dari sungai. Sediakan abu dapur atau tanah kering untuk menimbus sisa sejurus selepas digunakan.'
+                    },
+                    {
+                        title: '3. Peti Pertolongan Cemas (First Aid Box)',
+                        content: 'Mesti mengandungi kain anduh segi tiga, kain kasa steril, plaster luka, ubat antiseptik (povidone iodine), paracetamol, ubat cirit-birit (charcoal pills), cecair hidrasi garam (ORS), krim gigitan serangga dan gunting pembalut.'
+                    },
+                    {
+                        title: '4. Pencegahan Haiwan & Serangga Berbisa',
+                        content: 'Taburkan serbuk belerang (sulfur) di perimeter luar tapak khemah. Pastikan tiada baki makanan berbau manis/berlemak disimpan di dalam poket khemah tidur bagi mengelak serbuan tikus, semut api atau ular.'
+                    }
+                ],
+                checklist: [
+                    'Air sisa berminyak tidak dialirkan terus ke punca air minuman',
+                    'Lubang sisa ditimbus setiap kali sisa basah dibuang',
+                    'Belerang ditabur pada perimeter tapak perkhemahan',
+                    'First Aid Kit disemak tarikh luput ubat-ubatan'
+                ]
+            },
+            'h': {
+                letter: 'H',
+                title: 'Aturan Penutupan Perkhemahan & Leave No Trace',
+                icon: 'fa-flag',
+                badgeColor: 'bg-rose-100 text-rose-800',
+                description: 'Meninggalkan tapak perkhemahan dalam keadaan lebih baik dan bersih daripada keadaan semasa mula-mula tiba.',
+                sections: [
+                    {
+                        title: '1. Prinsip "Leave No Trace" (LNT)',
+                        content: 'Mengamalkan etika pemuliharaan alam sekitar: Peleraian semua gejet kayu, buka semua ikatan tali (jangan kerat sesuka hati melainkan terdesak), timbus semua lubang parit dan tandas, serta ratakan semula tanah tapak perkhemahan.'
+                    },
+                    {
+                        title: '2. Pemadaman Api Sepenuhnya (Cold Out Fire)',
+                        content: 'Curahkan air ke atas bara unggun api sehingga tiada lagi asap keluar. Gaulkan tanah basah dengan abu dan sentuh arang menggunakan belakang tangan untuk memastikan tiada haba bara yang tersembunyi.'
+                    },
+                    {
+                        title: '3. Baris Pembersihan Tapak (Sweeping Line)',
+                        content: 'Semua peserta berbaris lurus bahu ke bahu merentasi tapak perkhemahan dan berjalan perlahan-lahan ke hadapan untuk mengutip setiap cebisan kecil sampah, puntung rokok, atau cebisan benang rami.'
+                    },
+                    {
+                        title: '4. Istiadat Penutupan & Turun Bendera',
+                        content: 'Upacara perbarisan rasmi penutupan perkhemahan, istiadat menurunkan Jalur Gemilang dan Bendera Pengakap, doa kesyukuran perjalanan pulang serta bersalaman tali persaudaraan kelana.'
+                    }
+                ],
+                checklist: [
+                    'Semua parit dan lubang sisa ditimbus dan diratakan',
+                    'Bara api dipadamkan sepenuhnya dengan kaedah curah & sentuh',
+                    'Sweeping line dilakukan di seluruh kawasan perkhemahan',
+                    'Gejet dileraikan dan kayu dikembalikan ke pinggir belukar',
+                    'Surat terima kasih & pelepasan dihantar kepada tuan tanah'
+                ]
+            }
+        };
+
+        // Shelter Data for Practical Requirement 2
+        const sheltersData = {
+            'a-frame': {
+                title: 'Pondok Bentuk A (A-Frame Shelter / Bivouac)',
+                time: '15 - 25 Minit',
+                capacity: '1 - 2 Orang Kelana',
+                materials: ['1 keping Flysheet / Tarpaulin 3m x 3m', 'Tali rabung (ridge-line) 8 meter', '4 hingga 6 pasak pancang kayu/besi', 'Tali parakord penyambung (guy-lines)'],
+                steps: [
+                    'Cari dua batang pokok berjarak kira-kira 3 meter antara satu sama lain.',
+                    'Ikat tali rabung utama di antara kedua pokok pada ketinggian kira-kira 1 meter dari tanah menggunakan Simpul Manuk dan Ikatan Pemati Nelayan.',
+                    'Bentangkan flysheet secara seimbang di atas tali rabung.',
+                    'Tarik keempat-empat bucu flysheet ke bawah dan pancang pasak pada sudut 45 darjah untuk menghasilkan bentuk bumbung huruf A.',
+                    'Gunakan Simpul Prusik pada tali rabung untuk menegangkan kain kanvas di bahagian tengah agar air hujan tidak bertakung.'
+                ],
+                safetyTips: 'Pastikan rabung bumbung selari dengan arah angin agar angin kencang tidak meniup masuk melalui kedua-dua bucu terbuka.'
+            },
+            'lean-to': {
+                title: 'Pondok Sandar (Lean-To Shelter)',
+                time: '30 - 45 Minit',
+                capacity: '2 - 3 Orang Kelana',
+                materials: ['1 tiang palang melintang (horizontal pole)', '2 tiang sokong bercabang (forked sticks)', 'Flysheet atau barisan dahan kayu rapat', 'Tali rami / parakord'],
+                steps: [
+                    'Pacang dua batang kayu bercabang ke dalam tanah sedalam 30cm, berjarak 2.5 meter.',
+                    'Letakkan sebatang kayu palang melintang di atas cabang tersebut pada ketinggian 1.2 meter.',
+                    'Sandarkan dahan-dahan kayu lurus atau bentangkan flysheet dari palang atas condong ke permukaan tanah ke arah belakang (sudut 45-60 darjah).',
+                    'Pancang bahagian bawah ke tanah dengan kemas.',
+                    'Di hadapan pondok terbuka, bina dinding pemantul haba (reflector wall) dan nyalakan unggun api kecil untuk memantulkan haba ke dalam ruang tidur.'
+                ],
+                safetyTips: 'Sangat sesuai pada waktu malam sejuk di kawasan bukit, tetapi pastikan jarak unggun api sekurang-kurangnya 1.8 meter dari dinding condong.'
+            },
+            'debris-hut': {
+                title: 'Pondok Daun Hutan Rimba (Debris Hut Survival)',
+                time: '60 - 90 Minit (Tanpa Alatan Moden)',
+                capacity: '1 Orang (Kompak untuk Simpan Haba)',
+                materials: ['1 batang kayu rabung utama yang tegap (panjang 3 meter)', '2 batang kayu penyokong bentuk A (panjang 1.2 meter)', 'Bahan dedaun kering, daun kelapa sawit / bertam, lumut hutan'],
+                steps: [
+                    'Ikatkan dua batang kayu penyokong membentuk tripod rendah dan sandarkan kayu rabung utama yang panjang ke tanah.',
+                    'Susun kayu-kayu kecil secara bersandar di sepanjang kedua-dua belah kayu rabung utama membentuk struktur rusuk tulang ikan.',
+                    'Kumpulkan dedaun kering, lalang, ranting kecil dan lumut sehingga mencapai ketebalan sekurang-kurangnya 30-50 cm di bahagian bumbung.',
+                    'Masukkan lapisan dedaun kering yang tebal di bahagian dalam lantai pondok untuk menjadi tilam penebat haba dari tanah sejuk.'
+                ],
+                safetyTips: 'Pastikan anda memeriksa dedaun terlebih dahulu untuk memastikan tiada sengat tebuan, semut api atau kala jengking bersembunyi.'
+            },
+            'hammock-bivouac': {
+                title: 'Bivouac Gantung & Flysheet (Hammock System)',
+                time: '15 Minit',
+                capacity: '1 Orang',
+                materials: ['1 unit Khemah Gantung (Hammock berkelambu)', 'Tree-hugger straps & karabiner', '1 keping Flysheet berlian (diamond tarp)', 'Tali penegang parakord'],
+                steps: [
+                    'Lilitkan tree-hugger straps pada dua pokok matang berketinggian paras dada (jarak pokok kira-kira 4 hingga 5 meter).',
+                    'Kancing karabiner hammock dengan sudut gantungan kendur sekitar 30 darjah untuk keselesaan tidur optimum.',
+                    'Pasang tali rabung di bahagian atas hammock (kira-kira 30cm di atas buaian) untuk menggantung flysheet bentuk diamond.',
+                    'Tarik kedua-dua bucu sisi flysheet ke tanah dengan pasak pasang untuk melindungi buaian daripada tempias hujan ribut.'
+                ],
+                safetyTips: 'Jangan sesekali mengikat hammock pada pokok reput, pokok mati atau pokok berduri. Pastikan drip-lines dipasang pada tali gantung agar air hujan tidak mengalir masuk ke buaian.'
+            }
+        };
+
+        // Default Log Book Data (10 Nights Requirement)
+        let campRecords = [
+            {
+                id: 1,
+                name: 'Perkhemahan Latihan Kepimpinan Kelana',
+                location: 'Kem Rimba Ilmu, Hutan Lipur Kanching, Selangor',
+                date: '2026-03-14',
+                nights: 3,
+                role: 'Ketua Patrol Ekspedisi'
+            },
+            {
+                id: 2,
+                name: 'Ekspedisi Kembara Pandu Arah & Survival Rimba',
+                location: 'Hutan Simpan Belum, Perak',
+                date: '2026-06-20',
+                nights: 4,
+                role: 'Kuartermaster Alatan (QM)'
+            },
+            {
+                id: 3,
+                name: 'Perkhemahan Khidmat Masyarakat Komuniti Asli',
+                location: 'Pos Kuala Mu, Sungai Siput, Perak',
+                date: '2026-09-05',
+                nights: 3,
+                role: 'Pegawai First Aid & Sanitasi'
+            }
+        ];
+
+        // Quiz Questions Data (Covering Subtopics A - H)
+        const quizQuestions = [
+            {
+                topic: 'Subtopik A: Pengurusan & Pentadbiran',
+                question: 'Apakah tindakan paling penting yang wajib diselesaikan oleh kepimpinan Kelana sebelum membawa kontinjen masuk berkhemah di kawasan Hutan Simpan Kekal?',
+                options: [
+                    'Membeli pakaian seragam baru untuk semua ahli patrol',
+                    'Memperoleh Permit Memasuki Hutan daripada Jabatan Perhutanan dan memaklumkan Balai Polis terdekat',
+                    'Memasang banner hebahan di media sosial persatuan',
+                    'Menyediakan hadiah cenderahati untuk tetamu kehormat'
+                ],
+                answer: 1,
+                explanation: 'Surat permohonan permit kepada Jabatan Perhutanan dan surat makluman rasmi kepada Balai Polis adalah dokumen mandatori di sisi undang-undang untuk kawalan keselamatan & kecemasan.'
+            },
+            {
+                topic: 'Subtopik B: Persediaan Tiga Fasa',
+                question: 'Mengapakah khemah yang basah selepas perkhemahan dilarang sama sekali disimpan terus ke dalam beg simpanan?',
+                options: [
+                    'Kerana berat khemah akan menjadi dua kali ganda semasa ditimbang',
+                    'Kerana warna kain khemah akan bertukar menjadi gelap secara kimia',
+                    'Kerana kelembapan menyebabkan kulat (mildew), reput fabrik dan lapisan kalis air (PU coating) rosak',
+                    'Kerana tiang fiberglass akan membengkok jika terdedah air lama'
+                ],
+                answer: 2,
+                explanation: 'Fabrik khemah lembap yang diperap di dalam beg kedap udara akan diserang kulat (mildew) yang merosakkan pita kedap jahitan (seam seal) dan bau hapak kekal.'
+            },
+            {
+                topic: 'Subtopik C: Pemilihan Tapak',
+                question: 'Istilah "Widow-Maker" di dalam kemahiran memilih tapak perkhemahan merujuk kepada:',
+                options: [
+                    'Kawasan tebing sungai yang berarus terlalu deras',
+                    'Dahan pokok reput atau pokok mati di bahagian atas yang boleh patah dan menghempap khemah bila-bila masa',
+                    'Sarang serangga berbisa seperti tebuan tanah dan semut api',
+                    'Kawasan bertanah liat yang mudah lecah apabila hujan lebat'
+                ],
+                answer: 1,
+                explanation: 'Widow-maker ialah dahan pokok mati yang tergantung di bahagian kanopi atas. Angin kuat boleh menyebabkannya jatuh dan menghempap peserta semasa tidur.'
+            },
+            {
+                topic: 'Subtopik D: Jenis Khemah & Pasang',
+                question: 'Berapakah sudut condong yang paling ideal bagi menancapkan pasak (peg) khemah ke dalam tanah berbanding arah tarikan tali penegang?',
+                options: [
+                    '90 darjah tepat secara tegak lurus',
+                    '45 darjah mencondong menjauhi / menentang punca tarikan khemah',
+                    '180 darjah mendatar di atas permukaan tanah',
+                    '15 darjah condong ke arah dalam khemah'
+                ],
+                answer: 1,
+                explanation: 'Pasak mestilah dipancang pada sudut 45° menghala ke arah luar (bertentangan tali) bagi memberikan rintangan cengkaman tanah maksimum menentang daya regangan angin.'
+            },
+            {
+                topic: 'Subtopik E: Dapur & Gejet',
+                question: 'Apakah ikatan yang paling tepat digunakan untuk menyambung dua batang kayu yang bersilang pada sudut tepat 90 darjah semasa membina meja makan perkhemahan?',
+                options: [
+                    'Ikatan Seraya (Square Lashing)',
+                    'Ikatan Silang Gunting (Shear Lashing)',
+                    'Simpul Bunga Geti (Sheet Bend)',
+                    'Simpul Pengail (Fisherman’s Knot)'
+                ],
+                answer: 0,
+                explanation: 'Ikatan Seraya digunakan khusus untuk mengikat dua batang kayu yang bersilang pada sudut tepat (90 darjah) untuk rangka meja, rak kasut dan gejet asas.'
+            },
+            {
+                topic: 'Subtopik F: Aktiviti Perkhemahan',
+                question: 'Di dalam kaedah masakan rimba (backwoods cooking), bagaimanakah cara memasak roti lilit secara praktikal tanpa menggunakan kuali atau loyang?',
+                options: [
+                    'Menenggelamkan tepung terus ke dalam abu panas api',
+                    'Melilit adunan doh pada ranting kayu tidak beracun yang telah dikupas kulit dan memutarnya di atas bara api',
+                    'Menggoreng adunan di atas batu sungai yang basah',
+                    'Membakar tepung di dalam beg plastik nipis'
+                ],
+                answer: 1,
+                explanation: 'Roti lilit dibalut pada ranting pokok yang bersih dan dipanggang secara berputar di atas haba bara panas (bukan api marak berjelaga) sehingga kuning keemasan.'
+            },
+            {
+                topic: 'Subtopik G: Kesihatan & Kebersihan',
+                question: 'Berapakah jarak minimum yang disyorkan untuk membina tandas medan (latrine) dari tapak khemah utama dan dari sumber sungai mengikut standard sanitasi pengakap?',
+                options: [
+                    '5 meter dari khemah dan 10 meter dari sungai',
+                    'Sekurang-kurangnya 100 meter dari khemah dan 60 meter dari mana-mana sumber air',
+                    'Tandas mesti dibina tepat di sebelah dapur untuk memudahkan air basuhan',
+                    'Tiada sebarang had jarak asalkan kawasan itu berteduh'
+                ],
+                answer: 1,
+                explanation: 'Jarak 100 meter dari khemah mengelakkan bau serta lalat, manakala jarak 60 meter dari sungai mengelakkan pencemaran bakteria E. coli ke punca air minuman.'
+            },
+            {
+                topic: 'Subtopik H: Aturan Penutupan',
+                question: 'Apakah langkah terakhir yang mesti dilakukan untuk mengesahkan bahawa api perkhemahan telah padam sepenuhnya ("Cold Out") sebelum meninggalkan tapak?',
+                options: [
+                    'Membiarkan bara berasap dan meninggalkannya begitu sahaja',
+                    'Menyiram air, menggaulkan abu basah dengan tanah, dan menyentuh arang dengan belakang tangan untuk memastikan tiada haba',
+                    'Menutup unggun api dengan ranting-ranting daun kering',
+                    'Meniup abu api sehingga tiada habuk berterbangan'
+                ],
+                answer: 1,
+                explanation: 'Teknik "Douse, Stir and Feel": Siram air, gaul dengan tanah basah dan sentuh arang menggunakan belakang tangan bagi memastikan tiada bara tersembunyi yang boleh mencetuskan kebakaran hutan.'
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let selectedOption = null;
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById('tab-' + tabId);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+
+            // Update Desktop Navbar Styling
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.className = 'nav-item px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-red-700 hover:bg-slate-100 flex items-center gap-2 transition';
+            });
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) {
+                activeBtn.className = 'nav-item px-3 py-2 rounded-lg text-sm font-semibold text-red-700 bg-red-50 flex items-center gap-2 transition';
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Modul Teori Controller
+        function loadModulContent(letter) {
+            const data = topicsData[letter];
+            if (!data) return;
+
+            // Highlight Subtopic Buttons
+            ['a','b','c','d','e','f','g','h'].forEach(k => {
+                const btn = document.getElementById('btn-sub-' + k);
+                if (btn) {
+                    if (k === letter) {
+                        btn.className = 'w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-red-700 bg-red-50 flex items-center gap-2 transition border-l-4 border-red-700';
+                        btn.querySelector('span:first-child').className = 'w-6 h-6 rounded-md bg-red-700 text-white flex items-center justify-center text-xs';
+                    } else {
+                        btn.className = 'w-full text-left px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 flex items-center gap-2 transition';
+                        btn.querySelector('span:first-child').className = 'w-6 h-6 rounded-md bg-slate-200 text-slate-700 flex items-center justify-center text-xs';
+                    }
+                }
+            });
+
+            // Build Sections HTML
+            let sectionsHtml = '';
+            data.sections.forEach(sec => {
+                sectionsHtml += `
+                    <div class="mb-6 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                        <h4 class="text-sm sm:text-base font-bold text-slate-900 mb-2">${sec.title}</h4>
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed whitespace-pre-line">${sec.content}</p>
+                    </div>
+                `;
+            });
+
+            // Build Checklist HTML
+            let checklistHtml = '';
+            data.checklist.forEach(item => {
+                checklistHtml += `
+                    <li class="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700">
+                        <i class="fa-solid fa-square-check text-red-700 text-sm mt-0.5"></i>
+                        <span>${item}</span>
+                    </li>
+                `;
+            });
+
+            const html = `
+                <div class="animate-fadeIn">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="px-3 py-1 rounded-lg ${data.badgeColor} font-black text-xs uppercase tracking-wider">Subtopik ${data.letter}</span>
+                        <span class="text-xs text-slate-400">Silibus Pengakap Kelana</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">${data.title}</h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mb-6 leading-relaxed">${data.description}</p>
+                    
+                    <div class="space-y-4">
+                        ${sectionsHtml}
+                    </div>
+
+                    <div class="mt-8 p-5 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200">
+                        <h4 class="font-bold text-amber-950 text-sm mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-amber-700"></i> Senarai Semak Kompetensi Calon (Subtopik ${data.letter})
+                        </h4>
+                        <ul class="space-y-2">
+                            ${checklistHtml}
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('modulDisplayArea').innerHTML = html;
+        }
+
+        function openTopicDetail(letter) {
+            switchTab('modul');
+            loadModulContent(letter);
+        }
+
+        // Layout Inspector simulation
+        const layoutDescriptions = {
+            'gate': {
+                title: 'Pintu Gerbang & Pos Kawalan Masuk',
+                desc: 'Terletak di laluan utama keluar-masuk. Berfungsi memantau pergerakan masuk orang luar, buku pendaftaran tetamu dan memastikan perimeter perkhemahan terkawal.'
+            },
+            'quartermaster': {
+                title: 'Khemah Kuartermaster (QM Alatan & Logistik)',
+                desc: 'Diletakkan berhampiran pintu masuk/pusat tapak untuk memudahkan pemunggahan barang dari lori/kenderaan. Menyimpan alatan tajam, lampu gas, tali dan kanvas gantian.'
+            },
+            'female_tents': {
+                title: 'Zon Khemah Peserta Wanita',
+                desc: 'Dipisahkan secara berasingan dengan jarak selamat dari khemah peserta lelaki. Terletak berhampiran dengan laluan tandas khas wanita dan khemah pemimpin wanita.'
+            },
+            'male_tents': {
+                title: 'Zon Khemah Peserta Lelaki',
+                desc: 'Terletak pada zon berasingan dengan susunan teratur mengikut patrol masing-masing. Pintu khemah disusun mengadap ke arah tiang bendera pusat kem.'
+            },
+            'flagpole': {
+                title: 'Tiang Bendera & Dataran Perhimpunan (Camp Centre)',
+                desc: 'Titik pusat tapak perkhemahan. Tempat istiadat pagi, taklimat Kem Komandan, pemeriksaan kebersihan patrol dan pusat perjumpaan kecemasan (emergency muster point).'
+            },
+            'kitchen': {
+                title: 'Dapur Perkhemahan & Lubang Sisa',
+                desc: 'Mesti diletakkan di arah bertentangan hembusan angin (downwind) dari khemah tidur supaya asap dapur tidak menerjah ke khemah. Berhampiran dengan sumber air bersih namun sekurang-kurangnya 50m dari aliran sungai.'
+            },
+            'campfire': {
+                title: 'Bulatan Unggun Api (Campfire Circle)',
+                desc: 'Diletakkan di kawasan lapang bebas daripada dahan pokok tergantung di atas. Menjaga jarak selamat minima 6-8 meter dari barisan khemah terdekat.'
+            },
+            'latrine': {
+                title: 'Tandas Medan (Latrine) & Lubang Pelupusan',
+                desc: 'Wajib berada pada kedudukan paling bawah angin (furthest downwind) dan sekurang-kurangnya 100 meter dari khemah tidur serta 60 meter dari sungai untuk menjamin sanitasi.'
+            }
+        };
+
+        function inspectLayout(key) {
+            const item = layoutDescriptions[key];
+            if (item) {
+                document.getElementById('layoutInfoTitle').innerText = item.title;
+                document.getElementById('layoutInfoDesc').innerText = item.desc;
+                showToast(`Zon Diperiksa: ${item.title}`);
+            }
+        }
+
+        // Shelter Selector Controller
+        function selectShelter(type) {
+            const data = sheltersData[type];
+            if (!data) return;
+
+            // Update buttons styling
+            document.querySelectorAll('.shelter-btn').forEach(btn => {
+                btn.className = 'shelter-btn w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-900 transition flex items-center justify-between';
+                const chevron = btn.querySelector('.fa-chevron-right');
+                if (chevron) chevron.className = 'fa-solid fa-chevron-right text-slate-400';
+            });
+
+            const activeBtn = document.getElementById('btn-shelter-' + type);
+            if (activeBtn) {
+                activeBtn.className = 'shelter-btn w-full text-left p-4 rounded-2xl border-2 border-red-700 bg-red-50 text-slate-900 transition flex items-center justify-between';
+                const chevron = activeBtn.querySelector('.fa-chevron-right');
+                if (chevron) chevron.className = 'fa-solid fa-chevron-right text-red-700';
+            }
+
+            let stepsHtml = '';
+            data.steps.forEach((st, idx) => {
+                stepsHtml += `
+                    <div class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-slate-900 text-white font-bold text-xs flex-shrink-0 flex items-center justify-center mt-0.5">${idx + 1}</span>
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${st}</p>
+                    </div>
+                `;
+            });
+
+            let materialsHtml = '';
+            data.materials.forEach(mat => {
+                materialsHtml += `
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                        <i class="fa-solid fa-toolbox text-red-700"></i> ${mat}
+                    </span>
+                `;
+            });
+
+            const html = `
+                <div class="animate-fadeIn">
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-4 mb-4">
+                        <div>
+                            <span class="text-xs font-bold text-red-700 uppercase tracking-wider">Modul Praktikal Khemah Kecil</span>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">${data.title}</h3>
+                        </div>
+                        <div class="flex items-center gap-3 text-xs font-semibold text-slate-500">
+                            <span><i class="fa-regular fa-clock text-amber-600"></i> ${data.time}</span>
+                            <span>•</span>
+                            <span><i class="fa-solid fa-users text-indigo-600"></i> ${data.capacity}</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Bahan & Peralatan Diperlukan:</h4>
+                        <div class="flex flex-wrap gap-2">
+                            ${materialsHtml}
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Langkah Pembinaan (Standard Praktikal):</h4>
+                        <div class="space-y-3">
+                            ${stepsHtml}
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-start gap-3">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600 text-base mt-0.5"></i>
+                        <div>
+                            <strong class="text-xs sm:text-sm font-bold text-amber-900 block">Peringatan Keselamatan Penting:</strong>
+                            <p class="text-xs text-amber-800 mt-0.5">${data.safetyTips}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('shelterDetailBox').innerHTML = html;
+        }
+
+        // Log Buku Controller
+        function renderCampLogTable() {
+            const tbody = document.getElementById('campTableBody');
+            tbody.innerHTML = '';
+
+            let totalNights = 0;
+
+            campRecords.forEach((item, index) => {
+                totalNights += parseInt(item.nights);
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50/80 transition';
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4 font-bold text-slate-900">${item.name}</td>
+                    <td class="py-3.5 px-4 text-slate-600">${item.location}</td>
+                    <td class="py-3.5 px-4 text-slate-600 whitespace-nowrap">${formatDate(item.date)}</td>
+                    <td class="py-3.5 px-4 text-center">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-extrabold bg-red-100 text-red-800">
+                            ${item.nights} Malam
+                        </span>
+                    </td>
+                    <td class="py-3.5 px-4 font-medium text-slate-700">${item.role}</td>
+                    <td class="py-3.5 px-4 text-center">
+                        <button onclick="deleteCampRecord(${item.id})" class="text-slate-400 hover:text-red-700 p-1 transition" title="Padam Rekod">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Update Progress UI
+            const capNights = Math.min(totalNights, 10);
+            const percent = (capNights / 10) * 100;
+            const progressCircle = document.getElementById('progressCircle');
+            const progressText = document.getElementById('progressText');
+            const progressStatus = document.getElementById('progressStatus');
+
+            if (progressCircle) progressCircle.setAttribute('stroke-dasharray', `${percent}, 100`);
+            if (progressText) progressText.innerText = `${totalNights}/10`;
+
+            if (totalNights >= 10) {
+                progressStatus.innerText = 'Syarat 10 Malam Lengkap!';
+                progressStatus.className = 'text-sm font-extrabold text-emerald-600';
+            } else {
+                const diff = 10 - totalNights;
+                progressStatus.innerText = `Perlu ${diff} Malam Lagi`;
+                progressStatus.className = 'text-sm font-extrabold text-amber-600';
+            }
+        }
+
+        function toggleCampModal(show) {
+            const modal = document.getElementById('campModal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+                document.getElementById('campForm').reset();
+            }
+        }
+
+        function saveCampRecord(e) {
+            e.preventDefault();
+            const name = document.getElementById('modalCampName').value.trim();
+            const location = document.getElementById('modalCampLocation').value.trim();
+            const date = document.getElementById('modalCampDate').value;
+            const nights = parseInt(document.getElementById('modalCampNights').value) || 1;
+            const role = document.getElementById('modalCampRole').value;
+
+            const newRecord = {
+                id: Date.now(),
+                name,
+                location,
+                date,
+                nights,
+                role
+            };
+
+            campRecords.push(newRecord);
+            renderCampLogTable();
+            toggleCampModal(false);
+            showToast('Siri perkhemahan berjaya didaftarkan ke dalam buku log!');
+        }
+
+        function deleteCampRecord(id) {
+            campRecords = campRecords.filter(c => c.id !== id);
+            renderCampLogTable();
+            showToast('Rekod perkhemahan telah dipadam.');
+        }
+
+        function resetDefaultCamps() {
+            campRecords = [
+                { id: 1, name: 'Perkhemahan Latihan Kepimpinan Kelana', location: 'Kem Kanching, Selangor', date: '2026-03-14', nights: 3, role: 'Ketua Patrol Ekspedisi' },
+                { id: 2, name: 'Ekspedisi Kembara Pandu Arah & Survival Rimba', location: 'Hutan Belum, Perak', date: '2026-06-20', nights: 4, role: 'Kuartermaster Alatan' },
+                { id: 3, name: 'Perkhemahan Khidmat Masyarakat Komuniti', location: 'Pos Kuala Mu, Perak', date: '2026-09-05', nights: 3, role: 'Pegawai First Aid' }
+            ];
+            renderCampLogTable();
+            showToast('Contoh log buku telah dipulihkan.');
+        }
+
+        function exportCampLog() {
+            let total = campRecords.reduce((sum, r) => sum + parseInt(r.nights), 0);
+            let text = `RINGKASAN BUKU LOG PERKHEMAHAN PENGAKAP KELANA (TOPIK 9)\n`;
+            text += `Status Mandatori: ${total >= 10 ? 'LULUS (>=10 Malam)' : 'BELUM SELESAI'}\n`;
+            text += `Jumlah Malam Terkumpul: ${total} Malam\n\n`;
+            campRecords.forEach((c, idx) => {
+                text += `${idx + 1}. ${c.name}\n   Lokasi: ${c.location}\n   Tarikh: ${c.date} | Malam: ${c.nights} | Peranan: ${c.role}\n\n`;
+            });
+
+            // Fallback clipboard command
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            try {
+                document.execCommand('copy');
+                showToast('Laporan berjaya disalin ke papan keratan (clipboard)!');
+            } catch (err) {
+                showToast('Gagal menyalin ringkasan.');
+            }
+            document.body.removeChild(el);
+        }
+
+        function formatDate(dStr) {
+            if (!dStr) return '-';
+            const parts = dStr.split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            return dStr;
+        }
+
+        // Quiz Controller
+        function loadQuizQuestion() {
+            const q = quizQuestions[currentQuizIndex];
+            if (!q) return;
+
+            document.getElementById('quizCounter').innerText = `Soalan ${currentQuizIndex + 1} daripada ${quizQuestions.length}`;
+            document.getElementById('quizScoreTracker').innerText = `Skor: ${quizScore}`;
+            document.getElementById('quizTopicTag').innerText = q.topic;
+            document.getElementById('quizQuestionText').innerText = q.question;
+
+            const progressPct = ((currentQuizIndex + 1) / quizQuestions.length) * 100;
+            document.getElementById('quizProgressBar').style.width = progressPct + '%';
+
+            const optsContainer = document.getElementById('quizOptionsContainer');
+            optsContainer.innerHTML = '';
+
+            selectedOption = null;
+            document.getElementById('quizNextBtn').classList.add('hidden');
+            document.getElementById('quizFeedbackBox').classList.add('hidden');
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-xs sm:text-sm font-semibold text-slate-800 transition flex items-center justify-between group';
+                btn.onclick = () => handleQuizOptionSelect(idx, btn);
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-red-50 text-slate-700 group-hover:text-red-700 font-bold text-xs flex items-center justify-center">${String.fromCharCode(65 + idx)}</span>
+                        <span>${opt}</span>
+                    </div>
+                    <i class="fa-regular fa-circle text-slate-300 group-hover:text-red-600"></i>
+                `;
+                optsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizOptionSelect(index, element) {
+            if (selectedOption !== null) return; // Prevent multiple answers
+            selectedOption = index;
+
+            const q = quizQuestions[currentQuizIndex];
+            const isCorrect = (index === q.answer);
+            const feedbackBox = document.getElementById('quizFeedbackBox');
+
+            if (isCorrect) {
+                quizScore += 1;
+                element.className = 'w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-xs sm:text-sm font-bold text-emerald-950 flex items-center justify-between';
+                element.querySelector('i').className = 'fa-solid fa-circle-check text-emerald-600 text-lg';
+
+                feedbackBox.className = 'mt-5 p-4 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-900 text-xs sm:text-sm';
+                feedbackBox.innerHTML = `<strong>Tepat Sekali!</strong> ${q.explanation}`;
+            } else {
+                element.className = 'w-full text-left p-4 rounded-2xl border-2 border-rose-500 bg-rose-50 text-xs sm:text-sm font-bold text-rose-950 flex items-center justify-between';
+                element.querySelector('i').className = 'fa-solid fa-circle-xmark text-rose-600 text-lg';
+
+                // Highlight correct option
+                const allButtons = document.getElementById('quizOptionsContainer').querySelectorAll('button');
+                if (allButtons[q.answer]) {
+                    allButtons[q.answer].className = 'w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-xs sm:text-sm font-bold text-emerald-950 flex items-center justify-between';
+                }
+
+                feedbackBox.className = 'mt-5 p-4 rounded-xl border bg-rose-50 border-rose-200 text-rose-900 text-xs sm:text-sm';
+                feedbackBox.innerHTML = `<strong>Kurang Tepat.</strong> Jawapan yang betul ialah pilihan <strong>${String.fromCharCode(65 + q.answer)}</strong>.<br>${q.explanation}`;
+            }
+
+            feedbackBox.classList.remove('hidden');
+            document.getElementById('quizNextBtn').classList.remove('hidden');
+            document.getElementById('quizScoreTracker').innerText = `Skor: ${quizScore}`;
+        }
+
+        function nextQuestion() {
+            if (currentQuizIndex < quizQuestions.length - 1) {
+                currentQuizIndex++;
+                loadQuizQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            document.getElementById('quizContainer').classList.add('hidden');
+            const resultBox = document.getElementById('quizResultContainer');
+            resultBox.classList.remove('hidden');
+
+            const total = quizQuestions.length;
+            const percentage = Math.round((quizScore / total) * 100);
+
+            document.getElementById('finalScoreDisplay').innerText = percentage + '%';
+            document.getElementById('finalFractionDisplay').innerText = `(${quizScore} / ${total} soalan betul)`;
+            
+            const today = new Date();
+            document.getElementById('certDate').innerText = today.toLocaleDateString('ms-MY', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            const iconEl = document.getElementById('resultIcon');
+            const titleEl = document.getElementById('resultTitle');
+            const subtitleEl = document.getElementById('resultSubtitle');
+
+            if (percentage >= 80) {
+                iconEl.className = 'w-20 h-20 rounded-full mx-auto flex items-center justify-center text-3xl mb-4 bg-emerald-100 text-emerald-600';
+                iconEl.innerHTML = '<i class="fa-solid fa-award"></i>';
+                titleEl.innerText = 'Tahniah! Anda Lulus Cemerlang';
+                subtitleEl.innerText = 'Anda telah menguasai keseluruhan konsep teori Topic 9 dengan piawaian kepengakapan tertinggi.';
+                
+                // Launch celebratory confetti
+                try {
+                    confetti({
+                        particleCount: 80,
+                        spread: 60,
+                        origin: { y: 0.6 }
+                    });
+                } catch(e) {}
+            } else {
+                iconEl.className = 'w-20 h-20 rounded-full mx-auto flex items-center justify-center text-3xl mb-4 bg-amber-100 text-amber-700';
+                iconEl.innerHTML = '<i class="fa-solid fa-book-open"></i>';
+                titleEl.innerText = 'Sila Ulang Kaji Modul Teori';
+                subtitleEl.innerText = 'Markah minima lulus ialah 80%. Sila semak semula subtopik yang belum dikuasai dan cuba semula.';
+            }
+        }
+
+        function restartQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quizResultContainer').classList.add('hidden');
+            document.getElementById('quizContainer').classList.remove('hidden');
+            loadQuizQuestion();
+        }
+
+        // Toast Feedback System
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initialize App on Window Load
+        window.onload = function() {
+            loadModulContent('a');
+            selectShelter('a-frame');
+            renderCampLogTable();
+            loadQuizQuestion();
+        };
+    </script>
+</body>
+</html>

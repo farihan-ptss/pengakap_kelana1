@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hub Pembelajaran Interaktif: Topik 8 - Istiadat Pelantikan Pengakap Kelana</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts Inter & Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- Confetti Canvas Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            scout: {
+              red: '#B91C1C',
+              darkRed: '#7F1D1D',
+              gold: '#F59E0B',
+              green: '#15803D',
+              darkGreen: '#14532D',
+              navy: '#0F172A',
+              cream: '#FEF3C7'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .perspective-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .perspective-card:hover {
+      transform: translateY(-4px);
+    }
+    .badge-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .65; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-amber-200 selection:text-amber-900">
+
+  <!-- Header Banner -->
+  <header class="bg-gradient-to-r from-red-900 via-red-800 to-amber-900 text-white shadow-xl sticky top-0 z-50 border-b-4 border-amber-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo & Tajuk -->
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('pengenalan')">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/20 border-2 border-amber-400 flex items-center justify-center shadow-inner">
+            <i class="fa-solid fa-compass text-2xl text-amber-400 animate-spin-slow"></i>
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="text-xs uppercase tracking-widest font-bold text-amber-300 bg-red-950 px-2 py-0.5 rounded-full">Topik 8</span>
+              <span class="text-xs font-semibold text-red-200">Krew Pengakap Kelana</span>
+            </div>
+            <h1 class="text-lg sm:text-xl font-display font-bold tracking-tight text-white leading-tight">
+              Istiadat Pelantikan Kelana
+            </h1>
+          </div>
+        </div>
+
+        <!-- Navigation Desktop -->
+        <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium">
+          <button onclick="switchTab('pengenalan')" id="btn-pengenalan" class="nav-tab px-3 py-2 rounded-lg transition-all flex items-center space-x-1.5 text-white/90 hover:bg-white/10 hover:text-white">
+            <i class="fa-solid fa-book-open text-amber-400"></i>
+            <span>Pengenalan</span>
+          </button>
+          <button onclick="switchTab('syarat')" id="btn-syarat" class="nav-tab px-3 py-2 rounded-lg transition-all flex items-center space-x-1.5 text-white/90 hover:bg-white/10 hover:text-white">
+            <i class="fa-solid fa-list-check text-amber-400"></i>
+            <span>Pra-Syarat</span>
+          </button>
+          <button onclick="switchTab('simulasi')" id="btn-simulasi" class="nav-tab px-3 py-2 rounded-lg transition-all flex items-center space-x-1.5 text-white/90 hover:bg-white/10 hover:text-white">
+            <i class="fa-solid fa-people-group text-amber-400"></i>
+            <span>Susun Atur & Langkah</span>
+          </button>
+          <button onclick="switchTab('lafaz')" id="btn-lafaz" class="nav-tab px-3 py-2 rounded-lg transition-all flex items-center space-x-1.5 text-white/90 hover:bg-white/10 hover:text-white">
+            <i class="fa-solid fa-hand text-amber-400"></i>
+            <span>Persetiaan & Resam</span>
+          </button>
+          <button onclick="switchTab('kuiz')" id="btn-kuiz" class="nav-tab px-3 py-2 rounded-lg transition-all flex items-center space-x-1.5 text-white/90 hover:bg-white/10 hover:text-white">
+            <i class="fa-solid fa-award text-amber-400"></i>
+            <span>Uji Minda (Kuiz)</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Mobile Nav Bar (bawah header) -->
+    <div class="md:hidden flex overflow-x-auto py-2.5 px-4 bg-red-950/80 border-t border-red-800 space-x-2 text-xs font-medium no-scrollbar">
+      <button onclick="switchTab('pengenalan')" class="mobile-tab px-3 py-1.5 whitespace-nowrap rounded-md bg-red-800/80 text-white font-semibold">Pengenalan</button>
+      <button onclick="switchTab('syarat')" class="mobile-tab px-3 py-1.5 whitespace-nowrap rounded-md bg-transparent text-gray-200">Pra-Syarat</button>
+      <button onclick="switchTab('simulasi')" class="mobile-tab px-3 py-1.5 whitespace-nowrap rounded-md bg-transparent text-gray-200">Susun Atur</button>
+      <button onclick="switchTab('lafaz')" class="mobile-tab px-3 py-1.5 whitespace-nowrap rounded-md bg-transparent text-gray-200">Persetiaan</button>
+      <button onclick="switchTab('kuiz')" class="mobile-tab px-3 py-1.5 whitespace-nowrap rounded-md bg-transparent text-gray-200">Kuiz</button>
+    </div>
+  </header>
+
+  <!-- Hero Strip -->
+  <section class="bg-gradient-to-b from-amber-50 to-slate-100 py-6 border-b border-amber-200/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center space-x-2 bg-amber-100 text-amber-900 border border-amber-300 px-3 py-0.5 rounded-full text-xs font-semibold uppercase mb-2">
+          <i class="fa-solid fa-flag text-red-600"></i>
+          <span>Modul Latihan Kepimpinan Pengakap Malaysia</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-slate-900">
+          Istiadat Pelantikan & Penyampaian Epolet Kelana
+        </h2>
+        <p class="text-slate-600 text-sm mt-1 max-w-2xl">
+          Fahami falsafah, protokol rasmi, tertib perbarisan tapak kuda, pertukaran skaf atau sarung epolet, serta ikrar Persetiaan Pengakap bagi bakal Pengakap Kelana.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button onclick="bukaModulRingkasan()" class="px-4 py-2.5 bg-white text-slate-700 hover:text-red-700 rounded-xl border border-slate-300 shadow-sm text-sm font-semibold flex items-center space-x-2 hover:bg-slate-50 transition">
+          <i class="fa-solid fa-file-pdf text-red-600"></i>
+          <span>Ringkasan Nota (Cetak)</span>
+        </button>
+        <button onclick="switchTab('simulasi')" class="px-4 py-2.5 bg-red-700 hover:bg-red-800 text-white rounded-xl shadow-md shadow-red-700/20 text-sm font-semibold flex items-center space-x-2 transition">
+          <i class="fa-solid fa-play"></i>
+          <span>Mula Simulasi</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: PENGENALAN & FALSAFAH               -->
+    <!-- ========================================== -->
+    <div id="content-pengenalan" class="tab-content block space-y-8 animate-fade-in">
+      
+      <!-- Banner Pengenalan -->
+      <div class="bg-gradient-to-r from-red-800 to-amber-700 rounded-2xl p-6 sm:p-8 text-white shadow-lg relative overflow-hidden">
+        <div class="absolute right-0 top-0 bottom-0 opacity-10 flex items-center pointer-events-none pr-8">
+          <i class="fa-solid fa-shield-halved text-[220px]"></i>
+        </div>
+        <div class="relative z-10 max-w-3xl">
+          <span class="bg-amber-400 text-red-950 font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wide">Falsafah & Maksud</span>
+          <h3 class="text-2xl sm:text-3xl font-display font-bold mt-3 mb-2">Menyahut Cabaran Menjadi Pengakap Kelana Dewasa</h3>
+          <p class="text-amber-100 text-sm sm:text-base leading-relaxed">
+            Istiadat Pelantikan Pengakap Kelana bukan sekadar upacara formaliti; ia merupakan detik keramat peralihan daripada peringkat alam remaja (Kanak-kanak/Muda/Remaja) ke peringkat kedewasaan yang matang. Cogan kata Kelana adalah <strong>"BERKHIDMAT" (Service)</strong>.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-4 text-xs font-semibold">
+            <span class="inline-flex items-center bg-black/30 px-3 py-1.5 rounded-lg border border-white/20">
+              <i class="fa-solid fa-users text-amber-300 mr-2"></i> Usia: 18 hingga 26 Tahun
+            </span>
+            <span class="inline-flex items-center bg-black/30 px-3 py-1.5 rounded-lg border border-white/20">
+              <i class="fa-solid fa-hand-holding-heart text-amber-300 mr-2"></i> Motto: Berkhidmat
+            </span>
+            <span class="inline-flex items-center bg-black/30 px-3 py-1.5 rounded-lg border border-white/20">
+              <i class="fa-solid fa-medal text-amber-300 mr-2"></i> Matlamat: Anugerah B-P Guild / BP Award
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 Tonggak Istiadat -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="perspective-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+          <div class="w-12 h-12 rounded-xl bg-red-100 text-red-700 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-crown"></i>
+          </div>
+          <h4 class="text-lg font-bold text-slate-900 mb-2 font-display">Tanggungjawab Dewasa</h4>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Kelana diakui sebagai warganegara penuh yang mampu berdikari, berfikiran matang, dan bersedia membuat pertimbangan moral tanpa perlu bergantung kepada kawalan orang dewasa semata-mata.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="perspective-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+          <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-handshake-angle"></i>
+          </div>
+          <h4 class="text-lg font-bold text-slate-900 mb-2 font-display">Semangat Persaudaraan</h4>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Diterima masuk ke dalam <em>World Brotherhood of Scouts</em> (Persaudaraan Pengakap Sedunia) dan bersedia menyumbang tenaga bakti kepada komuniti, bangsa dan negara.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="perspective-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+          <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-certificate"></i>
+          </div>
+          <h4 class="text-lg font-bold text-slate-900 mb-2 font-display">Lafaz Ikrar Sukarela</h4>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Melafazkan semula Persetiaan Pengakap atas kehendak hati sendiri di hadapan Pemimpin Krew, disaksikan oleh sahabat sepasukan dengan penuh kesedaran dan integriti.
+          </p>
+        </div>
+      </div>
+
+      <!-- Video Simulasi / Panduan Interaktif Visual -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <h4 class="text-lg font-bold text-slate-900 mb-3 flex items-center font-display">
+          <i class="fa-solid fa-circle-info text-amber-500 mr-2"></i>
+          Elemen Penting Dalam Istiadat Pelantikan
+        </h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80">
+            <div class="text-xs font-bold text-slate-400 mb-1">01. FORMAT BARISAN</div>
+            <div class="font-bold text-slate-800 text-base mb-1">Tapak Kuda (Horseshoe)</div>
+            <p class="text-xs text-slate-600">Simbol keterbukaan, perbincangan demokratik, dan perlindungan krew terhadap calon.</p>
+          </div>
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80">
+            <div class="text-xs font-bold text-slate-400 mb-1">02. PENAJA (SPONSOR)</div>
+            <div class="font-bold text-slate-800 text-base mb-1">Kelana Kanan / Rakan Penaja</div>
+            <p class="text-xs text-slate-600">Membawa calon ke hadapan Pemimpin dan memberi jaminan keperibadian bakal Kelana.</p>
+          </div>
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80">
+            <div class="text-xs font-bold text-slate-400 mb-1">03. PEMASANGAN INSIGNIA</div>
+            <div class="font-bold text-slate-800 text-base mb-1">Epolet Kelana & Lencana</div>
+            <p class="text-xs text-slate-600">Epolet merah bersulam benang kuning/emas serta lambang Ibu Pejabat disarungkan ke pundak calon.</p>
+          </div>
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/80">
+            <div class="text-xs font-bold text-slate-400 mb-1">04. JABAT TANGAN KIRI</div>
+            <div class="font-bold text-slate-800 text-base mb-1">Salam Persaudaraan Sedunia</div>
+            <p class="text-xs text-slate-600">Tanda kepercayaan tulen (tangan kiri dekat dengan jantung/hati, tanpa perisai pertahanan).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button Next -->
+      <div class="flex justify-end pt-4">
+        <button onclick="markStepDone('pengenalan'); switchTab('syarat')" class="inline-flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white font-medium px-6 py-3 rounded-xl shadow transition">
+          <span>Seterusnya: Semak Pra-Syarat Calon</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: PRA-SYARAT & SENARAI SEMAK          -->
+    <!-- ========================================== -->
+    <div id="content-syarat" class="tab-content hidden space-y-6 animate-fade-in">
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-200 gap-4">
+          <div>
+            <h3 class="text-xl sm:text-2xl font-bold font-display text-slate-900">
+              Senarai Semak Kelayakan Calon (Bakal Kelana)
+            </h3>
+            <p class="text-slate-600 text-sm mt-1">
+              Sebelum seseorang itu boleh dilantik dan dipakaikan Epolet Pengakap Kelana, kriteria asas berikut mestilah dipenuhi dan disahkan oleh Pemimpin Krew.
+            </p>
+          </div>
+          <div class="bg-amber-50 border border-amber-300 px-4 py-2 rounded-xl text-amber-900 text-xs font-semibold flex items-center gap-2">
+            <i class="fa-solid fa-clipboard-check text-amber-600 text-lg"></i>
+            <span>Tanda untuk menguji kelayakan calon</span>
+          </div>
+        </div>
+
+        <!-- Checklist Grid -->
+        <div class="mt-6 space-y-3" id="checklistContainer">
+          <!-- Item 1 -->
+          <label class="flex items-start p-4 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition select-none group">
+            <input type="checkbox" onchange="updateChecklistProgress()" class="check-item mt-1 h-5 w-5 text-red-600 rounded border-gray-300 focus:ring-red-500">
+            <div class="ml-4">
+              <span class="text-sm font-bold text-slate-800 group-hover:text-red-700 transition">Had Umur Berkelayakan</span>
+              <p class="text-xs text-slate-600 mt-0.5">Telah mencapai umur sekurang-kurangnya 17½ atau 18 tahun dan belum melebihi 26 tahun.</p>
+            </div>
+          </label>
+          <!-- Item 2 -->
+          <label class="flex items-start p-4 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition select-none group">
+            <input type="checkbox" onchange="updateChecklistProgress()" class="check-item mt-1 h-5 w-5 text-red-600 rounded border-gray-300 focus:ring-red-500">
+            <div class="ml-4">
+              <span class="text-sm font-bold text-slate-800 group-hover:text-red-700 transition">Tempoh Percubaan / 'Squire'</span>
+              <p class="text-xs text-slate-600 mt-0.5">Telah menjalani tempoh orientasi dan perkenalan dengan krew (biasanya 3 hingga 6 bulan) sebagai bakal kelana.</p>
+            </div>
+          </label>
+          <!-- Item 3 -->
+          <label class="flex items-start p-4 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition select-none group">
+            <input type="checkbox" onchange="updateChecklistProgress()" class="check-item mt-1 h-5 w-5 text-red-600 rounded border-gray-300 focus:ring-red-500">
+            <div class="ml-4">
+              <span class="text-sm font-bold text-slate-800 group-hover:text-red-700 transition">Memahami Persetiaan & Undang-Undang Pengakap</span>
+              <p class="text-xs text-slate-600 mt-0.5">Mengetahui maksud tersurat dan tersirat serta bersedia mengaplikasikannya dalam kehidupan alam dewasa & kerjaya.</p>
+            </div>
+          </label>
+          <!-- Item 4 -->
+          <label class="flex items-start p-4 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition select-none group">
+            <input type="checkbox" onchange="updateChecklistProgress()" class="check-item mt-1 h-5 w-5 text-red-600 rounded border-gray-300 focus:ring-red-500">
+            <div class="ml-4">
+              <span class="text-sm font-bold text-slate-800 group-hover:text-red-700 transition">Kelengkapan Uniform Pengakap Lengkap</span>
+              <p class="text-xs text-slate-600 mt-0.5">Mempunyai pakaian seragam rasmi Pengakap Kelana yang lengkap bersedia untuk dipasangkan epolet bahu.</p>
+            </div>
+          </label>
+          <!-- Item 5 -->
+          <label class="flex items-start p-4 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition select-none group">
+            <input type="checkbox" onchange="updateChecklistProgress()" class="check-item mt-1 h-5 w-5 text-red-600 rounded border-gray-300 focus:ring-red-500">
+            <div class="ml-4">
+              <span class="text-sm font-bold text-slate-800 group-hover:text-red-700 transition">Persetujuan & Perakuan Krew</span>
+              <p class="text-xs text-slate-600 mt-0.5">Diterima sebulat suara atau melalui sokongan Majlis Krew Kelana dan diperakui oleh Pemimpin Krew Kelana.</p>
+            </div>
+          </label>
+        </div>
+
+        <!-- Status Bar Semakan -->
+        <div class="mt-8 p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center space-x-3 w-full sm:w-auto">
+            <div id="checkStatusIcon" class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold">
+              <i class="fa-solid fa-hourglass-half"></i>
+            </div>
+            <div>
+              <div class="text-xs text-slate-500">Status Kelayakan Calon</div>
+              <div id="checkStatusLabel" class="text-sm font-bold text-slate-700">0 daripada 5 syarat dipenuhi</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+            <button onclick="resetChecklist()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg transition">
+              Set Semula
+            </button>
+            <button id="btnTeruskanSimulasi" disabled onclick="markStepDone('syarat'); switchTab('simulasi')" class="px-5 py-2.5 bg-slate-300 text-slate-500 cursor-not-allowed rounded-xl text-xs font-bold transition flex items-center space-x-2">
+              <span>Ke Simulasi Istiadat</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: SIMULASI SUSUN ATUR & LANGKAH       -->
+    <!-- ========================================== -->
+    <div id="content-simulasi" class="tab-content hidden space-y-6 animate-fade-in">
+
+      <!-- Interactive Canvas & Stage Controller -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between pb-4 border-b border-slate-200 gap-4">
+          <div>
+            <div class="inline-flex items-center text-xs font-bold text-red-700 bg-red-50 border border-red-200 px-2.5 py-0.5 rounded-full mb-1">
+              <i class="fa-solid fa-play-circle mr-1.5"></i>
+              Simulasi Langkah Demi Langkah
+            </div>
+            <h3 class="text-xl sm:text-2xl font-bold font-display text-slate-900">
+              Pelan Formasi Tapak Kuda & Langkah Istiadat
+            </h3>
+            <p class="text-slate-600 text-xs sm:text-sm">
+              Gunakan butang kawalan di bawah untuk menavigasi setiap fasa protokol istiadat pelantikan secara visual.
+            </p>
+          </div>
+
+          <!-- Controls -->
+          <div class="flex items-center space-x-2">
+            <button onclick="prevStep()" id="btnPrevStep" class="px-3.5 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-bold transition disabled:opacity-40 disabled:cursor-not-allowed">
+              <i class="fa-solid fa-arrow-left mr-1"></i> Sebelum
+            </button>
+            <span id="stepIndicatorBadge" class="text-xs font-bold bg-amber-100 text-amber-900 px-3 py-2 rounded-xl border border-amber-300">
+              Fasa 1 / 5
+            </span>
+            <button onclick="nextStep()" id="btnNextStep" class="px-3.5 py-2 rounded-xl bg-red-700 hover:bg-red-800 text-white text-xs font-bold transition shadow-sm">
+              Seterusnya <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Visual Field Layout Canvas Container -->
+        <div class="mt-6 bg-slate-900 rounded-2xl p-4 sm:p-6 text-white relative overflow-hidden shadow-inner min-h-[380px] flex flex-col justify-between border-4 border-slate-800">
+          
+          <!-- Padang Grid Background Pattern -->
+          <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+          <!-- Papan Penunjuk Zon Tapak Kuda -->
+          <div class="relative z-10 flex justify-between items-start text-[11px] text-slate-400 border-b border-slate-800 pb-2">
+            <span class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-ping"></span>
+              Zon Padang Istiadat (Susunan Tapak Kuda)
+            </span>
+            <span id="activePhaseName" class="font-bold text-amber-400 uppercase tracking-wider">
+              Fasa 1: Barisan & Panggilan Calon
+            </span>
+          </div>
+
+          <!-- Grafik Formasi Tapak Kuda (SVG/HTML Hybrid) -->
+          <div class="relative z-10 my-4 flex-1 flex items-center justify-center py-6">
+            <div class="relative w-full max-w-lg aspect-[16/10] border-2 border-dashed border-slate-700/60 rounded-3xl p-4 flex flex-col justify-between">
+              
+              <!-- Bahagian Atas: Pemimpin Krew, Penolong & Meja Insignia -->
+              <div class="flex justify-center items-center space-x-6">
+                <!-- Penolong Pemimpin -->
+                <div class="text-center group">
+                  <div class="w-10 h-10 rounded-full bg-blue-700 border-2 border-blue-400 flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-blue-900/50">
+                    PP
+                  </div>
+                  <span class="text-[10px] text-slate-300 block mt-1 font-medium">Pen. Pemimpin</span>
+                </div>
+
+                <!-- Meja Istiadat (Bendera & Epolet) -->
+                <div class="text-center px-3 py-1.5 rounded-lg bg-amber-900/60 border border-amber-500/50 text-[10px]">
+                  <i class="fa-solid fa-flag text-red-500 mr-1"></i>
+                  <span class="text-amber-200 font-bold">Meja Insignia / Bendera</span>
+                </div>
+
+                <!-- Pemimpin Krew (Ketua Istiadat) -->
+                <div class="text-center group">
+                  <div class="w-11 h-11 rounded-full bg-red-600 border-2 border-amber-400 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-red-900/60">
+                    PK
+                  </div>
+                  <span class="text-[10px] text-amber-300 block mt-1 font-bold">Pemimpin Krew</span>
+                </div>
+              </div>
+
+              <!-- Bahagian Tengah: Calon & Penaja (Posisi Dinamik Mengikut Fasa) -->
+              <div class="flex justify-center items-center my-2">
+                <div id="simulasiSpotlight" class="transition-all duration-700 transform flex items-center space-x-8 bg-slate-800/80 px-6 py-3 rounded-2xl border border-amber-500/40">
+                  <!-- Penaja -->
+                  <div class="text-center">
+                    <div id="iconPenaja" class="w-9 h-9 rounded-full bg-emerald-600 border-2 border-emerald-300 flex items-center justify-center text-xs font-bold text-white transition-all">
+                      P
+                    </div>
+                    <span class="text-[10px] text-emerald-300 font-semibold block mt-0.5">Penaja (Kelana Kanan)</span>
+                  </div>
+
+                  <!-- Calon Kelana -->
+                  <div class="text-center relative">
+                    <span id="calonHalo" class="absolute -inset-1 rounded-full bg-amber-400 opacity-75 blur-sm animate-pulse"></span>
+                    <div id="iconCalon" class="relative w-10 h-10 rounded-full bg-amber-500 border-2 border-white flex items-center justify-center text-xs font-bold text-slate-900 shadow-md">
+                      C
+                    </div>
+                    <span id="labelCalon" class="text-[10px] text-amber-300 font-bold block mt-0.5">Calon Kelana</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bahagian Bawah & Sisi: Sayap Tapak Kuda (Ahli-ahli Krew) -->
+              <div class="flex justify-between items-end px-2">
+                <!-- Sayap Kiri -->
+                <div class="flex flex-col space-y-2">
+                  <div class="flex items-center space-x-1.5 text-[10px] text-slate-300">
+                    <div class="w-7 h-7 rounded-full bg-slate-700 border border-slate-500 flex items-center justify-center text-[10px]">K1</div>
+                    <span>Kelana</span>
+                  </div>
+                  <div class="flex items-center space-x-1.5 text-[10px] text-slate-300">
+                    <div class="w-7 h-7 rounded-full bg-slate-700 border border-slate-500 flex items-center justify-center text-[10px]">K2</div>
+                    <span>Kelana</span>
+                  </div>
+                  <div class="flex items-center space-x-1.5 text-[10px] text-slate-300">
+                    <div class="w-7 h-7 rounded-full bg-slate-700 border border-slate-500 flex items-center justify-center text-[10px]">K3</div>
+                    <span>Kelana</span>
+                  </div>
+                </div>
+
+                <!-- Label Tapak Kuda Terbuka -->
+                <div class="text-center text-[11px] text-slate-400 italic bg-slate-800/70 px-3 py-1 rounded-full border border-slate-700">
+                  <i class="fa-solid fa-arrows-left-right mr-1 text-slate-500"></i> Ruang Masuk Terbuka Tapak Kuda
+                </div>
+
+                <!-- Sayap Kanan -->
+                <div class="flex flex-col space-y-2 items-end">
+                  <div class="flex items-center space-x-1.5 text-[10px] text-slate-300">
+                    <span>Kelana</span>
+                    <div class="w-7 h-7 rounded-full bg-slate-700 border border-slate-500 flex items-center justify-center text-[10px]">K4</div>
+                  </div>
+                  <div class="flex items-center space-x-1.5 text-[10px] text-slate-300">
+                    <span>Kelana</span>
+                    <div class="w-7 h-7 rounded-full bg-slate-700 border border-slate-500 flex items-center justify-center text-[10px]">K5</div>
+                  </div>
+                  <div class="flex items-center space-x-1.5 text-[10px] text-slate-300">
+                    <span>Ketua Krew</span>
+                    <div class="w-7 h-7 rounded-full bg-purple-700 border border-purple-400 flex items-center justify-center text-[10px] font-bold">KK</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Panel Keterangan Skrip / Dialog Fasa -->
+          <div class="relative z-10 bg-slate-800/90 border border-slate-700 rounded-xl p-4">
+            <div class="flex items-center justify-between text-xs mb-1">
+              <span id="phaseStepBadge" class="font-bold text-amber-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-bullhorn"></i> FASA 1
+              </span>
+              <span class="text-slate-400 text-[11px]">Skrip / Perlakuan Rasmi</span>
+            </div>
+            <h5 id="phaseTitle" class="text-sm font-bold text-white mb-2">Penaja Membawa Calon Menghadap Pemimpin</h5>
+            <div id="phaseDescription" class="text-xs text-slate-300 leading-relaxed space-y-1">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 5 Langkah Navigation Buttons (Pilihan Pantas) -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-4">
+          <button onclick="setSimulasiStep(0)" class="step-nav-btn p-2.5 rounded-xl border border-slate-200 text-left transition hover:bg-slate-50 bg-red-50 border-red-300">
+            <span class="text-[10px] font-bold text-red-700 block">LANGKAH 1</span>
+            <span class="text-xs font-semibold text-slate-800">Menghadap Pemimpin</span>
+          </button>
+          <button onclick="setSimulasiStep(1)" class="step-nav-btn p-2.5 rounded-xl border border-slate-200 text-left transition hover:bg-slate-50">
+            <span class="text-[10px] font-bold text-slate-500 block">LANGKAH 2</span>
+            <span class="text-xs font-semibold text-slate-800">Soal Jawab Integriti</span>
+          </button>
+          <button onclick="setSimulasiStep(2)" class="step-nav-btn p-2.5 rounded-xl border border-slate-200 text-left transition hover:bg-slate-50">
+            <span class="text-[10px] font-bold text-slate-500 block">LANGKAH 3</span>
+            <span class="text-xs font-semibold text-slate-800">Lafaz Persetiaan</span>
+          </button>
+          <button onclick="setSimulasiStep(3)" class="step-nav-btn p-2.5 rounded-xl border border-slate-200 text-left transition hover:bg-slate-50">
+            <span class="text-[10px] font-bold text-slate-500 block">LANGKAH 4</span>
+            <span class="text-xs font-semibold text-slate-800">Pemasangan Epolet</span>
+          </button>
+          <button onclick="setSimulasiStep(4)" class="step-nav-btn p-2.5 rounded-xl border border-slate-200 text-left transition hover:bg-slate-50">
+            <span class="text-[10px] font-bold text-slate-500 block">LANGKAH 5</span>
+            <span class="text-xs font-semibold text-slate-800">Salam & Sambutan</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: PERSETIAAN & ADAB RESAM             -->
+    <!-- ========================================== -->
+    <div id="content-lafaz" class="tab-content hidden space-y-6 animate-fade-in">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Lafaz Persetiaan Interaktif (Kolum Kiri: 7 Span) -->
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xl">
+              <i class="fa-solid fa-hand"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold font-display text-slate-900">Lafaz Persetiaan Pengakap</h3>
+              <p class="text-xs text-slate-500">Ketik setiap rangkap semasa istiadat untuk mendengar penegasan intonasi</p>
+            </div>
+          </div>
+
+          <!-- Tanda Isyarat Hormat Pengakap -->
+          <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl mb-6">
+            <div class="flex items-start space-x-3">
+              <span class="text-2xl">🫡</span>
+              <div class="text-xs text-amber-950">
+                <strong>Tertib Isyarat Hormat Pengakap:</strong> Tangan kanan diangkat ke paras kening dengan tiga jari tengah tegak rapat (melambangkan 3 Teras Persetiaan), manakala ibu jari menindih jari kelingking (yang kuat melindungi yang lemah).
+              </div>
+            </div>
+          </div>
+
+          <!-- Dialog Interaktif Teks Ikrar -->
+          <div class="space-y-4">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-red-400 transition cursor-pointer" onclick="highlightIkrar(this)">
+              <div class="text-[11px] font-bold uppercase tracking-wider text-red-700">Mukaddimah Ikrar</div>
+              <p class="text-base font-serif italic text-slate-900 font-semibold mt-1">
+                "Bahawa dengan sesungguhnya, saya berjanji dan bersetia, yang saya, dengan seberapa daya upaya saya, akan..."
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-amber-400 transition cursor-pointer" onclick="highlightIkrar(this)">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-amber-700">Teras 1: Ketuhanan & Kenegaraan</span>
+                <span class="text-xs bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full font-bold">1</span>
+              </div>
+              <p class="text-base font-serif italic text-slate-900 font-semibold mt-1">
+                "...Taat kepada Tuhan, Raja dan Negara;"
+              </p>
+              <p class="text-xs text-slate-600 mt-1">Kelana berpegang teguh pada prinsip keagamaan, taat kepada Seri Paduka Baginda Yang di-Pertuan Agong & mematuhi undang-undang perlembagaan.</p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-emerald-400 transition cursor-pointer" onclick="highlightIkrar(this)">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-700">Teras 2: Khidmat Masyarakat (Motto Kelana)</span>
+                <span class="text-xs bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-full font-bold">2</span>
+              </div>
+              <p class="text-base font-serif italic text-slate-900 font-semibold mt-1">
+                "...Menolong orang pada setiap masa;"
+              </p>
+              <p class="text-xs text-slate-600 mt-1">Intipati terpenting Kelana: Membantu insan lain secara berterusan tanpa mengharapkan ganjaran material, menepati cogan kata <em>Berkhidmat</em>.</p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-blue-400 transition cursor-pointer" onclick="highlightIkrar(this)">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-blue-700">Teras 3: Disiplin & Peraturan</span>
+                <span class="text-xs bg-blue-200 text-blue-900 px-2 py-0.5 rounded-full font-bold">3</span>
+              </div>
+              <p class="text-base font-serif italic text-slate-900 font-semibold mt-1">
+                "...Menurut Undang-Undang Pengakap."
+              </p>
+              <p class="text-xs text-slate-600 mt-1">Mematuhi kesemua 10 Undang-Undang Pengakap bermula daripada Dipercayai, Taat, Berguna, Bersaudara, Berbudi, Kasihkan Binatang, Menurut Perintah, Tabah Hati, Jimat, sehinggalah Suci Fikiran, Perkataan dan Perbuatan.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Kolum Kanan: Makna Epolet & Adab Jabat Tangan Kiri (5 Span) -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- Kad Epolet Kelana -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+            <h4 class="text-base font-bold text-slate-900 mb-3 flex items-center font-display">
+              <i class="fa-solid fa-ribbon text-red-600 mr-2"></i>
+              Anatomi Epolet Merah Kelana
+            </h4>
+            
+            <!-- Visual Simulasi Epolet -->
+            <div class="bg-slate-900 p-6 rounded-xl flex items-center justify-center my-3 border-2 border-red-900 shadow-inner">
+              <div class="w-40 h-20 bg-red-700 rounded-lg border-2 border-amber-400 shadow-xl flex items-center justify-between px-3 text-amber-300 font-bold tracking-widest relative">
+                <div class="flex flex-col items-center">
+                  <i class="fa-solid fa-fleur-de-lis text-2xl text-amber-400 drop-shadow"></i>
+                  <span class="text-[9px] text-white font-mono mt-0.5">PPM</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs font-extrabold text-amber-300 block">KELANA</span>
+                  <span class="text-[9px] text-amber-100 font-normal">ROVER</span>
+                </div>
+              </div>
+            </div>
+
+            <ul class="text-xs text-slate-600 space-y-2 mt-3">
+              <li class="flex items-start">
+                <i class="fa-solid fa-check text-emerald-600 mt-0.5 mr-2"></i>
+                <span><strong>Warna Merah Hati (Maroon):</strong> Melambangkan kematangan, keberanian menghadapi alam dewasa, dan darah pengorbanan bakti.</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fa-solid fa-check text-emerald-600 mt-0.5 mr-2"></i>
+                <span><strong>Sulaman Emas 'KELANA':</strong> Melambangkan nilai luhur dan martabat keahlian tertinggi dalam bahagian kepengakapan remaja/muda.</span>
+              </li>
+              <li class="flex items-start">
+                <i class="fa-solid fa-check text-emerald-600 mt-0.5 mr-2"></i>
+                <span><strong>Pemakaian Sepasang:</strong> Disarungkan pada kedua-dua lidah bahu (shoulder strap) baju seragam Pengakap.</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: UJI MINDA & KUIZ INTERAKTIF         -->
+    <!-- ========================================== -->
+    <div id="content-kuiz" class="tab-content hidden space-y-6 animate-fade-in">
+      
+      <div class="max-w-3xl mx-auto bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+        
+        <!-- Header Kuiz -->
+        <div class="flex items-center justify-between pb-6 border-b border-slate-200">
+          <div>
+            <div class="text-xs font-bold text-red-700 uppercase tracking-widest">Penilaian Topik 8</div>
+            <h3 class="text-xl sm:text-2xl font-bold font-display text-slate-900">Kuiz Kefahaman Istiadat Kelana</h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Uji sejauh mana penguasaan anda mengenai tatacara istiadat pelantikan.</p>
+          </div>
+          <div class="text-right">
+            <span class="text-xs text-slate-400">Soalan</span>
+            <div id="quizIndexIndicator" class="text-lg font-extrabold text-red-700">1 / 5</div>
+          </div>
+        </div>
+
+        <!-- Quiz Container Body -->
+        <div id="quizActiveBox" class="mt-6 space-y-6">
+          <div class="bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200">
+            <h4 id="quizQuestionText" class="text-base sm:text-lg font-bold text-slate-900">
+              Apakah formasi barisan yang digunakan semasa Istiadat Pelantikan Pengakap Kelana dijalankan?
+            </h4>
+          </div>
+
+          <!-- Pilihan Jawapan -->
+          <div id="quizOptionsContainer" class="space-y-3">
+            <!-- Dynamically Rendered -->
+          </div>
+
+          <!-- Feedback Box -->
+          <div id="quizFeedbackBox" class="hidden p-4 rounded-xl text-xs sm:text-sm font-medium transition-all"></div>
+
+          <!-- Footer Button Kuiz -->
+          <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+            <span id="quizScoreTracker" class="text-xs font-bold text-slate-500">Skor Semasa: 0</span>
+            <button id="btnNextQuiz" onclick="nextQuizQuestion()" disabled class="px-6 py-2.5 bg-slate-300 text-slate-500 rounded-xl font-bold text-xs transition cursor-not-allowed">
+              Soalan Seterusnya
+            </button>
+          </div>
+        </div>
+
+        <!-- Quiz Result Screen (Tersorok Mulanya) -->
+        <div id="quizResultScreen" class="hidden text-center py-8 space-y-4">
+          <div class="w-20 h-20 mx-auto rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-4xl shadow-inner animate-bounce">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+          <h4 class="text-2xl font-bold font-display text-slate-900">Tahniah! Modul Selesai</h4>
+          <p id="finalScoreMessage" class="text-slate-600 text-sm max-w-md mx-auto">
+            Anda telah berjaya menjawab kuiz kefahaman Istiadat Pelantikan Pengakap Kelana.
+          </p>
+          <div class="text-3xl font-black text-red-700" id="finalScoreGrade">
+            5 / 5
+          </div>
+          <div class="pt-4 flex justify-center gap-3">
+            <button onclick="restartQuiz()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+              <i class="fa-solid fa-rotate-right mr-1"></i> Ulang Semula Kuiz
+            </button>
+            <button onclick="cetakSijilPenyempurnaan()" class="px-6 py-2.5 bg-red-700 hover:bg-red-800 text-white rounded-xl text-xs font-bold shadow-md shadow-red-700/20 transition flex items-center">
+              <i class="fa-solid fa-certificate mr-1.5"></i> Jana Perakuan Modul
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Modal Modal Ringkasan Nota -->
+  <div id="modalNota" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 shadow-2xl space-y-4 relative">
+      <button onclick="tutupModulRingkasan()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full flex items-center justify-center bg-slate-100">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center space-x-3 border-b pb-4">
+        <div class="w-10 h-10 rounded-xl bg-red-100 text-red-700 flex items-center justify-center font-bold">
+          <i class="fa-solid fa-print"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-slate-900 font-display">Nota Ringkas: Protokol Istiadat Pelantikan</h3>
+          <p class="text-xs text-slate-500">Rujukan pantas Pemimpin & Majlis Pengakap Kelana</p>
+        </div>
+      </div>
+
+      <div class="space-y-4 text-xs text-slate-700 leading-relaxed printable-area">
+        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+          <h5 class="font-bold text-slate-900 uppercase text-[11px] mb-1">1. Tertib Acara Utama</h5>
+          <ol class="list-decimal ml-4 space-y-1">
+            <li>Krew berbaris dalam bentuk <strong>Tapak Kuda</strong> di bawah kawalan Ketua Krew.</li>
+            <li>Pemimpin Krew mengambil tempat di tengah hadapan menghadap bukaan tapak kuda.</li>
+            <li>Penaja membawa calon melangkah masuk menghadap Pemimpin (kira-kira dua langkah jarak).</li>
+            <li>Pemimpin bertanya soalan kesediaan dan peringatan tanggungjawab dewasa.</li>
+            <li>Calon membuat Hormat Pengakap dan melafazkan Persetiaan Pengakap.</li>
+            <li>Pemimpin menyarungkan sepasang epolet merah ke pundak bahu calon.</li>
+            <li>Pemimpin menyambut dengan jabat tangan kiri tradisi Pengakap: <em>"Saya mengalu-alukan kedatangan anda ke dalam Persaudaraan Kelana Sedunia."</em></li>
+            <li>Kelana baharu berpusing memberi hormat kepada seluruh ahli Krew; disambut dengan sorakan Tahniah / Tepuk Pengakap.</li>
+          </ol>
+        </div>
+
+        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+          <h5 class="font-bold text-slate-900 uppercase text-[11px] mb-1">2. Lafaz Soal Jawab Rasmi Pemimpin & Calon</h5>
+          <div class="space-y-2 mt-1">
+            <p><strong>Pemimpin:</strong> <em>"Adakah anda datang ke sini dengan kerelaan hati sendiri untuk dilantik sebagai seorang Pengakap Kelana?"</em></p>
+            <p><strong>Calon:</strong> <em>"Ya, dengan kerelaan hati saya sendiri."</em></p>
+            <p><strong>Pemimpin:</strong> <em>"Adakah anda sedar bahawa menjadi Pengakap Kelana bermakna anda bersedia untuk BERKHIDMAT kepada masyarakat dan menunaikan tanggungjawab anda sebagai seorang dewasa?"</em></p>
+            <p><strong>Calon:</strong> <em>"Ya, saya sedar dan saya bersedia."</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-4 flex justify-end space-x-2 border-t">
+        <button onclick="window.print()" class="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-print"></i> Cetak Dokumen
+        </button>
+        <button onclick="tutupModulRingkasan()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold hover:bg-slate-300 transition">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg bg-red-700 text-white flex items-center justify-center font-bold">
+          <i class="fa-solid fa-clover"></i>
+        </div>
+        <div>
+          <p class="font-bold text-slate-200">Hub Interaktif Pengakap Kelana Malaysia</p>
+          <p class="text-[11px] text-slate-500">Topik 8: Istiadat Pelantikan & Penyampaian Epolet</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-6 text-[11px]">
+        <span>Cogan Kata: <strong>"Berkhidmat"</strong></span>
+        <span>Persekutuan Pengakap Malaysia (PPM)</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================== -->
+  <!-- JAVASCRIPT LOGIC                                         -->
+  <!-- ======================================================== -->
+  <script>
+    // State Tracking
+    const appState = {
+      currentTab: 'pengenalan',
+      completedSections: new Set(),
+      simulasiIndex: 0,
+      quizIndex: 0,
+      quizScore: 0,
+      quizAnswered: false
+    };
+
+    // Data Simulasi Langkah Istiadat
+    const simulasiSteps = [
+      {
+        stepNum: 1,
+        title: "Langkah 1: Penaja Membawa Calon Menghadap Pemimpin",
+        phaseBadge: "FASA 1: PERMULAAN",
+        descHTML: `
+          <p>• <strong>Ketua Krew</strong> mengarahkan Krew berada dalam kedudukan 'Sedia' di dalam susunan <em>Tapak Kuda</em>.</p>
+          <p>• <strong>Penaja</strong> (seorang Pengakap Kelana Kanan) melangkah ke hadapan bersama <strong>Calon</strong>.</p>
+          <p>• Penaja memberi tabik hormat kepada Pemimpin Krew dan berucap: <br><span class="italic text-amber-300">"Tuan, saya membawa [Nama Calon] yang telah memenuhi syarat percubaan untuk diterima masuk ke dalam Krew kita."</span></p>
+        `,
+        calonTransform: "translateX(-20px) translateY(-5px)",
+        penajaTransform: "translateX(10px) translateY(-5px)"
+      },
+      {
+        stepNum: 2,
+        title: "Langkah 2: Soal Jawab Kesediaan & Integriti",
+        phaseBadge: "FASA 2: TEMUDUGA TERBUKA",
+        descHTML: `
+          <p>• <strong>Pemimpin Krew</strong> memandang calon dengan tenang dan memulakan dialog penilaian:</p>
+          <p>• <em>"Adakah anda berhasrat menjadi Pengakap Kelana dengan kerelaan hati sendiri?"</em> — Calon menjawab: <strong>"Ya, dengan kerelaan hati saya sendiri."</strong></p>
+          <p>• Pemimpin mengingatkan bahawa Kelana bukan lagi penerima bimbingan kanak-kanak, tetapi pemberi khidmat kepada masyarakat berlandaskan kod etika Pengakap.</p>
+        `,
+        calonTransform: "translateX(0px) translateY(-15px) scale(1.05)",
+        penajaTransform: "translateX(-15px) translateY(0px)"
+      },
+      {
+        stepNum: 3,
+        title: "Langkah 3: Mengangkat Sumpah & Melafazkan Persetiaan",
+        phaseBadge: "FASA 3: IKRAR PERSETIAAN",
+        descHTML: `
+          <p>• Pemimpin memberi arahan: <span class="text-amber-300 font-bold">"Tanda Hormat Pengakap!"</span></p>
+          <p>• Semua ahli Krew di barisan tapak kuda mengangkat tangan kanan dalam posisi <strong>Hormat Pengakap</strong> secara serentak.</p>
+          <p>• Calon memegang bucu Bendera Malaysia/Krew atau mengangkat tangan kanannya melafazkan ikrar penuh: <br><span class="italic text-amber-200">"Bahawa dengan sesungguhnya, saya berjanji dan bersetia..."</span></p>
+        `,
+        calonTransform: "translateX(0px) translateY(-25px) scale(1.1)",
+        penajaTransform: "translateX(-30px) translateY(10px)"
+      },
+      {
+        stepNum: 4,
+        title: "Langkah 4: Penyampaian & Pemasangan Epolet Merah",
+        phaseBadge: "FASA 4: PENTAULIAHAN INSIGNIA",
+        descHTML: `
+          <p>• Pemimpin Krew mengambil sepasang <strong>Epolet Kelana berwarna merah</strong> daripada meja istiadat.</p>
+          <p>• Pemimpin menyarungkan epolet ke lidah bahu kiri dan kanan uniform calon sambil berkata: <br><span class="italic text-amber-300">"Terimalah epolet ini sebagai tanda keahlian rasmi anda dalam Persaudaraan Pengakap Kelana Sedunia."</span></p>
+          <p>• Lencana keahlian atau skaf krew disempurnakan jika calon merupakan ahli baharu.</p>
+        `,
+        calonTransform: "translateX(0px) translateY(-32px) scale(1.15)",
+        penajaTransform: "translateX(-30px) translateY(10px)"
+      },
+      {
+        stepNum: 5,
+        title: "Langkah 5: Jabat Tangan Kiri & Sorakan Sambutan",
+        phaseBadge: "FASA 5: PENUTUP & KELUARGA KREW",
+        descHTML: `
+          <p>• Pemimpin Krew menghulurkan <strong>tangan kiri</strong> menjabat erat tangan kiri Kelana yang baru dilantik.</p>
+          <p>• Kelana baharu berpusing menghadap barisan krew dan memberikan Hormat Pengakap pertama sebagai seorang Pengakap Kelana.</p>
+          <p>• Ketua Krew mengetuai sorakan: <strong>"Tahniah Kelana!"</strong> atau Sorakan Pengakap (Yell). Kelana baharu mengambil tempat di dalam barisan.</p>
+        `,
+        calonTransform: "translateX(25px) translateY(10px) scale(1.0)",
+        penajaTransform: "translateX(40px) translateY(10px)"
+      }
+    ];
+
+    // Data Kuiz Interaktif Topik 8
+    const quizData = [
+      {
+        q: "Apakah formasi perbarisan rasmi yang digunakan semasa Istiadat Pelantikan Pengakap Kelana?",
+        options: [
+          "Bentuk Bulatan Tertutup",
+          "Bentuk Tapak Kuda (Horseshoe)",
+          "Bentuk Garis Lurus Berderet",
+          "Bentuk Huruf V Terbalik"
+        ],
+        correct: 1,
+        explanation: "Formasi Tapak Kuda (Horseshoe) digunakan kerana ia mengekalkan tradisi keterbukaan, membolehkan semua ahli menyaksikan istiadat secara jelas sambil membenarkan ruang laluan masuk bagi calon dan penaja."
+      },
+      {
+        q: "Apakah peranan utama 'Penaja' (Sponsor) dalam istiadat ini?",
+        options: [
+          "Membayar yuran pendaftaran bagi pihak calon",
+          "Menyediakan makanan dan minuman selepas upacara",
+          "Membawa calon ke hadapan pemimpin dan memberi sokongan terhadap kelayakan peribadi calon",
+          "Menggantikan pemimpin melafazkan Persetiaan Pengakap"
+        ],
+        correct: 2,
+        explanation: "Penaja mestilah seorang Pengakap Kelana yang bertanggungjawab membawa dan memperkenalkan calon kepada Pemimpin Krew sebagai bukti calon telah dibimbing dengan baik."
+      },
+      {
+        q: "Apakah cogan kata (motto) bagi unit Pengakap Kelana yang ditegaskan semasa ikrar?",
+        options: [
+          "Selalu Sedia (Be Prepared)",
+          "Berkhidmat (Service)",
+          "Buat Sehabis Baik (Do Your Best)",
+          "Pandang Luas (Look Wide)"
+        ],
+        correct: 1,
+        explanation: "Cogan kata bagi Pengakap Kelana adalah 'BERKHIDMAT' (Service), berbeza daripada Pengakap Kanak-kanak (Buat Habis Baik) dan Pengakap Muda/Remaja (Selalu Sedia)."
+      },
+      {
+        q: "Mengapakah Pengakap menyambut persaudaraan dengan jabat tangan kiri?",
+        options: [
+          "Tangan kanan sedang memegang tongkat pengakap",
+          "Tradisi pahlawan Afrika yang menjatuhkan perisai tanda kepercayaan penuh tanpa senjata",
+          "Kerana tangan kiri lebih kuat daripada tangan kanan",
+          "Satu-satunya syarat dalam perlembagaan Pertubuhan Bangsa-Bangsa Bersatu"
+        ],
+        correct: 1,
+        explanation: "Baden-Powell mempelajari tradisi ini daripada pahlawan Ashanti (Ketua Prempeh); dengan menjatuhkan perisai di tangan kiri, seseorang membuktikan keikhlasan dan kepercayaan mutlak kepada sahabatnya."
+      },
+      {
+        q: "Buku rujukan utama karangan Lord Baden-Powell yang menjadi panduan seorang bakal Kelana ialah:",
+        options: [
+          "Scouting for Boys",
+          "Aids to Scoutmastership",
+          "Rovering to Success",
+          "The Wolf Cub's Handbook"
+        ],
+        correct: 2,
+        explanation: "'Rovering to Success' (Mengembara Ke Arah Kejayaan) diterbitkan pada tahun 1922 khusus sebagai panduan hidup golongan muda dewasa bagi menempuhi 5 batu karang kehidupan."
+      }
+    ];
+
+    // Tab Navigation Logic
+    function switchTab(tabId) {
+      appState.currentTab = tabId;
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      const activeContent = document.getElementById(`content-${tabId}`);
+      if (activeContent) {
+        activeContent.classList.remove('hidden');
+      }
+
+      // Update Desktop Nav Style
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.classList.remove('bg-white/20', 'text-white', 'shadow-inner');
+      });
+      const activeBtn = document.getElementById(`btn-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-white/20', 'text-white');
+      }
+
+      // Update Mobile Nav Style
+      document.querySelectorAll('.mobile-tab').forEach(mBtn => {
+        mBtn.classList.remove('bg-red-800/80', 'text-white', 'font-semibold');
+        mBtn.classList.add('bg-transparent', 'text-gray-200');
+        if (mBtn.getAttribute('onclick').includes(tabId)) {
+          mBtn.classList.add('bg-red-800/80', 'text-white', 'font-semibold');
+          mBtn.classList.remove('bg-transparent', 'text-gray-200');
+        }
+      });
+
+      // Special setup on tabs
+      if (tabId === 'kuiz') {
+        renderQuizQuestion();
+      } else if (tabId === 'simulasi') {
+        renderSimulasiStep();
+      }
+
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    }
+
+    // Mark Sections as Completed & Progress Calculation
+    function markStepDone(section) {
+      appState.completedSections.add(section);
+    }
+
+    // Checklist Logic (Tab 2)
+    function updateChecklistProgress() {
+      const checkboxes = document.querySelectorAll('#checklistContainer .check-item');
+      let checkedCount = 0;
+      checkboxes.forEach(cb => {
+        if (cb.checked) checkedCount++;
+      });
+
+      const label = document.getElementById('checkStatusLabel');
+      const iconBox = document.getElementById('checkStatusIcon');
+      const btnNext = document.getElementById('btnTeruskanSimulasi');
+
+      if (label) {
+        label.innerText = `${checkedCount} daripada ${checkboxes.length} syarat dipenuhi`;
+      }
+
+      if (checkedCount === checkboxes.length) {
+        label.innerText = `Semua syarat dipenuhi! Calon Layak Dilantik`;
+        label.classList.add('text-emerald-700');
+        iconBox.className = "w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold";
+        iconBox.innerHTML = '<i class="fa-solid fa-check"></i>';
+        
+        btnNext.disabled = false;
+        btnNext.className = "px-5 py-2.5 bg-red-700 hover:bg-red-800 text-white rounded-xl text-xs font-bold transition flex items-center space-x-2 shadow-md cursor-pointer";
+
+        markStepDone('syarat');
+        triggerConfetti(0.3);
+      } else {
+        label.classList.remove('text-emerald-700');
+        iconBox.className = "w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold";
+        iconBox.innerHTML = '<i class="fa-solid fa-hourglass-half"></i>';
+
+        btnNext.disabled = true;
+        btnNext.className = "px-5 py-2.5 bg-slate-300 text-slate-500 cursor-not-allowed rounded-xl text-xs font-bold transition flex items-center space-x-2";
+      }
+    }
+
+    function resetChecklist() {
+      const checkboxes = document.querySelectorAll('#checklistContainer .check-item');
+      checkboxes.forEach(cb => cb.checked = false);
+      updateChecklistProgress();
+    }
+
+    // Simulasi Logic (Tab 3)
+    function renderSimulasiStep() {
+      const step = simulasiSteps[appState.simulasiIndex];
+      if (!step) return;
+
+      document.getElementById('stepIndicatorBadge').innerText = `Fasa ${step.stepNum} / ${simulasiSteps.length}`;
+      document.getElementById('activePhaseName').innerText = step.phaseBadge;
+      document.getElementById('phaseStepBadge').innerHTML = `<i class="fa-solid fa-bullhorn"></i> FASA ${step.stepNum}`;
+      document.getElementById('phaseTitle').innerText = step.title;
+      document.getElementById('phaseDescription').innerHTML = step.descHTML;
+
+      // Animate Visual Avatar Movements
+      const spotlight = document.getElementById('simulasiSpotlight');
+      if (spotlight) {
+        spotlight.style.transform = step.calonTransform;
+      }
+
+      // Buttons State
+      document.getElementById('btnPrevStep').disabled = (appState.simulasiIndex === 0);
+      const nextBtn = document.getElementById('btnNextStep');
+      if (appState.simulasiIndex === simulasiSteps.length - 1) {
+        nextBtn.innerHTML = `Selesai Istiadat <i class="fa-solid fa-check ml-1"></i>`;
+        nextBtn.classList.replace('bg-red-700', 'bg-emerald-700');
+        nextBtn.classList.replace('hover:bg-red-800', 'hover:bg-emerald-800');
+      } else {
+        nextBtn.innerHTML = `Seterusnya <i class="fa-solid fa-arrow-right ml-1"></i>`;
+        nextBtn.classList.replace('bg-emerald-700', 'bg-red-700');
+        nextBtn.classList.replace('hover:bg-emerald-800', 'hover:bg-red-800');
+      }
+
+      // Update Sub-button cards
+      const subButtons = document.querySelectorAll('.step-nav-btn');
+      subButtons.forEach((btn, idx) => {
+        if (idx === appState.simulasiIndex) {
+          btn.classList.add('bg-red-50', 'border-red-300');
+          btn.classList.remove('bg-white');
+        } else {
+          btn.classList.remove('bg-red-50', 'border-red-300');
+          btn.classList.add('bg-white');
+        }
+      });
+    }
+
+    function nextStep() {
+      if (appState.simulasiIndex < simulasiSteps.length - 1) {
+        appState.simulasiIndex++;
+        renderSimulasiStep();
+      } else {
+        markStepDone('simulasi');
+        switchTab('lafaz');
+      }
+    }
+
+    function prevStep() {
+      if (appState.simulasiIndex > 0) {
+        appState.simulasiIndex--;
+        renderSimulasiStep();
+      }
+    }
+
+    function setSimulasiStep(index) {
+      appState.simulasiIndex = index;
+      renderSimulasiStep();
+    }
+
+    // Interactivity Ikrar
+    function highlightIkrar(element) {
+      document.querySelectorAll('#content-lafaz .cursor-pointer').forEach(el => {
+        el.classList.remove('ring-2', 'ring-red-500', 'bg-amber-50');
+      });
+      element.classList.add('ring-2', 'ring-red-500', 'bg-amber-50');
+    }
+
+    // Kuiz Logic (Tab 5)
+    function renderQuizQuestion() {
+      const q = quizData[appState.quizIndex];
+      appState.quizAnswered = false;
+
+      document.getElementById('quizIndexIndicator').innerText = `${appState.quizIndex + 1} / ${quizData.length}`;
+      document.getElementById('quizQuestionText').innerText = q.q;
+      document.getElementById('quizScoreTracker').innerText = `Skor Semasa: ${appState.quizScore} / ${quizData.length}`;
+
+      const optionsBox = document.getElementById('quizOptionsContainer');
+      optionsBox.innerHTML = '';
+
+      const feedbackBox = document.getElementById('quizFeedbackBox');
+      feedbackBox.className = 'hidden';
+
+      const nextBtn = document.getElementById('btnNextQuiz');
+      nextBtn.disabled = true;
+      nextBtn.className = "px-6 py-2.5 bg-slate-300 text-slate-500 rounded-xl font-bold text-xs transition cursor-not-allowed";
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-4 rounded-xl border border-slate-200 hover:border-slate-400 hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-semibold transition flex items-center justify-between";
+        btn.innerHTML = `
+          <span><strong class="text-slate-400 mr-2">${String.fromCharCode(65 + idx)}.</strong> ${opt}</span>
+          <i class="fa-regular fa-circle text-slate-300"></i>
+        `;
+        btn.onclick = () => selectQuizAnswer(idx, btn);
+        optionsBox.appendChild(btn);
+      });
+    }
+
+    function selectQuizAnswer(selectedIndex, clickedBtn) {
+      if (appState.quizAnswered) return;
+      appState.quizAnswered = true;
+
+      const q = quizData[appState.quizIndex];
+      const allOptionButtons = document.querySelectorAll('#quizOptionsContainer button');
+      const feedbackBox = document.getElementById('quizFeedbackBox');
+      const nextBtn = document.getElementById('btnNextQuiz');
+
+      allOptionButtons.forEach(b => b.disabled = true);
+
+      if (selectedIndex === q.correct) {
+        appState.quizScore++;
+        clickedBtn.className = "w-full text-left p-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-950 text-xs sm:text-sm font-bold flex items-center justify-between";
+        clickedBtn.querySelector('i').className = "fa-solid fa-circle-check text-emerald-600 text-base";
+        
+        feedbackBox.className = "p-4 rounded-xl text-xs sm:text-sm font-medium bg-emerald-50 border border-emerald-200 text-emerald-900 block";
+        feedbackBox.innerHTML = `<strong>Tepat Sekali!</strong> ${q.explanation}`;
+      } else {
+        clickedBtn.className = "w-full text-left p-4 rounded-xl border-2 border-red-500 bg-red-50 text-red-950 text-xs sm:text-sm font-bold flex items-center justify-between";
+        clickedBtn.querySelector('i').className = "fa-solid fa-circle-xmark text-red-600 text-base";
+
+        // Highlight Jawapan Sebenar
+        const correctBtn = allOptionButtons[q.correct];
+        correctBtn.className = "w-full text-left p-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-950 text-xs sm:text-sm font-bold flex items-center justify-between";
+        correctBtn.querySelector('i').className = "fa-solid fa-circle-check text-emerald-600 text-base";
+
+        feedbackBox.className = "p-4 rounded-xl text-xs sm:text-sm font-medium bg-red-50 border border-red-200 text-red-900 block";
+        feedbackBox.innerHTML = `<strong>Kurang Tepat.</strong> ${q.explanation}`;
+      }
+
+      document.getElementById('quizScoreTracker').innerText = `Skor Semasa: ${appState.quizScore} / ${quizData.length}`;
+
+      nextBtn.disabled = false;
+      nextBtn.className = "px-6 py-2.5 bg-red-700 hover:bg-red-800 text-white rounded-xl font-bold text-xs transition cursor-pointer shadow-sm";
+      if (appState.quizIndex === quizData.length - 1) {
+        nextBtn.innerText = "Lihat Keputusan Akhir";
+      } else {
+        nextBtn.innerText = "Soalan Seterusnya";
+      }
+    }
+
+    function nextQuizQuestion() {
+      if (appState.quizIndex < quizData.length - 1) {
+        appState.quizIndex++;
+        renderQuizQuestion();
+      } else {
+        showQuizResults();
+      }
+    }
+
+    function showQuizResults() {
+      document.getElementById('quizActiveBox').classList.add('hidden');
+      const screen = document.getElementById('quizResultScreen');
+      screen.classList.remove('hidden');
+
+      document.getElementById('finalScoreGrade').innerText = `${appState.quizScore} / ${quizData.length}`;
+      const msg = document.getElementById('finalScoreMessage');
+
+      if (appState.quizScore === quizData.length) {
+        msg.innerText = "Cemerlang! Anda memahami dengan teliti setiap tatacara dan falsafah di sebalik Istiadat Pelantikan Kelana.";
+        triggerConfetti(0.8);
+      } else if (appState.quizScore >= 3) {
+        msg.innerText = "Tahap kefahaman anda amat baik. Anda kini bersedia untuk membantu mengendalikan istiadat krew.";
+      } else {
+        msg.innerText = "Teruskan latihan. Anda boleh mengulangi semula kuiz dan menyemak nota tatacara istiadat.";
+      }
+
+      markStepDone('kuiz');
+    }
+
+    function restartQuiz() {
+      appState.quizIndex = 0;
+      appState.quizScore = 0;
+      document.getElementById('quizResultScreen').classList.add('hidden');
+      document.getElementById('quizActiveBox').classList.remove('hidden');
+      renderQuizQuestion();
+    }
+
+    // Modal Ringkasan Nota
+    function bukaModulRingkasan() {
+      document.getElementById('modalNota').classList.remove('hidden');
+    }
+
+    function tutupModulRingkasan() {
+      document.getElementById('modalNota').classList.add('hidden');
+    }
+
+    // Sijil / Perakuan Mudah
+    function cetakSijilPenyempurnaan() {
+      window.print();
+    }
+
+    // Utility Confetti Animation
+    function triggerConfetti(intensity) {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: Math.floor(70 * intensity),
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+
+    // Initialize Default States on Window Load
+    window.onload = function() {
+      switchTab('pengenalan');
+      markStepDone('pengenalan');
+    };
+  </script>
+</body>
+</html>

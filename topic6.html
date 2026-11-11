@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hub Pembelajaran Kelana: Amalan Ajaran Agama</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .scout-red { background-color: #8b0000; }
+    .scout-green { background-color: #1b4d3e; }
+    .tab-active {
+      border-bottom: 3px solid #dc2626;
+      color: #dc2626;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- Header Banner -->
+  <header class="bg-gradient-to-r from-red-900 via-red-800 to-amber-900 text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center space-x-3">
+          <div class="bg-amber-400 p-2.5 rounded-xl text-red-900 shadow-md">
+            <i class="fa-solid fa-compass text-2xl"></i>
+          </div>
+          <div>
+            <span class="text-xs tracking-widest font-semibold uppercase text-amber-300">Skim Latihan Pengakap Kelana • Topik 6</span>
+            <h1 class="text-xl md:text-2xl font-extrabold tracking-tight">Amalan Ajaran Agama Masing-Masing</h1>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm">
+          <div class="text-right">
+            <p class="text-xs text-amber-200">Motto Kelana</p>
+            <p class="text-sm font-bold tracking-wide">"BERKHIDMAT" (Service)</p>
+          </div>
+          <div class="w-10 h-10 rounded-full bg-amber-400 text-red-900 font-black flex items-center justify-center text-sm shadow">
+            PK
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex space-x-1 sm:space-x-4 mt-4 border-t border-red-700/60 pt-2 overflow-x-auto text-sm font-medium">
+        <button onclick="switchTab('pengenalan')" id="btn-pengenalan" class="tab-btn px-4 py-2 rounded-md hover:bg-white/10 transition text-amber-300 font-bold">
+          <i class="fa-solid fa-book-open mr-1.5"></i>Pengenalan & Teras
+        </button>
+        <button onclick="switchTab('penerokaan')" id="btn-penerokaan" class="tab-btn px-4 py-2 rounded-md hover:bg-white/10 transition text-slate-200">
+          <i class="fa-solid fa-hands-praying mr-1.5"></i>Ajaran Agama
+        </button>
+        <button onclick="switchTab('dilema')" id="btn-dilema" class="tab-btn px-4 py-2 rounded-md hover:bg-white/10 transition text-slate-200">
+          <i class="fa-solid fa-scale-balanced mr-1.5"></i>Dilema Moral & Kajian Kes
+        </button>
+        <button onclick="switchTab('adab')" id="btn-adab" class="tab-btn px-4 py-2 rounded-md hover:bg-white/10 transition text-slate-200">
+          <i class="fa-solid fa-person-shelter mr-1.5"></i>Adab Ziarah & Komuniti
+        </button>
+        <button onclick="switchTab('kuiz')" id="btn-kuiz" class="tab-btn px-4 py-2 rounded-md hover:bg-white/10 transition text-slate-200">
+          <i class="fa-solid fa-circle-question mr-1.5"></i>Ujian Interaktif
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+
+    <!-- 1. TAB PENGENALAN -->
+    <section id="section-pengenalan" class="tab-content block space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-100 text-red-800 text-xs font-bold rounded-full mb-3">
+            <i class="fa-solid fa-shield-halved"></i> Prinsip Pertama Pengakap
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-snug">
+            Kewajipan Kepada Tuhan: Tonggak Jatidiri Pengakap Kelana
+          </h2>
+          <p class="mt-3 text-slate-600 leading-relaxed">
+            Sebagai Pengakap Kelana (berusia 18–26 tahun), amalan agama bukan sekadar upacara ritual, tetapi asas integriti kepemimpinan, kompas etika dalam membuat keputusan dewasa, serta benteng persaudaraan sejagat merentas budaya dan latar belakang.
+          </p>
+        </div>
+
+        <!-- 3 Tiang Utama Persetiaan -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          <div class="bg-amber-50/70 border border-amber-200/80 rounded-xl p-5 hover:shadow-md transition">
+            <div class="w-10 h-10 rounded-lg bg-amber-600 text-white flex items-center justify-center font-bold mb-3">
+              <i class="fa-solid fa-heart"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 mb-1">Ketaatan & Penghayatan</h3>
+            <p class="text-sm text-slate-600">
+              Melaksanakan perintah agama masing-masing secara ikhlas dan mendalam, mengelakkan kemungkaran dan membentuk akhlak terpuji.
+            </p>
+          </div>
+
+          <div class="bg-red-50/70 border border-red-200/80 rounded-xl p-5 hover:shadow-md transition">
+            <div class="w-10 h-10 rounded-lg bg-red-600 text-white flex items-center justify-center font-bold mb-3">
+              <i class="fa-solid fa-handshake-angle"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 mb-1">Khidmat Tanpa Diskriminasi</h3>
+            <p class="text-sm text-slate-600">
+              Menghayati moto <em>"Berkhidmat"</em> kepada masyarakat majmuk tanpa mengira kaum, warna kulit, atau pegangan agama.
+            </p>
+          </div>
+
+          <div class="bg-blue-50/70 border border-blue-200/80 rounded-xl p-5 hover:shadow-md transition">
+            <div class="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold mb-3">
+              <i class="fa-solid fa-users-rays"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 mb-1">Persaudaraan Sejagat</h3>
+            <p class="text-sm text-slate-600">
+              Mewujudkan persefahaman dan toleransi tinggi, mengiktiraf bahawa setiap agama menyeru kepada keamanan, kasih sayang, dan kebaikan.
+            </p>
+          </div>
+        </div>
+
+        <!-- Kutipan Robert Baden-Powell -->
+        <div class="mt-8 bg-slate-900 text-white p-6 rounded-xl relative overflow-hidden">
+          <div class="absolute right-0 bottom-0 text-slate-800 text-8xl -mb-6 -mr-4 pointer-events-none opacity-40 font-serif">“</div>
+          <p class="text-base sm:text-lg italic font-light relative z-10">
+            "No man is much good unless he believes in God and obeys His laws. So every Scout should have a religion... Religion seems a very simple thing: First, love and serve God. Second, love and serve your neighbour."
+          </p>
+          <p class="mt-3 text-xs sm:text-sm font-semibold text-amber-400">— Lord Baden-Powell of Gilwell (Pengasas Pengakap)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. TAB PENEROKAAN AJARAN AGAMA -->
+    <section id="section-penerokaan" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div>
+          <h2 class="text-2xl font-black text-slate-900">Meneroka Teras Nilai Agama di Malaysia</h2>
+          <p class="text-slate-600 text-sm mt-1">Pilih agama untuk meneliti ajaran moral, prinsip kemanusiaan, dan hubung kait dengan disiplin Pengakap Kelana.</p>
+        </div>
+
+        <!-- Buttons Switcher -->
+        <div class="flex flex-wrap gap-2 mt-6">
+          <button onclick="showReligion('islam')" id="rel-btn-islam" class="rel-btn px-4 py-2 rounded-lg font-semibold text-sm bg-emerald-700 text-white shadow-sm">
+            Islam
+          </button>
+          <button onclick="showReligion('kristian')" id="rel-btn-kristian" class="rel-btn px-4 py-2 rounded-lg font-semibold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200">
+            Kristian
+          </button>
+          <button onclick="showReligion('buddha')" id="rel-btn-buddha" class="rel-btn px-4 py-2 rounded-lg font-semibold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200">
+            Buddha
+          </button>
+          <button onclick="showReligion('hindu')" id="rel-btn-hindu" class="rel-btn px-4 py-2 rounded-lg font-semibold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200">
+            Hindu
+          </button>
+          <button onclick="showReligion('sikh')" id="rel-btn-sikh" class="rel-btn px-4 py-2 rounded-lg font-semibold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200">
+            Sikhisme
+          </button>
+        </div>
+
+        <!-- Religion Details Display -->
+        <div id="religion-content" class="mt-6 p-6 rounded-xl bg-slate-50 border border-slate-200">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. TAB DILEMA MORAL & KAJIAN KES -->
+    <section id="section-dilema" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div>
+          <span class="text-xs font-bold text-red-600 uppercase tracking-widest">Kepimpinan Beretika</span>
+          <h2 class="text-2xl font-black text-slate-900 mt-1">Simulasi Dilema Moral Pengakap Kelana</h2>
+          <p class="text-slate-600 text-sm mt-1">Sebagai pemimpin muda, uji bagaimana anda mengimbangi tanggungjawab agama, penghormatan kepada rakan sejawat, dan misi kemasyarakatan.</p>
+        </div>
+
+        <div id="dilemma-box" class="mt-6 bg-slate-50 p-6 rounded-xl border border-slate-200">
+          <div class="flex items-center gap-2 text-xs font-bold px-3 py-1 bg-amber-100 text-amber-900 rounded-md inline-block w-max">
+            <span id="dilemma-index">Senario 1 daripada 3</span>
+          </div>
+          <h3 id="dilemma-title" class="text-lg font-bold text-slate-900 mt-3"></h3>
+          <p id="dilemma-desc" class="text-slate-700 text-sm mt-2 leading-relaxed"></p>
+
+          <div class="mt-5 space-y-3" id="dilemma-options">
+            <!-- Pilihan Jawapan Dimuatkan Melalui JS -->
+          </div>
+
+          <div id="dilemma-feedback" class="mt-5 hidden p-4 rounded-xl text-sm leading-relaxed"></div>
+
+          <div class="mt-6 flex justify-between items-center pt-4 border-t border-slate-200">
+            <button id="prev-dilemma-btn" onclick="prevDilemma()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 rounded-lg text-xs font-bold text-slate-700 transition">
+              <i class="fa-solid fa-chevron-left mr-1"></i> Sebelumnya
+            </button>
+            <button id="next-dilemma-btn" onclick="nextDilemma()" class="px-4 py-2 bg-red-800 hover:bg-red-900 rounded-lg text-xs font-bold text-white transition">
+              Seterusnya <i class="fa-solid fa-chevron-right ml-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. TAB ADAB ZIARAH & KOMUNITI -->
+    <section id="section-adab" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div>
+          <h2 class="text-2xl font-black text-slate-900">Protokol & Etika Lawatan Rumah Ibadat</h2>
+          <p class="text-slate-600 text-sm mt-1">Panduan praktikal Pengakap Kelana semasa mengendalikan program khidmat komuniti, ekspedisi lencana kemasyarakatan, atau lawatan muhibah.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+          <!-- Kad Masjid -->
+          <div class="border border-slate-200 rounded-xl p-5 bg-gradient-to-br from-emerald-50/50 to-white hover:border-emerald-500 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-bold">
+                <i class="fa-solid fa-mosque"></i>
+              </div>
+              <h3 class="font-bold text-slate-900">Masjid & Surau</h3>
+            </div>
+            <ul class="mt-4 space-y-2 text-xs text-slate-600">
+              <li><i class="fa-solid fa-check text-emerald-600 mr-2"></i><strong>Pakaian:</strong> Sopan, menutup aurat (lelaki berseluar panjang; wanita berbaju longgar dan bertudung/selendang).</li>
+              <li><i class="fa-solid fa-check text-emerald-600 mr-2"></i><strong>Kebersihan:</strong> Buka kasut di luar ruang solat; pastikan kaki bersih dan kering.</li>
+              <li><i class="fa-solid fa-check text-emerald-600 mr-2"></i><strong>Adab Solat:</strong> Jangan melintas di hadapan orang yang sedang menunaikan solat. Senyapkan telefon.</li>
+            </ul>
+          </div>
+
+          <!-- Kad Kuil Hindu -->
+          <div class="border border-slate-200 rounded-xl p-5 bg-gradient-to-br from-amber-50/50 to-white hover:border-amber-500 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-amber-600 text-white flex items-center justify-center font-bold">
+                <i class="fa-solid fa-om"></i>
+              </div>
+              <h3 class="font-bold text-slate-900">Kuil Hindu</h3>
+            </div>
+            <ul class="mt-4 space-y-2 text-xs text-slate-600">
+              <li><i class="fa-solid fa-check text-amber-600 mr-2"></i><strong>Pakaian:</strong> Bersopan, elakkan pakaian terdedah bahu atau lutut; tanggalkan kasut di luar.</li>
+              <li><i class="fa-solid fa-check text-amber-600 mr-2"></i><strong>Pantang:</strong> Elakkan membawa atau memakan produk berasaskan daging lembu/alkohol.</li>
+              <li><i class="fa-solid fa-check text-amber-600 mr-2"></i><strong>Penghormatan:</strong> Jangan menyentuh patung atau mezbah pemujaan tanpa izin sami.</li>
+            </ul>
+          </div>
+
+          <!-- Kad Tokong Buddha -->
+          <div class="border border-slate-200 rounded-xl p-5 bg-gradient-to-br from-yellow-50/50 to-white hover:border-yellow-500 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-yellow-600 text-white flex items-center justify-center font-bold">
+                <i class="fa-solid fa-dharmachakra"></i>
+              </div>
+              <h3 class="font-bold text-slate-900">Tokong Buddha</h3>
+            </div>
+            <ul class="mt-4 space-y-2 text-xs text-slate-600">
+              <li><i class="fa-solid fa-check text-yellow-600 mr-2"></i><strong>Pakaian:</strong> Pakaian ringkas, tidak mencolok mata; tanggalkan topi dan kasut di dewan utama.</li>
+              <li><i class="fa-solid fa-check text-yellow-600 mr-2"></i><strong>Ketenteraman:</strong> Kekalkan ketenangan minda, elakkan suara lantang ketika penganut sedang bertafakur.</li>
+              <li><i class="fa-solid fa-check text-yellow-600 mr-2"></i><strong>Adab Duduk:</strong> Jangan menghalakan tapak kaki terus ke arah patung Buddha atau sami.</li>
+            </ul>
+          </div>
+
+          <!-- Kad Gereja Kristian -->
+          <div class="border border-slate-200 rounded-xl p-5 bg-gradient-to-br from-blue-50/50 to-white hover:border-blue-500 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-blue-700 text-white flex items-center justify-center font-bold">
+                <i class="fa-solid fa-church"></i>
+              </div>
+              <h3 class="font-bold text-slate-900">Gereja Kristian</h3>
+            </div>
+            <ul class="mt-4 space-y-2 text-xs text-slate-600">
+              <li><i class="fa-solid fa-check text-blue-600 mr-2"></i><strong>Pakaian:</strong> Kemas (kemeja, seluar panjang/gaun sopan). Kasut biasanya dibenarkan dipakai kecuali dinyatakan sebaliknya.</li>
+              <li><i class="fa-solid fa-check text-blue-600 mr-2"></i><strong>Upacara Perjamuan:</strong> Hormati jika upacara Komuni Kudus diadakan; hanya yang dibaptis mengambil bahagian.</li>
+              <li><i class="fa-solid fa-check text-blue-600 mr-2"></i><strong>Fotografi:</strong> Dapatkan kebenaran paderi atau petugas sebelum mengambil gambar semasa liturgi.</li>
+            </ul>
+          </div>
+
+          <!-- Kad Gurdwara Sikh -->
+          <div class="border border-slate-200 rounded-xl p-5 bg-gradient-to-br from-orange-50/50 to-white hover:border-orange-500 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-orange-600 text-white flex items-center justify-center font-bold">
+                <i class="fa-solid fa-khanda"></i>
+              </div>
+              <h3 class="font-bold text-slate-900">Gurdwara Sikh</h3>
+            </div>
+            <ul class="mt-4 space-y-2 text-xs text-slate-600">
+              <li><i class="fa-solid fa-check text-orange-600 mr-2"></i><strong>Tutup Kepala:</strong> Wajib menutup kepala (kain rumal disediakan) bagi lelaki dan wanita.</li>
+              <li><i class="fa-solid fa-check text-orange-600 mr-2"></i><strong>Tanggalkan Kasut:</strong> Cuci kaki dan tangan di tempat khas sebelum melangkah masuk.</li>
+              <li><i class="fa-solid fa-check text-orange-600 mr-2"></i><strong>Langar (Dapur Komuniti):</strong> Makanan vegetarian percuma disediakan untuk semua tanpa memandang darjat.</li>
+            </ul>
+          </div>
+
+          <!-- Kad Ringkasan Kelana -->
+          <div class="border border-red-300 rounded-xl p-5 bg-red-900 text-white flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-2 text-amber-300 font-bold text-sm">
+                <i class="fa-solid fa-lightbulb"></i> Petua Khidmat Kelana
+              </div>
+              <p class="text-xs text-red-100 mt-3 leading-relaxed">
+                "Hormatilah rumah ibadat orang lain sebagaimana anda mahukan rumah ibadat anda dihormati. Keikhlasan seorang Pengakap terpancar daripada kerendahan hati dan kesediaannya memahami perbezaan."
+              </p>
+            </div>
+            <div class="text-[11px] text-amber-300/80 font-mono mt-4 pt-3 border-t border-red-800">
+              Prinsip: Saling Menghormati & Harmoni
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. TAB KUIZ INTERAKTIF -->
+    <section id="section-kuiz" class="tab-content hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 max-w-3xl mx-auto">
+        <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+          <div>
+            <h2 class="text-2xl font-black text-slate-900">Ujian Pengetahuan & Penghayatan</h2>
+            <p class="text-slate-600 text-xs mt-1">Uji pemahaman anda berkenaan topik amalan agama bagi Pengakap Kelana.</p>
+          </div>
+          <div class="text-right">
+            <span class="text-xs text-slate-400 font-bold uppercase">Skor</span>
+            <p id="quiz-score" class="text-2xl font-black text-red-700">0 / 5</p>
+          </div>
+        </div>
+
+        <div id="quiz-box" class="mt-6">
+          <div class="flex justify-between items-center text-xs font-semibold text-slate-500 mb-2">
+            <span id="quiz-progress">Soalan 1 daripada 5</span>
+            <span id="quiz-category" class="bg-slate-100 px-2 py-0.5 rounded text-slate-700">Pengetahuan Amalan</span>
+          </div>
+
+          <h3 id="quiz-question" class="text-base sm:text-lg font-bold text-slate-800 leading-snug">
+            <!-- Soalan -->
+          </h3>
+
+          <div id="quiz-options" class="mt-5 space-y-3">
+            <!-- Pilihan Jawapan -->
+          </div>
+
+          <div id="quiz-explanation" class="mt-5 p-4 rounded-xl text-xs sm:text-sm hidden leading-relaxed">
+            <!-- Penjelasan -->
+          </div>
+
+          <div class="mt-6 flex justify-end">
+            <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden px-5 py-2.5 bg-red-800 text-white text-xs font-bold rounded-lg hover:bg-red-900 transition">
+              Soalan Seterusnya <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+            <button id="quiz-restart-btn" onclick="restartQuiz()" class="hidden px-5 py-2.5 bg-slate-800 text-white text-xs font-bold rounded-lg hover:bg-slate-900 transition">
+              Ulang Semula Kuiz <i class="fa-solid fa-rotate-right ml-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+      <p class="font-semibold text-slate-300">Hub Pembelajaran Maya Skim Latihan Pengakap Kelana Malaysia</p>
+      <p>Topik 6: Amalan Ajaran Agama Masing-Masing • Membina Sahsiah dan Semangat Muhibah Belia Madani</p>
+      <p class="text-slate-500 text-[11px]">Disediakan untuk rujukan Pemimpin, Penolong Pemimpin, dan Ahli Pengakap Kelana di seluruh Malaysia.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Data Agama
+    const religionData = {
+      islam: {
+        name: "Islam",
+        color: "emerald",
+        badge: "Teras: Tauhid & Ihsan",
+        core: "Menyerah diri kepada Allah SWT, melaksanakan Rukun Islam & Rukun Iman, serta menyemai akhlak mulia menerusi konsep Ihsan dan Rahmatan lil 'Alamin (rahmat untuk sekalian alam).",
+        scoutConnection: "Bagi Pengakap Kelana Muslim, prinsip 'Kewajipan kepada Tuhan' diterjemahkan melalui solat tepat waktu (termasuk solat musafir/jamak semasa berkhemah), amanah dalam wang krew, dan khidmat ikhlas lillahi Ta'ala.",
+        keyPractices: [
+          "Solat Fardu 5 waktu & Solat Jumaat berjemaah.",
+          "Puasa di bulan Ramadan & mengeluarkan Zakat bagi membersihkan harta.",
+          "Menjaga batas pergaulan, kebersihan fizikal serta kesucian hati.",
+          "Menghormati hak jiran dan rakan bukan Muslim seperti yang termaktub dalam Piagam Madinah."
+        ]
+      },
+      kristian: {
+        name: "Kristian",
+        color: "blue",
+        badge: "Teras: Kasih & Penebusan",
+        core: "Beriman kepada Tuhan Yang Maha Esa dan ajaran Yesus Kristus, berpusat kepada perintah terbesar: Mengasihi Tuhan dengan sepenuh hati dan mengasihi sesama manusia seperti diri sendiri.",
+        scoutConnection: "Kelana beragama Kristian menterjemahkan amalan melalui semangat pengorbanan ('Servant Leadership'), belas kasihan kepada golongan miskin, serta bersikap jujur dan boleh dipercayai dalam organisasi.",
+        keyPractices: [
+          "Menghadiri kebaktian ibadat pada hari Ahad di Gereja.",
+          "Membaca dan merenungi Kitab Suci (Alkitab / Bible).",
+          "Melakukan perbuatan kebajikan (charity) dan menjadi pendamai ('peacemaker').",
+          "Berdoa secara peribadi bagi memohon bimbingan Roh Kudus dalam membuat keputusan hidup."
+        ]
+      },
+      buddha: {
+        name: "Buddha",
+        color: "yellow",
+        badge: "Teras: Empat Kebenaran Mulia & Jalan Lapan Lapis",
+        core: "Mencapai ketenangan dan pembebasan daripada penderitaan menerusi kebijaksanaan (Panna), moral (Sila), dan meditasi/penumpuan minda (Samadhi).",
+        scoutConnection: "Nilai belas kasihan sejagat (Karuna) dan kasih sayang tulen (Metta) mendorong Pengakap Kelana Buddha memelihara alam sekitar, tidak menyakiti hidupan, dan mengamalkan kesederhanaan semasa aktiviti lasak.",
+        keyPractices: [
+          "Mematuhi Lima Sila (Pancasila) termasuk tidak membunuh, tidak mencuri, dan tidak berbohong.",
+          "Melakukan meditasi (Vipassana / Samatha) untuk mengawal emosi dan fikiran.",
+          "Menghulurkan 'Dana' (sedekah dan sokongan kepada sami atau masyarakat).",
+          "Menyambut Hari Wesak sebagai peringatan kelahiran, pencerahan, dan pemergian Buddha."
+        ]
+      },
+      hindu: {
+        name: "Hindu",
+        color: "amber",
+        badge: "Teras: Dharma & Karma",
+        core: "Menjalani hidup mengikut kebenaran dan tanggungjawab moral (Dharma), mempercayai hukum sebab dan akibat tindakan (Karma), serta matlamat penyatuan rohani (Moksha).",
+        scoutConnection: "Bagi Pengakap Kelana Hindu, konsep 'Seva' (khidmat tanpa mementingkan diri) amat serasi dengan moto Berkhidmat. Setiap tindakan kepengakapan dipandang sebagai ibadah tanpa mengharapkan pujian semata-mata.",
+        keyPractices: [
+          "Melakukan Puja (sembahyang harian) di kuil atau altar rumah.",
+          "Mengamalkan 'Ahimsa' (sikap tidak melakukan keganasan terhadap semua makhluk).",
+          "Melaksanakan kewajipan Seva (khidmat sukarela kepada masyarakat yang memerlukan).",
+          "Meraikan perayaan seperti Deepavali dan Thaipusam dengan kesyukuran dan penyucian diri."
+        ]
+      },
+      sikh: {
+        name: "Sikhisme",
+        color: "orange",
+        badge: "Teras: Naam Japna, Kirat Karo, Vand Chhako",
+        core: "Mengingati Tuhan yang Satu (Waheguru), bekerja keras secara jujur, dan berkongsi rezeki dengan insan yang memerlukan tanpa membezakan kasta atau kaum.",
+        scoutConnection: "Pengakap Kelana Sikh mempamerkan disiplin ksatria (Sant-Sipahi), ketabahan mental dan keberanian moral, serta mengutamakan kebajikan orang lain mendahului diri sendiri dalam sebarang ekspedisi.",
+        keyPractices: [
+          "Sentiasa mengingati nama Tuhan (Naam Japna) dalam apa jua keadaan.",
+          "Bekerja dan memperoleh pendapatan melalui cara yang halal dan beretika (Kirat Karo).",
+          "Berkongsi kekayaan dan makanan melalui tradisi dapur terbuka komuniti (Vand Chhako / Langar).",
+          "Memelihara identiti diri dengan disiplin dan integriti peribadi yang teguh."
+        ]
+      }
+    };
+
+    // Fungsi Render Agama
+    function showReligion(key) {
+      const data = religionData[key];
+      const container = document.getElementById('religion-content');
+
+      // Update button styles
+      document.querySelectorAll('.rel-btn').forEach(btn => {
+        btn.className = 'rel-btn px-4 py-2 rounded-lg font-semibold text-sm bg-slate-100 text-slate-700 hover:bg-slate-200';
+      });
+      document.getElementById('rel-btn-' + key).className = 'rel-btn px-4 py-2 rounded-lg font-semibold text-sm bg-red-800 text-white shadow-sm';
+
+      let practicesHTML = data.keyPractices.map(item => `
+        <li class="flex items-start gap-2">
+          <i class="fa-solid fa-circle-check text-red-600 mt-1 text-xs"></i>
+          <span>${item}</span>
+        </li>
+      `).join('');
+
+      container.innerHTML = `
+        <div class="border-b border-slate-200 pb-3 mb-4 flex flex-wrap justify-between items-center gap-2">
+          <h3 class="text-xl font-bold text-slate-900">${data.name}</h3>
+          <span class="text-xs font-bold px-3 py-1 bg-red-100 text-red-800 rounded-full">${data.badge}</span>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Teras Ajaran</h4>
+            <p class="text-sm text-slate-700 mt-1 leading-relaxed">${data.core}</p>
+          </div>
+
+          <div class="p-4 bg-white rounded-lg border border-slate-200 shadow-sm">
+            <h4 class="text-xs font-bold text-red-800 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-compass"></i> Aplikasi Terhadap Pengakap Kelana
+            </h4>
+            <p class="text-sm text-slate-700 mt-1.5 leading-relaxed">${data.scoutConnection}</p>
+          </div>
+
+          <div>
+            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Amalan & Disiplin Utama</h4>
+            <ul class="text-sm text-slate-700 space-y-2">
+              ${practicesHTML}
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    // Data Dilema Moral
+    const dilemmas = [
+      {
+        title: "Perkhemahan Ekspedisi & Waktu Ibadat",
+        desc: "Krew Kelana anda sedang mendaki gunung untuk Penilaian Lencana Pengakap Kelana. Jadual pendakian sangat padat bagi mengelakkan cuaca petang gelap. Beberapa orang ahli Muslim meminta rehat 25 minit untuk solat Jamak Zohor-Asar, manakala sebahagian ahli lain bimbang tidak sempat tiba di tapak perkhemahan sebelum hujan lebat.",
+        options: [
+          {
+            text: "A. Menolak permintaan mereka dan menyuruh mereka solat selepas sampai di puncak walaupun lewat waktu.",
+            correct: false,
+            rationale: "Tindakan ini melanggar Prinsip Pertama Pengakap: 'Kewajipan kepada Tuhan'. Memaksa ahli mengabaikan waktu solat bertentangan dengan semangat kepengakapan."
+          },
+          {
+            text: "B. Berbincang secara tenang, menyusun hentian strategik selama 15-20 minit berhampiran punca air untuk solat, sementara ahli lain memeriksa kelengkapan kecemasan.",
+            correct: true,
+            rationale: "Tepat! Pemimpin Kelana mengutamakan keseimbangan antara keselamatan fizikal dan tanggungjawab spiritual dengan pengurusan masa berdisiplin."
+          },
+          {
+            text: "C. Membiarkan ahli Muslim tinggal di belakang secara bersendirian untuk solat tanpa pengawasan.",
+            correct: false,
+            rationale: "Ini membahayakan keselamatan krew dalam pendakian dan melanggar peraturan kerja berpasukan Pengakap."
+          }
+        ]
+      },
+      {
+        title: "Menu Makanan Program Kemasyarakatan Muhibah",
+        desc: "Krew Kelana anda menjadi tuan rumah bagi program komuniti belia yang melibatkan ahli daripada pelbagai agama dan kaum. Jawatankuasa penganjur bercadang memesan makanan daripada satu pembekal murah tanpa mengesahkan status Halal dan pilihan Vegetarian.",
+        options: [
+          {
+            text: "A. Mengabaikan sensitiviti kerana ingin menjimatkan kos dana krew.",
+            correct: false,
+            rationale: "Tidak wajar. Kelana mesti memelihara sensitiviti amalan pemakanan semua ahli masyarakat demi menjaga keharmonian."
+          },
+          {
+            text: "B. Memastikan pembekal makanan mempunyai pensijilan Halal yang sah serta menyediakan menu vegetarian yang berasingan untuk penganut Buddha/Hindu.",
+            correct: true,
+            rationale: "Terbaik! Ini melambangkan penghormatan tinggi terhadap hukum agama dan diet setiap individu tanpa diskriminasi."
+          },
+          {
+            text: "C. Meminta peserta bukan Muslim dan yang memerlukan makanan khas membeli makanan mereka sendiri di luar dewan.",
+            correct: false,
+            rationale: "Ini mewujudkan jurang perpecahan dan menafikan semangat layanan mesra (hospitality) kepengakapan."
+          }
+        ]
+      },
+      {
+        title: "Khidmat Bencana Banjir di Rumah Ibadat",
+        desc: "Banjir besar telah merosakkan sebuah kawasan perkampungan termasuk sebuah tokong lama dan surau. Krew Kelana anda dikerahkan untuk membersihkan kedua-dua tempat tersebut. Terdapat seorang ahli yang berasa ragu-ragu untuk membantu mencuci lumpur di pekarangan rumah ibadat agama lain.",
+        options: [
+          {
+            text: "A. Mengkritik dan menyingkirkan ahli tersebut daripada krew serta-merta.",
+            correct: false,
+            rationale: "Tindakan terburu-buru tanpa bimbingan dan penjelasan adab kepemimpinan tidak mencerminkan jiwa Kelana."
+          },
+          {
+            text: "B. Menjelaskan bahawa membantu membersihkan kawasan kemudahan komuniti (di luar ruang ritual suci) adalah amal kemanusiaan yang selaras dengan nilai semua agama, atau memberikan tugasan alternatif seperti agihan bantuan.",
+            correct: true,
+            rationale: "Sangat matang. Pendekatan ini mendidik ahli mengenai batasan bantuan kemanusiaan sambil menghormati keselesaan pegangan peribadinya."
+          },
+          {
+            text: "C. Membatalkan bantuan kepada rumah ibadat tersebut dan hanya fokus pada rumah persendirian.",
+            correct: false,
+            rationale: "Khidmat Pengakap Kelana berfokus kepada keperluan komuniti secara adil dan menyeluruh."
+          }
+        ]
+      }
+    ];
+
+    let currentDilemma = 0;
+
+    function renderDilemma() {
+      const item = dilemmas[currentDilemma];
+      document.getElementById('dilemma-index').innerText = `Senario ${currentDilemma + 1} daripada ${dilemmas.length}`;
+      document.getElementById('dilemma-title').innerText = item.title;
+      document.getElementById('dilemma-desc').innerText = item.desc;
+
+      const optsContainer = document.getElementById('dilemma-options');
+      optsContainer.innerHTML = '';
+
+      const feedbackBox = document.getElementById('dilemma-feedback');
+      feedbackBox.className = 'mt-5 hidden p-4 rounded-xl text-sm leading-relaxed';
+
+      item.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs sm:text-sm font-medium hover:bg-slate-100 transition flex items-start gap-2 bg-white';
+        btn.innerHTML = `<span class="font-bold">${opt.text.substring(0, 2)}</span> <span>${opt.text.substring(3)}</span>`;
+        btn.onclick = () => checkDilemma(idx);
+        optsContainer.appendChild(btn);
+      });
+
+      document.getElementById('prev-dilemma-btn').disabled = currentDilemma === 0;
+      document.getElementById('prev-dilemma-btn').style.opacity = currentDilemma === 0 ? '0.4' : '1';
+    }
+
+    function checkDilemma(choiceIdx) {
+      const item = dilemmas[currentDilemma];
+      const selected = item.options[choiceIdx];
+      const feedbackBox = document.getElementById('dilemma-feedback');
+
+      feedbackBox.classList.remove('hidden');
+      if (selected.correct) {
+        feedbackBox.className = 'mt-5 p-4 rounded-xl text-xs sm:text-sm leading-relaxed bg-emerald-50 text-emerald-900 border border-emerald-200';
+        feedbackBox.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Keputusan Tepat:</strong> ${selected.rationale}`;
+      } else {
+        feedbackBox.className = 'mt-5 p-4 rounded-xl text-xs sm:text-sm leading-relaxed bg-rose-50 text-rose-900 border border-rose-200';
+        feedbackBox.innerHTML = `<strong><i class="fa-solid fa-triangle-exclamation"></i> Kurang Tepat:</strong> ${selected.rationale}`;
+      }
+    }
+
+    function nextDilemma() {
+      if (currentDilemma < dilemmas.length - 1) {
+        currentDilemma++;
+        renderDilemma();
+      } else {
+        currentDilemma = 0;
+        renderDilemma();
+      }
+    }
+
+    function prevDilemma() {
+      if (currentDilemma > 0) {
+        currentDilemma--;
+        renderDilemma();
+      }
+    }
+
+    // Data Kuiz Interaktif
+    const quizData = [
+      {
+        q: "Apakah maksud teras 'Kewajipan kepada Tuhan' dalam Persetiaan Pengakap bagi peringkat Kelana?",
+        category: "Persetiaan Pengakap",
+        options: [
+          "Hanya melibatkan kehadiran ritual tanpa mengira etika harian",
+          "Menghayati hukum agama sendiri secara ikhlas dan menterjemahkannya dalam akhlak serta khidmat kepada masyarakat",
+          "Memaksa ahli lain menyertai upacara keagamaan kita",
+          "Mengehadkan khidmat bantuan hanya kepada rakan seiman"
+        ],
+        answer: 1,
+        exp: "Kewajipan kepada Tuhan menuntut Pengakap Kelana memiliki pegangan rohani yang kukuh, berintegriti tinggi, dan sentiasa bersedia menabur bakti sesama insan."
+      },
+      {
+        q: "Semasa mengadakan program khidmat masyarakat di sebuah Gurdwara Sikh, apakah peraturan adab yang wajib dipatuhi sebelum memasuki ruang ibadat?",
+        category: "Protokol Rumah Ibadat",
+        options: [
+          "Menutup kepala (dengan kain/rumal) dan menanggalkan kasut",
+          "Memakai pakaian berwarna merah gelap sahaja",
+          "Membawa loceng upacara",
+          "Berpuasa sehari sebelumnya"
+        ],
+        answer: 0,
+        exp: "Di Gurdwara Sikh, semua pengunjung diwajibkan menutup kepala dan menanggalkan kasut bagi memelihara kesucian dan rasa hormat."
+      },
+      {
+        q: "Konsep 'Seva' dalam ajaran agama Hindu membawa maksud:",
+        category: "Konsep Agama",
+        options: [
+          "Pertandingan kekuatan fizikal",
+          "Khidmat sukarela tanpa mementingkan diri sendiri",
+          "Penebusan denda harta",
+          "Kemahiran membina gajet kayu"
+        ],
+        answer: 1,
+        exp: "'Seva' adalah nilai khidmat sukarela yang ikhlas untuk kebaikan sejagat, selari dengan moto Kelana 'Berkhidmat'."
+      },
+      {
+        q: "Bagaimanakah seorang Ketua Krew Kelana patut menguruskan jadual aktiviti ekspedisi pada hari Jumaat?",
+        category: "Kepimpinan Kelana",
+        options: [
+          "Meneruskan aktiviti tanpa henti agar jadual tidak terjejas",
+          "Menyusun perancangan laluan yang membolehkan ahli Muslim menunaikan Solat Jumaat di masjid berdekatan",
+          "Menggantikan solat Jumaat dengan senaman ringan",
+          "Menyerahkan kepada ahli untuk mencari jalan sendiri semasa waktu solat"
+        ],
+        answer: 1,
+        exp: "Pemimpin yang cekap merancang logistik aktiviti dengan mengambil kira kewajipan ibadat ahli agar rohani dan fizikal seimbang."
+      },
+      {
+        q: "Dalam ajaran Kristian, prinsip 'Kasihilah sesama manusia seperti dirimu sendiri' menjadi dorongan kuat kepada Pengakap Kelana untuk:",
+        category: "Nilai Kasih Sayang",
+        options: [
+          "Membantu mereka yang dalam kesusahan tanpa mengira latar belakang dan prejudis",
+          "Mencari ganjaran pujian di media sosial",
+          "Mengasingkan diri daripada komuniti luar",
+          "Mengutamakan kepentingan peribadi dalam sebarang projek"
+        ],
+        answer: 0,
+        exp: "Ajaran cinta kasih (Agape) melatih jiwa belia untuk sentiasa berempati dan bertindak membantu sesiapa sahaja yang memerlukan pertolongan."
+      }
+    ];
+
+    let currentQuizIdx = 0;
+    let quizScore = 0;
+    let quizAnswered = false;
+
+    function renderQuiz() {
+      const q = quizData[currentQuizIdx];
+      document.getElementById('quiz-progress').innerText = `Soalan ${currentQuizIdx + 1} daripada ${quizData.length}`;
+      document.getElementById('quiz-category').innerText = q.category;
+      document.getElementById('quiz-question').innerText = q.q;
+
+      const optsContainer = document.getElementById('quiz-options');
+      optsContainer.innerHTML = '';
+
+      const expBox = document.getElementById('quiz-explanation');
+      expBox.classList.add('hidden');
+      document.getElementById('quiz-next-btn').classList.add('hidden');
+      document.getElementById('quiz-restart-btn').classList.add('hidden');
+      quizAnswered = false;
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.id = `quiz-opt-${idx}`;
+        btn.className = 'w-full text-left p-3.5 rounded-lg border border-slate-200 text-xs sm:text-sm font-medium hover:bg-slate-50 transition flex items-center justify-between bg-white';
+        btn.innerHTML = `<span>${opt}</span><i class="fa-regular fa-circle text-slate-300"></i>`;
+        btn.onclick = () => selectQuizAnswer(idx);
+        optsContainer.appendChild(btn);
+      });
+    }
+
+    function selectQuizAnswer(selectedIdx) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+
+      const q = quizData[currentQuizIdx];
+      const isCorrect = selectedIdx === q.answer;
+      const expBox = document.getElementById('quiz-explanation');
+
+      if (isCorrect) {
+        quizScore++;
+        document.getElementById('quiz-score').innerText = `${quizScore} / ${quizData.length}`;
+      }
+
+      // Format pilihan
+      for (let i = 0; i < q.options.length; i++) {
+        const btn = document.getElementById(`quiz-opt-${i}`);
+        btn.disabled = true;
+        if (i === q.answer) {
+          btn.className = 'w-full text-left p-3.5 rounded-lg border border-emerald-500 bg-emerald-50 text-emerald-900 text-xs sm:text-sm font-bold flex items-center justify-between';
+          btn.innerHTML = `<span>${q.options[i]}</span><i class="fa-solid fa-circle-check text-emerald-600"></i>`;
+        } else if (i === selectedIdx && !isCorrect) {
+          btn.className = 'w-full text-left p-3.5 rounded-lg border border-rose-500 bg-rose-50 text-rose-900 text-xs sm:text-sm font-semibold flex items-center justify-between';
+          btn.innerHTML = `<span>${q.options[i]}</span><i class="fa-solid fa-circle-xmark text-rose-600"></i>`;
+        } else {
+          btn.className = 'w-full text-left p-3.5 rounded-lg border border-slate-200 text-slate-400 text-xs sm:text-sm flex items-center justify-between opacity-60';
+        }
+      }
+
+      // Display Explanation
+      expBox.classList.remove('hidden');
+      expBox.className = isCorrect ? 'mt-5 p-4 rounded-xl text-xs sm:text-sm leading-relaxed bg-emerald-50 text-emerald-950 border border-emerald-200' : 'mt-5 p-4 rounded-xl text-xs sm:text-sm leading-relaxed bg-amber-50 text-amber-950 border border-amber-200';
+      expBox.innerHTML = `<strong>${isCorrect ? 'Tahniah, Tepat Sekali!' : 'Perlu Diingati:'}</strong> ${q.exp}`;
+
+      if (currentQuizIdx < quizData.length - 1) {
+        document.getElementById('quiz-next-btn').classList.remove('hidden');
+      } else {
+        document.getElementById('quiz-restart-btn').classList.remove('hidden');
+      }
+    }
+
+    function nextQuizQuestion() {
+      if (currentQuizIdx < quizData.length - 1) {
+        currentQuizIdx++;
+        renderQuiz();
+      }
+    }
+
+    function restartQuiz() {
+      currentQuizIdx = 0;
+      quizScore = 0;
+      document.getElementById('quiz-score').innerText = `0 / ${quizData.length}`;
+      renderQuiz();
+    }
+
+    // Tab Switcher
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+      });
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.className = 'tab-btn px-4 py-2 rounded-md hover:bg-white/10 transition text-slate-200';
+      });
+
+      document.getElementById('section-' + tabId).classList.remove('hidden');
+      const activeBtn = document.getElementById('btn-' + tabId);
+      activeBtn.className = 'tab-btn px-4 py-2 rounded-md hover:bg-white/10 transition text-amber-300 font-bold bg-white/10';
+    }
+
+    // Inisialisasi awal
+    window.onload = function() {
+      showReligion('islam');
+      renderDilemma();
+      renderQuiz();
+    };
+  </script>
+</body>
+</html>

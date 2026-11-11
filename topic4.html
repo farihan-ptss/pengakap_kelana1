@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Hub Pengakap Kelana - Sejarah Pengakap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            scout: {
+              red: '#8B0000',
+              crimson: '#A30000',
+              gold: '#D4AF37',
+              forest: '#1B4332',
+              sand: '#F7F5EE',
+              card: '#FFFFFF',
+              dark: '#1C1917'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .timeline-line::before {
+      content: '';
+      position: absolute;
+      left: 1.25rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #D4AF37;
+    }
+    @media (min-width: 768px) {
+      .timeline-line::before {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+</head>
+<body class="bg-scout-sand text-stone-800 font-sans min-h-screen flex flex-col">
+
+  <!-- Header / Navigation -->
+  <header class="bg-scout-forest text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-scout-gold flex items-center justify-center text-scout-forest font-bold text-xl shadow">
+          <i class="fa-solid fa-compass"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg leading-tight tracking-wide">PENGAKAP KELANA MALAYSIA</h1>
+          <p class="text-xs text-scout-gold tracking-wider uppercase font-semibold">Learning Hub • Bahagian 1</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <span class="hidden md:inline-block px-3 py-1 bg-scout-forest/80 border border-scout-gold/40 text-xs rounded-full text-stone-200">
+          <i class="fa-solid fa-award text-scout-gold mr-1"></i> Lencana Keahlian / Asas Kelana
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-scout-forest to-stone-900 text-white py-12 px-4 shadow-inner">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 bg-scout-gold/20 text-scout-gold text-xs rounded-full font-semibold mb-4 border border-scout-gold/40">
+        <i class="fa-solid fa-book-open"></i> Subtopik 1: Asas Sejarah & Pertubuhan
+      </div>
+      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 text-stone-100">
+        Sejarah Pergerakan Pengakap Antarabangsa & Malaysia
+      </h2>
+      <p class="text-stone-300 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
+        Modul interaktif sejarah penubuhan pengakap dunia oleh Lord Baden-Powell, perkembangan Pengakap Kelana (Rover Scout), dan titik penting evolusi pengakap di Tanah Melayu sehingga Persekutuan Pengakap Malaysia (PPM).
+      </p>
+
+      <!-- Tab Navigation -->
+      <div class="flex flex-wrap justify-center gap-2 mt-8">
+        <button onclick="switchTab('antarabangsa')" id="tab-antarabangsa" class="px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 shadow-sm flex items-center gap-2 bg-scout-gold text-scout-forest font-bold">
+          <i class="fa-solid fa-earth-americas"></i> Sejarah Antarabangsa
+        </button>
+        <button onclick="switchTab('malaysia')" id="tab-malaysia" class="px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 shadow-sm flex items-center gap-2 bg-stone-800 text-stone-300 hover:bg-stone-700">
+          <i class="fa-solid fa-flag"></i> Sejarah Malaysia
+        </button>
+        <button onclick="switchTab('kelana')" id="tab-kelana" class="px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 shadow-sm flex items-center gap-2 bg-stone-800 text-stone-300 hover:bg-stone-700">
+          <i class="fa-solid fa-person-hiking"></i> Penubuhan Kelana (Rover)
+        </button>
+        <button onclick="switchTab('kuiz')" id="tab-kuiz" class="px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 shadow-sm flex items-center gap-2 bg-stone-800 text-stone-300 hover:bg-stone-700">
+          <i class="fa-solid fa-clipboard-question"></i> Kuiz Uji Minda
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Container -->
+  <main class="max-w-5xl mx-auto px-4 py-10 flex-grow w-full">
+
+    <!-- TAB 1: SEJARAH ANTARABANGSA -->
+    <div id="content-antarabangsa" class="tab-pane space-y-8">
+      <!-- Founder Profile Card -->
+      <div class="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden md:flex">
+        <div class="md:w-1/3 bg-stone-100 flex flex-col items-center justify-center p-6 border-b md:border-b-0 md:border-r border-stone-200">
+          <div class="w-28 h-28 rounded-full border-4 border-scout-gold bg-stone-200 flex items-center justify-center text-4xl text-stone-600 shadow-inner mb-4">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+          <h3 class="font-bold text-lg text-stone-900 text-center">Lord Baden-Powell</h3>
+          <p class="text-xs text-stone-500 text-center font-medium">Robert Stephenson Smyth Baden-Powell</p>
+          <span class="mt-2 text-xs bg-scout-forest text-white px-3 py-1 rounded-full font-semibold">
+            Pengasas Pengakap Dunia
+          </span>
+          <p class="text-xs text-stone-500 mt-2">22 Feb 1857 – 8 Jan 1941</p>
+        </div>
+        <div class="md:w-2/3 p-6 flex flex-col justify-between">
+          <div>
+            <h4 class="text-scout-forest font-bold text-xl mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-feather-pointed text-scout-gold"></i> Asal Usul Penubuhan
+            </h4>
+            <p class="text-stone-600 text-sm leading-relaxed mb-4">
+              Pergerakan Pengakap bermula daripada pengalaman ketenteraan Robert Baden-Powell semasa <strong>Pengepungan Mafeking (1899–1900)</strong> di Afrika Selatan. Di sana, beliau melihat kecekapan dan keberanian golongan pemuda yang bertindak sebagai posmen, peninjau dan penghubung mesej.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-scout-sand p-3.5 rounded-lg border border-stone-200 mb-4">
+              <div>
+                <span class="font-bold text-scout-forest block">Perkhemahan Pertama:</span>
+                1–8 Ogos 1907 di Pulau Brownsea (Brownsea Island), England bersama 20 orang budak lelaki.
+              </div>
+              <div>
+                <span class="font-bold text-scout-forest block">Buku Panduan Utama:</span>
+                <em>"Scouting for Boys"</em> diterbitkan pada tahun 1908, menjadi asas gerakan pengakap global.
+              </div>
+            </div>
+          </div>
+          <div class="border-t border-stone-100 pt-3 flex items-center justify-between text-xs text-stone-500">
+            <span>Ibu Pejabat (WOSM): Kuala Lumpur, Malaysia</span>
+            <span class="text-scout-forest font-semibold">Cogan Kata: "Selalu Bersedia"</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- International Timeline -->
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <h3 class="text-xl font-bold text-stone-900 mb-6 flex items-center gap-2">
+          <i class="fa-solid fa-clock-rotate-left text-scout-gold"></i> Garis Masa Peristiwa Penting Dunia
+        </h3>
+        <div class="relative timeline-line pl-8 md:pl-0 space-y-6">
+          
+          <!-- Event 1 -->
+          <div class="relative md:flex items-center justify-between">
+            <div class="hidden md:block w-5/12 text-right pr-6">
+              <span class="font-bold text-scout-forest text-base">1899 - 1900</span>
+              <p class="text-xs text-stone-500">Peristiwa Pengepungan Mafeking (Afrika Selatan)</p>
+            </div>
+            <div class="absolute -left-8 md:left-1/2 md:-translate-x-1/2 w-6 h-6 rounded-full bg-scout-gold border-4 border-white shadow flex items-center justify-center text-[10px] text-scout-forest font-bold">1</div>
+            <div class="md:w-5/12 md:pl-6">
+              <div class="md:hidden font-bold text-scout-forest text-sm">1899 - 1900</div>
+              <div class="bg-scout-sand p-4 rounded-lg border border-stone-200 text-sm">
+                B-P mendapati sistem kadet muda sangat berdisiplin dan berkesan, menyemai idea modul latihan berasaskan kemahiran luar dan tanggungjawab kendiri.
+              </div>
+            </div>
+          </div>
+
+          <!-- Event 2 -->
+          <div class="relative md:flex items-center justify-between">
+            <div class="hidden md:block w-5/12 text-right pr-6 order-1 md:order-2">
+              <span class="font-bold text-scout-forest text-base">Ogos 1907</span>
+              <p class="text-xs text-stone-500">Ujian Eksperimen Pertama di Pulau Brownsea</p>
+            </div>
+            <div class="absolute -left-8 md:left-1/2 md:-translate-x-1/2 w-6 h-6 rounded-full bg-scout-forest border-4 border-white shadow flex items-center justify-center text-[10px] text-white font-bold order-2">2</div>
+            <div class="md:w-5/12 md:pr-6 order-2 md:order-1 text-left md:text-right">
+              <div class="md:hidden font-bold text-scout-forest text-sm">Ogos 1907</div>
+              <div class="bg-scout-sand p-4 rounded-lg border border-stone-200 text-sm">
+                Perkhemahan 8 hari untuk menguji idea B-P mengenai sistem patrol, ikatan, pertolongan cemas, dan pemerhatian alam semulajadi.
+              </div>
+            </div>
+          </div>
+
+          <!-- Event 3 -->
+          <div class="relative md:flex items-center justify-between">
+            <div class="hidden md:block w-5/12 text-right pr-6">
+              <span class="font-bold text-scout-forest text-base">1908</span>
+              <p class="text-xs text-stone-500">Penerbitan Buku "Scouting for Boys"</p>
+            </div>
+            <div class="absolute -left-8 md:left-1/2 md:-translate-x-1/2 w-6 h-6 rounded-full bg-scout-gold border-4 border-white shadow flex items-center justify-center text-[10px] text-scout-forest font-bold">3</div>
+            <div class="md:w-5/12 md:pl-6">
+              <div class="md:hidden font-bold text-scout-forest text-sm">1908</div>
+              <div class="bg-scout-sand p-4 rounded-lg border border-stone-200 text-sm">
+                Diterbitkan secara bersiri sebanyak 6 edisi sebelum dikompilasikan menjadi sebuah buku lengkap. Gelombang pergerakan pengakap merebak pantas ke seluruh dunia.
+              </div>
+            </div>
+          </div>
+
+          <!-- Event 4 -->
+          <div class="relative md:flex items-center justify-between">
+            <div class="hidden md:block w-5/12 text-right pr-6 order-1 md:order-2">
+              <span class="font-bold text-scout-forest text-base">1920</span>
+              <p class="text-xs text-stone-500">Jambori Pengakap Sedunia Pertama (Olympia, London)</p>
+            </div>
+            <div class="absolute -left-8 md:left-1/2 md:-translate-x-1/2 w-6 h-6 rounded-full bg-scout-forest border-4 border-white shadow flex items-center justify-center text-[10px] text-white font-bold order-2">4</div>
+            <div class="md:w-5/12 md:pr-6 order-2 md:order-1 text-left md:text-right">
+              <div class="md:hidden font-bold text-scout-forest text-sm">1920</div>
+              <div class="bg-scout-sand p-4 rounded-lg border border-stone-200 text-sm">
+                Dihadiri oleh 8,000 pengakap dari 34 buah negara. Dalam acara ini, B-P telah dimasyhurkan sebagai <strong>Ketua Pengakap Sedunia (Chief Scout of the World)</strong>.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: SEJARAH MALAYSIA -->
+    <div id="content-malaysia" class="tab-pane hidden space-y-8">
+      
+      <!-- Quick Info Banner -->
+      <div class="bg-gradient-to-r from-scout-forest to-stone-800 text-white p-6 rounded-xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <span class="text-scout-gold font-bold text-xs uppercase tracking-wider">Titik Mula di Tanah Melayu</span>
+          <h3 class="text-2xl font-bold mt-1">Bermula di Singapura pada Tahun 1910</h3>
+          <p class="text-stone-300 text-sm mt-1 max-w-xl">
+            Ditubuhkan oleh <strong>Frank Cooper Sands (F.C. Sands)</strong> bersama 30 orang ahli Pengakap Kanak-Kanak pertama di Singapura.
+          </p>
+        </div>
+        <div class="px-4 py-2 bg-white/10 rounded-lg text-center backdrop-blur border border-white/10">
+          <div class="text-2xl font-extrabold text-scout-gold">1968</div>
+          <div class="text-xs text-stone-300 uppercase">Akta Parlimen No. 38</div>
+        </div>
+      </div>
+
+      <!-- Timeline mengikut Negeri -->
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <h3 class="text-xl font-bold text-stone-900 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-map-location-dot text-scout-forest"></i> Kronologi Penubuhan Mengikut Negeri & Wilayah
+        </h3>
+        <p class="text-xs text-stone-500 mb-6">Penyebaran awal pergerakan pengakap di seluruh Semenanjung, Sabah, dan Sarawak:</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Card 1 -->
+          <div class="p-4 rounded-lg border border-stone-200 bg-scout-sand/50 hover:border-scout-gold transition">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-scout-forest">1910 - Singapura</span>
+              <span class="text-xs bg-scout-gold/20 text-stone-800 px-2 py-0.5 rounded font-mono font-bold">F.C. Sands</span>
+            </div>
+            <p class="text-xs text-stone-600">Pasukan pertama ditubuhkan di YMCA Singapura untuk anak-anak pegawai Inggeris dan tempatan.</p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="p-4 rounded-lg border border-stone-200 bg-scout-sand/50 hover:border-scout-gold transition">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-scout-forest">1913 - Sarawak</span>
+              <span class="text-xs bg-stone-200 text-stone-700 px-2 py-0.5 rounded font-mono">Kuching</span>
+            </div>
+            <p class="text-xs text-stone-600">Ditubuhkan di Kuching (Rev. Thomas Cecil Alexander) dan kemudian berkembang pesat.</p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="p-4 rounded-lg border border-stone-200 bg-scout-sand/50 hover:border-scout-gold transition">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-scout-forest">1915 - Sabah & Pahang</span>
+              <span class="text-xs bg-stone-200 text-stone-700 px-2 py-0.5 rounded font-mono">Pekan</span>
+            </div>
+            <p class="text-xs text-stone-600">Bermula di Sandakan (Sabah) dan di Pekan (Pahang) oleh G.M. Laidlow.</p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="p-4 rounded-lg border border-stone-200 bg-scout-sand/50 hover:border-scout-gold transition">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-scout-forest">1915 - Pulau Pinang</span>
+              <span class="text-xs bg-stone-200 text-stone-700 px-2 py-0.5 rounded font-mono">H.R. Cheeseman</span>
+            </div>
+            <p class="text-xs text-stone-600">Dipelopori di Penang Free School oleh H.R. Cheeseman, seorang tokoh pendidikan terkenal.</p>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="p-4 rounded-lg border border-stone-200 bg-scout-sand/50 hover:border-scout-gold transition">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-scout-forest">1922 - Kedah</span>
+              <span class="text-xs bg-stone-200 text-stone-700 px-2 py-0.5 rounded font-mono">E.C. Hicks</span>
+            </div>
+            <p class="text-xs text-stone-600">Bermula di Kolej Sultan Abdul Hamid, Alor Setar oleh E.C. Hicks.</p>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="p-4 rounded-lg border border-stone-200 bg-scout-sand/50 hover:border-scout-gold transition">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-scout-forest">1926 - Perak & Melaka</span>
+              <span class="text-xs bg-stone-200 text-stone-700 px-2 py-0.5 rounded font-mono">I.R. Wheeler</span>
+            </div>
+            <p class="text-xs text-stone-600">Perak diasaskan oleh I.R. Wheeler di Maktab Melayu Kuala Kangsar (MCKK).</p>
+          </div>
+
+          <!-- Card 7 -->
+          <div class="p-4 rounded-lg border border-stone-200 bg-scout-sand/50 hover:border-scout-gold transition">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-scout-forest">1927 - Terengganu & Kelantan</span>
+              <span class="text-xs bg-stone-200 text-stone-700 px-2 py-0.5 rounded font-mono">A.J. Craddock</span>
+            </div>
+            <p class="text-xs text-stone-600">A.J. Craddock memulakan latihan terancang di Terengganu dan Y.M. Tengku Ahmad Temenggong di Kelantan.</p>
+          </div>
+
+          <!-- Card 8 -->
+          <div class="p-4 rounded-lg border border-stone-200 bg-scout-sand/50 hover:border-scout-gold transition">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-scout-forest">1928 - Johor & Selangor</span>
+              <span class="text-xs bg-stone-200 text-stone-700 px-2 py-0.5 rounded font-mono">Sultan Ibrahim</span>
+            </div>
+            <p class="text-xs text-stone-600">Johor ditubuhkan dengan sokongan padu DYMM Sultan Johor ketika itu.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Institusi & Perundangan -->
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <h3 class="text-xl font-bold text-stone-900 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-scale-balanced text-scout-gold"></i> Pengiktirafan Rasmi & Akta Parlimen
+        </h3>
+        <p class="text-stone-600 text-sm leading-relaxed mb-4">
+          Selepas kemerdekaan Tanah Melayu pada 1957 dan pembentukan Malaysia pada 1963, persatuan ini disatukan sepenuhnya di bawah satu badan perundangan rasmi negara.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-scout-sand p-4 rounded-lg border-l-4 border-scout-forest">
+            <h4 class="font-bold text-scout-forest text-sm">Akta No. 38/1968</h4>
+            <p class="text-xs text-stone-600 mt-1">Persekutuan Budak-Budak Pengakap Malaysia diperbadankan melalui Akta Parlimen (Pemberbadanan) No. 38 Tahun 1968.</p>
+          </div>
+          <div class="bg-scout-sand p-4 rounded-lg border-l-4 border-scout-gold">
+            <h4 class="font-bold text-scout-forest text-sm">Akta Pindaan 1974 & 1989</h4>
+            <p class="text-xs text-stone-600 mt-1">Nama pertubuhan dipinda secara rasmi menjadi <strong>Persekutuan Pengakap Malaysia (PPM)</strong>, membuka pintu penyertaan meluas termasuk pengakap puteri/kelana wanita.</p>
+          </div>
+          <div class="bg-scout-sand p-4 rounded-lg border-l-4 border-stone-700">
+            <h4 class="font-bold text-scout-forest text-sm">Ibu Pejabat Kebangsaan</h4>
+            <p class="text-xs text-stone-600 mt-1">Rumah BP (Baden-Powell House) yang terletak di Jalan Hang Jebat, Kuala Lumpur menjadi nadi pentadbiran PPM.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 3: SEJARAH PENGAKAP KELANA (ROVER SCOUT) -->
+    <div id="content-kelana" class="tab-pane hidden space-y-8">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <div class="max-w-3xl">
+          <span class="text-scout-red font-bold text-xs uppercase tracking-wider">Cawangan Dewasa Muda (17.5 - 26 Tahun)</span>
+          <h3 class="text-2xl font-bold text-stone-900 mt-1 mb-3">Kelahiran Pengakap Kelana (Rover Scouts)</h3>
+          <p class="text-stone-600 text-sm leading-relaxed mb-4">
+            Selepas Perang Dunia Pertama (1914–1918), ramai remaja pengakap telah melepasi umur persekolahan namun masih ingin terus berbakti serta meneruskan persaudaraan berpengakap. Maka, Lord Baden-Powell memperkenalkan unit khas iaitu <strong>Rover Scouting</strong> pada tahun <strong>1918</strong>.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div class="bg-stone-50 border border-stone-200 rounded-lg p-5">
+            <h4 class="font-bold text-scout-forest text-base flex items-center gap-2 mb-2">
+              <i class="fa-solid fa-book text-scout-gold"></i> Buku Panduan: "Rovering to Success" (1922)
+            </h4>
+            <p class="text-xs text-stone-600 leading-relaxed">
+              Buku ini dikarang khas oleh Baden-Powell untuk membimbing anak muda mengharungi ranjau kehidupan dewasa. B-P menggunakan metafora <em>"Mengayuh sampan anda sendiri" (Paddle your own canoe)</em> dan memberi amaran tentang 5 'batu karang' (karang godaan) kehidupan:
+            </p>
+            <ul class="text-xs text-stone-700 mt-3 space-y-1 list-disc list-inside">
+              <li><strong>Kuda lumba & Perjudian</strong> (Horses & Gambling)</li>
+              <li><strong>Arak & Minuman Keras</strong> (Wine / Alcohol)</li>
+              <li><strong>Wanita / Hawa Nafsu</strong> (Women / Uncontrolled desires)</li>
+              <li><strong>Penipu & Fanatik</strong> (Cuckoos & Humbugs / Ideologi melampau)</li>
+              <li><strong>Ketidakpercayaan / Tiada Agama</strong> (Irreligion)</li>
+            </ul>
+          </div>
+
+          <div class="bg-stone-50 border border-stone-200 rounded-lg p-5 flex flex-col justify-between">
+            <div>
+              <h4 class="font-bold text-scout-forest text-base flex items-center gap-2 mb-2">
+                <i class="fa-solid fa-hand-holding-heart text-scout-gold"></i> Cogan Kata Pengakap Kelana
+              </h4>
+              <div class="text-center py-4 bg-white rounded border border-stone-200 shadow-inner my-2">
+                <span class="text-2xl font-extrabold text-scout-forest tracking-wider uppercase">"BERKHIDMAT"</span>
+                <span class="block text-xs text-stone-500 italic mt-1 font-mono">(SERVICE)</span>
+              </div>
+              <p class="text-xs text-stone-600 leading-relaxed mt-2">
+                Kelana tidak lagi hanya 'belajar berkhemah', sebaliknya berperanan mengaplikasikan ilmu pengakap untuk masyarakat, pertolongan bencana, kepimpinan belia, dan pembangunan sahsiah sivik.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-stone-200 text-xs text-stone-500">
+              Badge Tertinggi: <strong>Anugerah B-P (Baden-Powell Award)</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ciri-Ciri Krew Kelana -->
+        <div class="mt-6 border-t border-stone-200 pt-6">
+          <h4 class="font-bold text-stone-900 text-sm mb-3">Struktur Utama Pasukan (Krew Kelana):</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div class="p-3 bg-scout-sand rounded border border-stone-200">
+              <span class="font-bold text-scout-forest block">Keahlian Terbuka:</span>
+              Boleh diwujudkan di institusi pengajian tinggi (IPTA/IPTS), institusi belia, mahupun Krew Terbuka (Open Crew) komuniti.
+            </div>
+            <div class="p-3 bg-scout-sand rounded border border-stone-200">
+              <span class="font-bold text-scout-forest block">Sistem Pentadbiran Sendiri:</span>
+              Diterajui oleh Majlis Krew (Ketua Krew, Setiausaha, Bendahari) dengan bimbingan Penasihat Kelana (Rover Scout Leader).
+            </div>
+            <div class="p-3 bg-scout-sand rounded border border-stone-200">
+              <span class="font-bold text-scout-forest block">Upacara Pertabalan:</span>
+              Vigil & Investiture — masa muhasabah diri sebelum melafazkan Persetiaan Pengakap secara matang sebagai Kelana.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 4: KUIZ UJI MINDA -->
+    <div id="content-kuiz" class="tab-pane hidden space-y-6">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+        <div class="flex items-center justify-between border-b border-stone-200 pb-4 mb-6">
+          <div>
+            <h3 class="text-xl font-bold text-stone-900">Uji Kefahaman Subtopik 1</h3>
+            <p class="text-xs text-stone-500 mt-1">Jawab 5 soalan asas sejarah pengakap antarabangsa dan kebangsaan.</p>
+          </div>
+          <div id="quiz-score-badge" class="hidden px-4 py-1.5 rounded-full bg-scout-forest text-white text-xs font-bold">
+            Skor: <span id="current-score">0</span> / 5
+          </div>
+        </div>
+
+        <div id="quiz-container" class="space-y-6">
+          <!-- Soalan 1 -->
+          <div class="quiz-item p-4 rounded-lg bg-stone-50 border border-stone-200" data-answer="B">
+            <p class="font-semibold text-sm text-stone-800 mb-3">1. Di manakah perkhemahan percubaan pengakap pertama diadakan oleh Baden-Powell pada tahun 1907?</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <button onclick="checkAnswer(this, 'A')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">A. Mafeking, Afrika Selatan</button>
+              <button onclick="checkAnswer(this, 'B')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">B. Pulau Brownsea, England</button>
+              <button onclick="checkAnswer(this, 'C')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">C. Gilwell Park, London</button>
+              <button onclick="checkAnswer(this, 'D')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">D. Olympia Hall, London</button>
+            </div>
+            <p class="feedback-msg hidden text-xs mt-2 font-medium"></p>
+          </div>
+
+          <!-- Soalan 2 -->
+          <div class="quiz-item p-4 rounded-lg bg-stone-50 border border-stone-200" data-answer="C">
+            <p class="font-semibold text-sm text-stone-800 mb-3">2. Siapakah tokoh yang mengasaskan pergerakan pengakap terawal di Singapura pada tahun 1910?</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <button onclick="checkAnswer(this, 'A')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">A. H.R. Cheeseman</button>
+              <button onclick="checkAnswer(this, 'B')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">B. I.R. Wheeler</button>
+              <button onclick="checkAnswer(this, 'C')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">C. Frank Cooper Sands (F.C. Sands)</button>
+              <button onclick="checkAnswer(this, 'D')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">D. Rev. Thomas Cecil</button>
+            </div>
+            <p class="feedback-msg hidden text-xs mt-2 font-medium"></p>
+          </div>
+
+          <!-- Soalan 3 -->
+          <div class="quiz-item p-4 rounded-lg bg-stone-50 border border-stone-200" data-answer="D">
+            <p class="font-semibold text-sm text-stone-800 mb-3">3. Apakah akta parlimen yang memperbadankan Persekutuan Pengakap Malaysia?</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <button onclick="checkAnswer(this, 'A')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">A. Akta Pertubuhan Belia 1966</button>
+              <button onclick="checkAnswer(this, 'B')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">B. Akta Pendidikan 1996</button>
+              <button onclick="checkAnswer(this, 'C')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">C. Akta Warisan Kebangsaan 2005</button>
+              <button onclick="checkAnswer(this, 'D')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">D. Akta Parlimen No. 38 Tahun 1968</button>
+            </div>
+            <p class="feedback-msg hidden text-xs mt-2 font-medium"></p>
+          </div>
+
+          <!-- Soalan 4 -->
+          <div class="quiz-item p-4 rounded-lg bg-stone-50 border border-stone-200" data-answer="A">
+            <p class="font-semibold text-sm text-stone-800 mb-3">4. Buku khas karangan Lord Baden-Powell untuk panduan Pengakap Kelana (Rover Scout) bertajuk:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <button onclick="checkAnswer(this, 'A')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">A. Rovering to Success</button>
+              <button onclick="checkAnswer(this, 'B')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">B. Scouting for Boys</button>
+              <button onclick="checkAnswer(this, 'C')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">C. Aids to Scoutmastership</button>
+              <button onclick="checkAnswer(this, 'D')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">D. The Wolf Cub's Handbook</button>
+            </div>
+            <p class="feedback-msg hidden text-xs mt-2 font-medium"></p>
+          </div>
+
+          <!-- Soalan 5 -->
+          <div class="quiz-item p-4 rounded-lg bg-stone-50 border border-stone-200" data-answer="B">
+            <p class="font-semibold text-sm text-stone-800 mb-3">5. Apakah cogan kata rasmi bagi unit Pengakap Kelana?</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <button onclick="checkAnswer(this, 'A')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">A. Buat Sehabis Baik</button>
+              <button onclick="checkAnswer(this, 'B')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">B. Berkhidmat</button>
+              <button onclick="checkAnswer(this, 'C')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">C. Selalu Bersedia</button>
+              <button onclick="checkAnswer(this, 'D')" class="option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition">D. Pandang Luas</button>
+            </div>
+            <p class="feedback-msg hidden text-xs mt-2 font-medium"></p>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+          <button onclick="resetQuiz()" class="px-4 py-2 border border-stone-300 hover:bg-stone-100 text-stone-700 rounded-lg text-xs font-semibold flex items-center gap-2">
+            <i class="fa-solid fa-rotate-left"></i> Ulang Semula Kuiz
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-stone-900 text-stone-400 py-6 border-t border-stone-800 text-xs">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-knot text-scout-gold text-base"></i>
+        <span>Learning Hub Pengakap Kelana • Panduan Silibus Lencana Asas</span>
+      </div>
+      <div>
+        <span>"Sekali Berpengakap, Terus Berpengakap"</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Tab switching logic
+    function switchTab(tabId) {
+      const tabs = ['antarabangsa', 'malaysia', 'kelana', 'kuiz'];
+      
+      tabs.forEach(tab => {
+        const content = document.getElementById(`content-${tab}`);
+        const button = document.getElementById(`tab-${tab}`);
+        
+        if (tab === tabId) {
+          content.classList.remove('hidden');
+          button.classList.add('bg-scout-gold', 'text-scout-forest', 'font-bold');
+          button.classList.remove('bg-stone-800', 'text-stone-300');
+        } else {
+          content.classList.add('hidden');
+          button.classList.remove('bg-scout-gold', 'text-scout-forest', 'font-bold');
+          button.classList.add('bg-stone-800', 'text-stone-300');
+        }
+      });
+    }
+
+    // Quiz evaluation logic
+    let answeredQuestions = 0;
+    let score = 0;
+
+    function checkAnswer(buttonEl, selectedOption) {
+      const parentCard = buttonEl.closest('.quiz-item');
+      if (parentCard.classList.contains('answered')) return; // Allow answering once per card
+
+      const correctAnswer = parentCard.dataset.answer;
+      const feedback = parentCard.querySelector('.feedback-msg');
+      const allButtons = parentCard.querySelectorAll('.option-btn');
+
+      parentCard.classList.add('answered');
+      answeredQuestions++;
+
+      allButtons.forEach(btn => {
+        btn.disabled = true;
+        btn.classList.remove('hover:bg-stone-100');
+      });
+
+      if (selectedOption === correctAnswer) {
+        buttonEl.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-800', 'font-bold');
+        feedback.textContent = "Tahniah! Jawapan anda tepat.";
+        feedback.classList.remove('hidden', 'text-rose-600');
+        feedback.classList.add('text-emerald-700');
+        score++;
+      } else {
+        buttonEl.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-800', 'font-semibold');
+        feedback.textContent = `Kurang tepat. Jawapan yang betul ialah (${correctAnswer}).`;
+        feedback.classList.remove('hidden', 'text-emerald-700');
+        feedback.classList.add('text-rose-600');
+        
+        // Highlight correct button
+        allButtons.forEach(btn => {
+          if (btn.textContent.trim().startsWith(correctAnswer)) {
+            btn.classList.add('bg-emerald-50', 'border-emerald-400', 'text-emerald-800');
+          }
+        });
+      }
+
+      // Update score display
+      const scoreBadge = document.getElementById('quiz-score-badge');
+      const scoreNum = document.getElementById('current-score');
+      scoreBadge.classList.remove('hidden');
+      scoreNum.textContent = score;
+    }
+
+    function resetQuiz() {
+      score = 0;
+      answeredQuestions = 0;
+      document.getElementById('quiz-score-badge').classList.add('hidden');
+      document.getElementById('current-score').textContent = '0';
+
+      const quizCards = document.querySelectorAll('.quiz-item');
+      quizCards.forEach(card => {
+        card.classList.remove('answered');
+        const feedback = card.querySelector('.feedback-msg');
+        feedback.classList.add('hidden');
+        
+        const buttons = card.querySelectorAll('.option-btn');
+        buttons.forEach(btn => {
+          btn.disabled = false;
+          btn.className = "option-btn text-left p-2.5 rounded border border-stone-300 hover:bg-stone-100 transition";
+        });
+      });
+    }
+  </script>
+</body>
+</html>
