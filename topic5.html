@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="ms" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hab Interaktif Simpulan & Ikatan Pengakap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        scout: {
+                            50: '#f4f7f4',
+                            100: '#e3ebe3',
+                            200: '#c7d7c8',
+                            300: '#9eba9f',
+                            400: '#729774',
+                            500: '#517a54',
+                            600: '#3e6041',
+                            700: '#324d35',
+                            800: '#293e2c',
+                            900: '#223325',
+                        },
+                        rope: {
+                            light: '#e6c89c',
+                            base: '#c89d66',
+                            dark: '#8c6239',
+                            accent: '#d9534f'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Animasi khas untuk simulasi tali SVG */
+        .rope-path {
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke-dashoffset 0.8s ease-in-out, opacity 0.4s ease;
+        }
+        
+        /* Gaya tab aktif */
+        .tab-active {
+            background-color: #3e6041;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Corak latar belakang halus */
+        .bg-grid-pattern {
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Animasi berdenyut lembut untuk titik fokus gajet */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.8; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+        .hotspot-ring {
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-scout-600 selection:text-white">
+
+    <!-- Navigasi Utama -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-scout-700 text-white flex items-center justify-center shadow-md">
+                        <!-- Ikon Tali / Simpulan SVG -->
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg text-scout-900 tracking-tight block leading-none">Kemahiran Tali</span>
+                        <span class="text-xs text-slate-500 font-medium">Hab Simulasi Simpulan & Ikatan</span>
+                    </div>
+                </div>
+                
+                <!-- Butang Navigasi Mod -->
+                <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200">
+                    <button id="btn-mod-knots" onclick="switchMode('knots')" class="tab-active px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-2">
+                        <span>8 Simpulan & Ikatan</span>
+                    </button>
+                    <button id="btn-mod-gadgets" onclick="switchMode('gadgets')" class="text-slate-600 hover:text-slate-900 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-2">
+                        <span>Simulasi Gajet</span>
+                    </button>
+                    <button id="btn-mod-quiz" onclick="switchMode('quiz')" class="text-slate-600 hover:text-slate-900 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 hidden sm:flex items-center gap-2">
+                        <span>Uji Minda</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Hero Ringkas -->
+    <header class="bg-gradient-to-br from-scout-800 via-scout-900 to-slate-900 text-white py-8 sm:py-12 px-4 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==')]"></div>
+        <div class="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="max-w-2xl text-center md:text-left">
+                <span class="inline-block py-1 px-3 rounded-full bg-scout-700/80 border border-scout-500/30 text-scout-200 text-xs font-semibold tracking-wider uppercase mb-3">
+                    Modul Perkhemahan & Ikhtiar Hidup
+                </span>
+                <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-3 leading-tight">
+                    Kuasai Seni Simpulan, Ikatan & Binaan Gajet
+                </h1>
+                <p class="text-scout-100 text-sm sm:text-base leading-relaxed">
+                    Pelajari teknik mengikat secara visual langkah demi langkah dan terokai bagaimana ikatan ini digabungkan untuk membina struktur gajet perkhemahan yang kukuh.
+                </p>
+            </div>
+            
+            <!-- Kad Statistik Ringkas -->
+            <div class="grid grid-cols-3 gap-3 w-full md:w-auto shrink-0">
+                <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-3 sm:p-4 text-center">
+                    <div class="text-2xl sm:text-3xl font-bold text-amber-400">8</div>
+                    <div class="text-xs text-scout-200 mt-1">Asas Ikatan</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-3 sm:p-4 text-center">
+                    <div class="text-2xl sm:text-3xl font-bold text-emerald-400">4</div>
+                    <div class="text-xs text-scout-200 mt-1">Model Gajet</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-3 sm:p-4 text-center cursor-pointer hover:bg-white/20 transition" onclick="switchMode('quiz')">
+                    <div class="text-2xl sm:text-3xl font-bold text-sky-400" id="header-score">0%</div>
+                    <div class="text-xs text-scout-200 mt-1">Skor Kuiz</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- KANDUNGAN UTAMA -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ========================================================= -->
+        <!-- SEKSYEN 1: SIMULASI 8 SIMPULAN & IKATAN                     -->
+        <!-- ========================================================= -->
+        <section id="section-knots" class="space-y-6">
+            
+            <!-- Pemilih 8 Simpulan (Scroll mendatar pada mudah alih, grid pada desktop) -->
+            <div>
+                <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-scout-600"></span> Pilih Simpulan atau Ikatan
+                </h2>
+                <div id="knot-selector-grid" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
+                    <!-- Dijana oleh JavaScript -->
+                </div>
+            </div>
+
+            <!-- Paparan Utama Simulasi Simpulan -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                <!-- Kolum Kiri: Kanvas Visual Simulasi Interaktif (7 cols) -->
+                <div class="lg:col-span-7 bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+                    <!-- Bar Atas Kanvas -->
+                    <div class="px-6 py-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2 bg-slate-50/50">
+                        <div>
+                            <span id="knot-category-badge" class="text-xs font-bold px-2.5 py-1 rounded-md bg-amber-100 text-amber-800">Simpulan</span>
+                            <h3 id="knot-title" class="text-xl font-bold text-slate-900 mt-1">1. Buku Sila (Reef Knot)</h3>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="toggleAutoPlay()" id="btn-autoplay" class="px-3 py-1.5 rounded-xl bg-scout-100 text-scout-800 hover:bg-scout-200 text-xs font-semibold flex items-center gap-1.5 transition">
+                                <svg id="icon-play" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+                                <span id="text-autoplay">Main Auto</span>
+                            </button>
+                            <button onclick="resetSimulation()" class="p-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 transition" title="Mula Semula">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kawasan Lukisan SVG Simulasi -->
+                    <div class="relative bg-grid-pattern flex-grow flex items-center justify-center p-4 sm:p-8 min-h-[340px] sm:min-h-[400px]">
+                        <!-- Petunjuk Warna Tali -->
+                        <div class="absolute top-3 left-4 flex flex-wrap gap-3 text-xs font-medium bg-white/90 backdrop-blur px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm">
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 rounded-full bg-[#c89d66] border border-[#8c6239]"></span>
+                                <span>Tali Utama / Kiri</span>
+                            </div>
+                            <div id="legend-rope-2" class="flex items-center gap-1.5">
+                                <span class="w-3 h-3 rounded-full bg-[#d9534f] border border-[#9e2a27]"></span>
+                                <span>Tali Kedua / Kanan</span>
+                            </div>
+                            <div id="legend-wood" class="hidden items-center gap-1.5">
+                                <span class="w-3 h-3 rounded-sm bg-[#85583f]"></span>
+                                <span>Kayu / Tiang</span>
+                            </div>
+                        </div>
+
+                        <!-- Bekas SVG Dinamik -->
+                        <div id="simulation-canvas" class="w-full max-w-lg flex items-center justify-center">
+                            <!-- SVG disuntik oleh JS -->
+                        </div>
+
+                        <!-- Lencana Langkah Semasa di penjuru bawah -->
+                        <div class="absolute bottom-3 right-4 bg-slate-900/85 text-white text-xs font-semibold px-3 py-1.5 rounded-xl backdrop-blur">
+                            Langkah <span id="step-indicator" class="text-amber-400">1</span> daripada <span id="total-steps">4</span>
+                        </div>
+                    </div>
+
+                    <!-- Kawalan Langkah (Step Controller) -->
+                    <div class="p-4 sm:p-6 bg-white border-t border-slate-100">
+                        <!-- Bar Kemajuan Langkah -->
+                        <div class="flex gap-2 mb-4" id="step-progress-bars">
+                            <!-- Dijana oleh JS -->
+                        </div>
+
+                        <!-- Penerangan Langkah Semasa -->
+                        <div class="bg-scout-50 border border-scout-200/80 rounded-2xl p-4 mb-4 min-h-[76px] flex items-center">
+                            <p id="step-instruction" class="text-sm sm:text-base text-scout-950 font-medium leading-relaxed">
+                                Memuatkan arahan...
+                            </p>
+                        </div>
+
+                        <!-- Butang Navigasi Langkah -->
+                        <div class="flex items-center justify-between gap-3">
+                            <button onclick="prevStep()" id="btn-prev-step" class="flex-1 py-3 px-4 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                                Sebelumnya
+                            </button>
+                            <button onclick="nextStep()" id="btn-next-step" class="flex-1 py-3 px-4 rounded-xl bg-scout-700 text-white font-semibold text-sm hover:bg-scout-800 shadow-sm transition flex items-center justify-center gap-2">
+                                Seterusnya
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kolum Kanan: Nota Lengkap, Kegunaan & Aplikasi Gajet (5 cols) -->
+                <div class="lg:col-span-5 space-y-6">
+                    <!-- Kad Kegunaan & Fungsi -->
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
+                        <h4 class="text-base font-bold text-slate-900 flex items-center gap-2 mb-3">
+                            <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </span>
+                            Kegunaan Utama
+                        </h4>
+                        <ul id="knot-uses-list" class="space-y-2.5 text-sm text-slate-600">
+                            <!-- Dijana oleh JS -->
+                        </ul>
+                    </div>
+
+                    <!-- Kad Ciri & Tip Keselamatan -->
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
+                        <h4 class="text-base font-bold text-slate-900 flex items-center gap-2 mb-3">
+                            <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </span>
+                            Ciri-ciri & Tip Penting
+                        </h4>
+                        <p id="knot-tips" class="text-sm text-slate-600 leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                            <!-- Dijana oleh JS -->
+                        </p>
+                    </div>
+
+                    <!-- Kad Pautan Terus ke Simulasi Gajet -->
+                    <div class="bg-gradient-to-br from-scout-700 to-scout-900 rounded-3xl p-6 text-white shadow-md">
+                        <span class="text-xs font-bold uppercase tracking-wider text-scout-300">Aplikasi Praktikal</span>
+                        <h4 class="text-lg font-bold mt-1 mb-2">Lihat Dalam Binaan Gajet</h4>
+                        <p id="knot-gadget-preview" class="text-sm text-scout-100 mb-4">
+                            Ikatan ini digunakan secara meluas dalam pembinaan gajet perkhemahan.
+                        </p>
+                        <button onclick="jumpToRelatedGadget()" class="w-full py-2.5 px-4 rounded-xl bg-white text-scout-900 font-bold text-sm hover:bg-scout-50 transition flex items-center justify-center gap-2 shadow">
+                            <span>Buka Simulasi Gajet Berkaitan</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SEKSYEN 2: SIMULASI GAJET PERKHEMAHAN INTERAKTIF          -->
+        <!-- ========================================================= -->
+        <section id="section-gadgets" class="hidden space-y-6">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Simulasi Binaan Gajet Perkhemahan</h2>
+                    <p class="text-sm text-slate-600">Klik pada titik berdenyut (hotspot) pada struktur gajet atau gunakan butang bina berperingkat untuk melihat ikatan yang digunakan.</p>
+                </div>
+                
+                <!-- Pemilih Gajet -->
+                <div class="flex flex-wrap gap-2" id="gadget-selector">
+                    <!-- Dijana oleh JS -->
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Paparan Interaktif Struktur Gajet (7 cols) -->
+                <div class="lg:col-span-7 bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+                    <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+                        <div>
+                            <h3 id="gadget-title" class="text-lg font-bold text-slate-900">Tripod / Tungku Kaki Tiga</h3>
+                            <p id="gadget-subtitle" class="text-xs text-slate-500">Asas untuk menggantung periuk atau besen air</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="animateGadgetBuild()" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shadow-sm transition flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                                Simulasi Bina Semula
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Kanvas SVG Gajet -->
+                    <div class="relative bg-gradient-to-b from-sky-50 to-emerald-50/50 flex-grow flex items-center justify-center p-4 sm:p-6 min-h-[380px] sm:min-h-[440px]">
+                        <div id="gadget-canvas" class="w-full max-w-lg">
+                            <!-- SVG Gajet disuntik oleh JS -->
+                        </div>
+                        <div class="absolute bottom-3 left-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-xl border border-slate-200 text-xs text-slate-600 shadow-sm">
+                            💡 Tip: Klik bulatan merah/emas pada struktur kayu untuk memeriksa ikatan.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel Maklumat Gajet & Senarai Ikatan Terlibat (5 cols) -->
+                <div class="lg:col-span-5 space-y-5">
+                    
+                    <!-- Kad Penerangan Titik Ikatan Yang Dipilih -->
+                    <div id="hotspot-detail-card" class="bg-white rounded-3xl p-6 shadow-sm border-2 border-scout-500 transition-all">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-scout-700 bg-scout-100 px-2.5 py-1 rounded-md">
+                                Perincian Bahagian Gajet
+                            </span>
+                            <span id="hotspot-step-badge" class="text-xs font-semibold text-slate-400">Bahagian 1</span>
+                        </div>
+                        <h4 id="hotspot-part-name" class="text-lg font-bold text-slate-900 mt-1">Persilangan Utama Puncak</h4>
+                        <div class="mt-3 p-3.5 rounded-2xl bg-amber-50 border border-amber-200/80">
+                            <div class="text-xs text-amber-800 font-semibold">Ikatan Digunakan:</div>
+                            <div id="hotspot-knot-name" class="text-base font-bold text-amber-950 mt-0.5">Ikatan Serong (Diagonal Lashing) / Lilit Kacang</div>
+                        </div>
+                        <p id="hotspot-desc" class="text-sm text-slate-600 mt-3 leading-relaxed">
+                            Digunakan untuk merapatkan dan mengikat tiga batang kayu yang bersilang pada bahagian puncak sebelum kaki dibuka membentuk tripod.
+                        </p>
+                        <button id="btn-inspect-knot" onclick="inspectKnotFromGadget(0)" class="mt-4 w-full py-2.5 px-4 rounded-xl bg-scout-700 hover:bg-scout-800 text-white text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2">
+                            <span>Pelajari Cara Mengikat Ikatan Ini</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- Senarai Semua Komponen & Ikatan Gajet Ini -->
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
+                        <h4 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3">
+                            Senarai Ikatan Dalam Gajet Ini
+                        </h4>
+                        <div id="gadget-knots-checklist" class="space-y-2.5">
+                            <!-- Dijana oleh JS -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SEKSYEN 3: KUIZ INTERAKTIF UJI KEFAHAMAN                  -->
+        <!-- ========================================================= -->
+        <section id="section-quiz" class="hidden max-w-3xl mx-auto">
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-scout-600">Penilaian Kendiri</span>
+                        <h2 class="text-xl font-bold text-slate-900">Kuiz Kemahiran Simpulan & Gajet</h2>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-slate-500 block">Soalan</span>
+                        <span class="font-bold text-lg text-scout-800"><span id="quiz-current">1</span> / <span id="quiz-total">6</span></span>
+                    </div>
+                </div>
+
+                <div id="quiz-body">
+                    <h3 id="quiz-question" class="text-base sm:text-lg font-bold text-slate-800 mb-5 leading-relaxed">
+                        Soalan akan dipaparkan di sini...
+                    </h3>
+                    <div id="quiz-options" class="space-y-3">
+                        <!-- Pilihan jawapan -->
+                    </div>
+                    <div id="quiz-feedback" class="hidden mt-5 p-4 rounded-2xl text-sm font-medium"></div>
+                    <div class="mt-6 flex justify-end">
+                        <button id="btn-next-question" onclick="nextQuizQuestion()" class="hidden px-6 py-2.5 rounded-xl bg-scout-700 text-white font-semibold text-sm hover:bg-scout-800 transition">
+                            Soalan Seterusnya
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Keputusan Kuiz -->
+                <div id="quiz-result" class="hidden text-center py-6 space-y-4">
+                    <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-2xl font-bold">
+                        🏆
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900">Tahniah! Kuiz Selesai</h3>
+                    <p class="text-slate-600">Markah anda: <span id="final-score-text" class="font-bold text-scout-700 text-lg">0 / 6</span></p>
+                    <div class="pt-4 flex justify-center gap-3">
+                        <button onclick="restartQuiz()" class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50">
+                            Cuba Lagi
+                        </button>
+                        <button onclick="switchMode('knots')" class="px-5 py-2.5 rounded-xl bg-scout-700 text-white font-semibold text-sm hover:bg-scout-800">
+                            Kembali Belajar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bar Navigasi Bawah Khas Mudah Alih untuk Kuiz -->
+    <div class="sm:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-2 flex justify-around z-40">
+        <button onclick="switchMode('knots')" class="flex-1 py-2 text-xs font-bold text-scout-800 flex flex-col items-center">
+            <span>🪢 Simpulan (8)</span>
+        </button>
+        <button onclick="switchMode('gadgets')" class="flex-1 py-2 text-xs font-bold text-slate-600 flex flex-col items-center">
+            <span>⛺ Gajet</span>
+        </button>
+        <button onclick="switchMode('quiz')" class="flex-1 py-2 text-xs font-bold text-slate-600 flex flex-col items-center">
+            <span>📝 Kuiz</span>
+        </button>
+    </div>
+
+    <footer class="max-w-7xl mx-auto px-4 py-8 text-center text-xs text-slate-400 border-t border-slate-200/70 mt-12 mb-12 sm:mb-0">
+        Hab Pembelajaran Interaktif Simpulan & Ikatan Perkhemahan • Dibina untuk tujuan pendidikan & latihan luar.
+    </footer>
+
+    <!-- ========================================================= -->
+    <!-- LOGIK APLIKASI & DATA VISUAL SIMULASI (JAVASCRIPT)        -->
+    <!-- ========================================================= -->
+    <script>
+        // Pangkalan Data Lengkap 8 Simpulan & Ikatan dengan Animasi SVG Langkah demi Langkah
+        const knotsData = [
+            {
+                id: 0,
+                shortName: "Buku Sila",
+                title: "1. Buku Sila (Reef Knot)",
+                category: "Simpulan Asas",
+                hasSecondRope: true,
+                hasWood: false,
+                relatedGadgetId: 2,
+                gadgetPreviewText: "Digunakan untuk mengikat bungkusan peralatan serta mengikat anduh pertolongan cemas di tapak perkhemahan.",
+                uses: [
+                    "Menyambung dua hujung tali yang sama saiz dan jenis.",
+                    "Mengikat bungkusan khemah, bungkusan kain atau kotak.",
+                    "Mengikat kain anduh dalam pertolongan cemas kerana ia leper dan tidak menyakitkan pesakit.",
+                    "Mematikan ikatan pada bungkusan."
+                ],
+                tips: "Ingat formula mudah: 'Kanan atas Kiri, pusing; Kiri atas Kanan, pusing'. Jangan keliru dengan Simpul Nenek (Granny Knot) yang mudah terlucut apabila ditarik.",
+                steps: [
+                    {
+                        text: "Langkah 1: Pegang hujung tali kiri (emas) dan hujung tali kanan (merah) yang sama saiz.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <path d="M 30 120 C 90 120, 120 120, 175 120" stroke="#c89d66" stroke-width="14" fill="none" stroke-linecap="round"/>
+                                <path d="M 370 120 C 310 120, 280 120, 225 120" stroke="#d9534f" stroke-width="14" fill="none" stroke-linecap="round"/>
+                                <text x="80" y="95" fill="#8c6239" font-size="13" font-weight="bold">Hujung Kiri</text>
+                                <text x="255" y="95" fill="#9e2a27" font-size="13" font-weight="bold">Hujung Kanan</text>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 2: Silangkan hujung tali kanan (merah) di atas hujung tali kiri (emas) dan selitkan ke bawah untuk membuat belitan pertama.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <!-- Tali Kiri bawah -->
+                                <path d="M 30 140 C 110 140, 150 140, 200 100 C 230 75, 250 70, 270 60" stroke="#c89d66" stroke-width="14" fill="none" stroke-linecap="round"/>
+                                <!-- Tali Kanan silang atas kemudian masuk bawah -->
+                                <path d="M 370 140 C 290 140, 250 140, 200 100 C 170 75, 150 70, 130 60" stroke="#d9534f" stroke-width="14" fill="none" stroke-linecap="round"/>
+                                <!-- Penegasan Tindihan -->
+                                <path d="M 225 118 L 175 82" stroke="#d9534f" stroke-width="15" fill="none" stroke-linecap="round"/>
+                                <circle cx="200" cy="100" r="24" stroke="#3e6041" stroke-width="2" stroke-dasharray="4 4" fill="none"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 3: Bawa hujung tali merah (kini di kiri) menyilang di ATAS hujung tali emas (kini di kanan), lalu masukkan ke dalam gelung.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <!-- Gelung Bawah -->
+                                <path d="M 30 150 C 100 150, 130 150, 165 125" stroke="#c89d66" stroke-width="14" fill="none" stroke-linecap="round"/>
+                                <path d="M 370 150 C 300 150, 270 150, 235 125" stroke="#d9534f" stroke-width="14" fill="none" stroke-linecap="round"/>
+                                <!-- Gelung Sisi -->
+                                <path d="M 165 125 C 140 100, 155 70, 200 70" stroke="#d9534f" stroke-width="14" fill="none" stroke-linecap="round"/>
+                                <path d="M 235 125 C 260 100, 245 70, 200 70" stroke="#c89d66" stroke-width="14" fill="none" stroke-linecap="round"/>
+                                <!-- Hujung keluar atas -->
+                                <path d="M 200 70 C 225 70, 240 45, 260 35" stroke="#d9534f" stroke-width="14" fill="none" stroke-linecap="round"/>
+                                <path d="M 200 70 C 175 70, 160 45, 140 35" stroke="#c89d66" stroke-width="14" fill="none" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 4: Tarik kedua-dua belah tali serentak untuk mengetatkan simpulan. Perhatikan kedua-dua gelung saling mengunci dengan kemas dan simetri.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <!-- Bahagian Kiri (Emas) -->
+                                <path d="M 25 135 L 145 135 C 175 135, 185 95, 150 95 L 95 95" stroke="#c89d66" stroke-width="15" fill="none" stroke-linecap="round"/>
+                                <!-- Bahagian Kanan (Merah) -->
+                                <path d="M 375 135 L 255 135 C 225 135, 215 95, 250 95 L 305 95" stroke="#d9534f" stroke-width="15" fill="none" stroke-linecap="round"/>
+                                <!-- Lengkungan Saling Mengunci -->
+                                <path d="M 145 135 C 185 135, 195 95, 250 95" stroke="#c89d66" stroke-width="15" fill="none" stroke-linecap="round"/>
+                                <path d="M 255 135 C 215 135, 205 95, 150 95" stroke="#d9534f" stroke-width="15" fill="none" stroke-linecap="round"/>
+                                <!-- Tindihan atas untuk kesan 3D -->
+                                <path d="M 162 128 C 175 118, 185 108, 196 102" stroke="#c89d66" stroke-width="15" fill="none" stroke-linecap="round"/>
+                                <rect x="130" y="165" width="140" height="28" rx="14" fill="#3e6041"/>
+                                <text x="200" y="184" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">Kemas & Rata!</text>
+                              </svg>`
+                    }
+                ]
+            },
+            {
+                id: 1,
+                shortName: "Bunga Geti",
+                title: "2. Bunga Geti (Sheet Bend)",
+                category: "Simpulan Penyambung",
+                hasSecondRope: true,
+                hasWood: false,
+                relatedGadgetId: 3,
+                gadgetPreviewText: "Digunakan untuk menyambung tali ampaian kain atau tali pemancang khemah yang berlainan ketebalan.",
+                uses: [
+                    "Menyambung dua tali yang TIDAK sama saiz (satu tebal, satu halus).",
+                    "Menyambung dua tali yang licin atau basah.",
+                    "Mengikat tali pada penjuru kain atau bendera yang mempunyai gelung."
+                ],
+                tips: "Pastikan tali yang lebih TEBAL membentuk gelung (bight), manakala tali yang lebih HALUS digunakan untuk membelit dan menyelit. Kedua-dua hujung tali mesti berada di sebelah yang sama.",
+                steps: [
+                    {
+                        text: "Langkah 1: Bentuk satu gelung (bight) menggunakan tali yang lebih tebal (emas).",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <path d="M 40 90 L 160 90 C 215 90, 215 150, 160 150 L 40 150" stroke="#c89d66" stroke-width="18" fill="none" stroke-linecap="round"/>
+                                <text x="90" y="70" fill="#8c6239" font-size="13" font-weight="bold">Tali Tebal (Gelung)</text>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 2: Masukkan hujung tali halus (merah) dari BAWAH menembusi lubang gelung tali tebal.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <!-- Gelung Tali Tebal -->
+                                <path d="M 40 90 L 160 90 C 215 90, 215 150, 160 150 L 40 150" stroke="#c89d66" stroke-width="18" fill="none" stroke-linecap="round"/>
+                                <!-- Tali Halus masuk dari bawah -->
+                                <path d="M 360 175 C 260 175, 195 160, 175 120 L 155 80" stroke="#d9534f" stroke-width="10" fill="none" stroke-linecap="round"/>
+                                <!-- Bahagian atas gelung emas menutupi tali merah -->
+                                <path d="M 120 90 L 160 90 C 185 90, 198 103, 200 120" stroke="#c89d66" stroke-width="18" fill="none" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 3: Bawa hujung tali merah mengelilingi bahagian belakang kedua-dua cabang tali tebal.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <!-- Tali Merah pusing belakang -->
+                                <path d="M 155 80 C 140 55, 110 65, 110 120 C 110 170, 145 175, 165 155" stroke="#d9534f" stroke-width="10" fill="none" stroke-linecap="round"/>
+                                <!-- Gelung Tali Tebal di depan -->
+                                <path d="M 40 90 L 160 90 C 215 90, 215 150, 160 150 L 40 150" stroke="#c89d66" stroke-width="18" fill="none" stroke-linecap="round"/>
+                                <!-- Tali merah naik dari bawah gelung -->
+                                <path d="M 360 165 C 260 165, 195 155, 175 120 L 155 80" stroke="#d9534f" stroke-width="10" fill="none" stroke-linecap="round"/>
+                                <path d="M 125 90 L 160 90 C 185 90, 198 103, 200 120" stroke="#c89d66" stroke-width="18" fill="none" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 4: Selitkan hujung tali merah di BAWAH badannya sendiri (di atas gelung emas) dan tarik kedua-dua tali utama hingga ketat.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <!-- Tali merah belakang -->
+                                <path d="M 155 78 C 135 55, 115 70, 115 120 C 115 168, 145 172, 165 148" stroke="#d9534f" stroke-width="10" fill="none" stroke-linecap="round"/>
+                                <!-- Gelung Tali Tebal -->
+                                <path d="M 35 92 L 155 92 C 210 92, 210 148, 155 148 L 35 148" stroke="#c89d66" stroke-width="18" fill="none" stroke-linecap="round"/>
+                                <!-- Tali merah selit bawah -->
+                                <path d="M 165 148 C 180 125, 175 95, 140 70" stroke="#d9534f" stroke-width="10" fill="none" stroke-linecap="round"/>
+                                <!-- Tali merah utama keluar kanan -->
+                                <path d="M 365 120 L 185 120 C 170 120, 165 95, 155 78" stroke="#d9534f" stroke-width="10" fill="none" stroke-linecap="round"/>
+                                <rect x="125" y="185" width="150" height="28" rx="14" fill="#3e6041"/>
+                                <text x="200" y="204" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">Kukuh Walau Berbeza Saiz</text>
+                              </svg>`
+                    }
+                ]
+            },
+            {
+                id: 2,
+                shortName: "Simpul Manuk",
+                title: "3. Simpul Manuk (Clove Hitch)",
+                category: "Simpulan Tiang",
+                hasSecondRope: false,
+                hasWood: true,
+                relatedGadgetId: 1,
+                gadgetPreviewText: "Setiap ikatan seraya (meja makan, rak kasut, pintu gerbang) MESTI dimulakan dan dimatikan dengan Simpul Manuk.",
+                uses: [
+                    "Memulakan dan mematikan Ikatan Seraya dan Ikatan Serong.",
+                    "Mengikat tali pada tiang, pancang khemah atau balak.",
+                    "Mengikat tali sampan pada tiang jeti."
+                ],
+                tips: "Simpul Manuk boleh terlucut jika tiada tekanan berterusan atau jika tiang berputar. Tambahkan satu setengah belit (half hitch) sebagai kunci keselamatan jika perlu.",
+                steps: [
+                    {
+                        text: "Langkah 1: Lilitkan tali mengelilingi tiang kayu dari depan ke belakang.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <!-- Tiang Kayu Mendatar -->
+                                <rect x="40" y="95" width="320" height="50" rx="8" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <!-- Tali belakang tiang -->
+                                <path d="M 160 95 L 175 145" stroke="#8c6239" stroke-width="12" stroke-dasharray="4 2"/>
+                                <!-- Tali depan tiang -->
+                                <path d="M 140 210 L 160 95" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 2: Bawa tali menyilang menyerong di atas lilitan pertama membentuk huruf 'X' pada permukaan tiang.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="40" y="95" width="320" height="50" rx="8" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <!-- Tali pertama -->
+                                <path d="M 135 210 L 165 95" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <!-- Tali kedua silang X -->
+                                <path d="M 175 145 L 220 95" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <path d="M 155 110 L 210 135" stroke="#e6c89c" stroke-width="13" fill="none" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 3: Teruskan melilit ke belakang tiang dan selitkan hujung tali di BAWAH palang silang yang baru dibuat.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="40" y="95" width="320" height="50" rx="8" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <!-- Lilitan 1 -->
+                                <path d="M 135 210 L 165 95" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <!-- Lilitan 2 -->
+                                <path d="M 175 145 L 225 95" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <!-- Hujung selit bawah silang -->
+                                <path d="M 225 145 L 185 115 L 170 40" stroke="#d9534f" stroke-width="12" fill="none" stroke-linecap="round"/>
+                                <!-- Silang atas -->
+                                <path d="M 152 108 L 225 138" stroke="#e6c89c" stroke-width="13" fill="none" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 4: Tarik kedua-dua hujung tali bertentangan arah untuk mengetatkan Simpul Manuk pada tiang.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="40" y="95" width="320" height="50" rx="8" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <path d="M 145 215 L 165 95" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <path d="M 180 145 L 215 95" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <path d="M 215 145 L 185 112 L 235 30" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <path d="M 155 106 L 215 138" stroke="#e6c89c" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <rect x="130" y="175" width="140" height="26" rx="13" fill="#3e6041"/>
+                                <text x="200" y="192" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">Asas Ikatan Gajet</text>
+                              </svg>`
+                    }
+                ]
+            },
+            {
+                id: 3,
+                shortName: "Tindih Kasih",
+                title: "4. Tindih Kasih (Bowline)",
+                category: "Simpulan Menyelamat",
+                hasSecondRope: false,
+                hasWood: false,
+                relatedGadgetId: 0,
+                gadgetPreviewText: "Digunakan untuk membuat gelung tetap pada hujung tali penarik atau tali penggantung barang yang tidak menjerut.",
+                uses: [
+                    "Membuat gelung tetap yang TIDAK akan menjerut atau mengecil apabila ditarik.",
+                    "Kerja-kerja menyelamat (mengikat pinggang mangsa untuk ditarik naik).",
+                    "Mengikat leher haiwan ternakan supaya tidak tercekik.",
+                    "Mengikat tali pada gelung atau tiang."
+                ],
+                tips: "Gunakan cerita klasik: 'Ular (hujung tali) keluar dari lubang (gelung kecil), mengelilingi pokok (tali utama), dan masuk semula ke dalam lubang'.",
+                steps: [
+                    {
+                        text: "Langkah 1: Bentuk satu gelung kecil (lubang) pada bahagian tengah tali dengan memastikan bahagian hujung tali berada di ATAS tali utama.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <!-- Tali Utama dari atas -->
+                                <path d="M 200 20 L 200 100 C 200 145, 145 145, 145 115 C 145 85, 200 85, 225 125 L 250 175" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <text x="225" y="55" fill="#8c6239" font-size="12" font-weight="bold">Tali Utama (Pokok)</text>
+                                <text x="80" y="120" fill="#8c6239" font-size="12" font-weight="bold">Lubang</text>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 2: Masukkan hujung tali ('ular') dari BAWAH menembusi lubang gelung kecil tersebut.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <!-- Gelung asas -->
+                                <path d="M 200 20 L 200 100 C 200 145, 145 145, 145 115 C 145 85, 195 85, 215 115" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <!-- Hujung membentuk gelung besar bawah dan naik masuk lubang -->
+                                <path d="M 215 115 C 245 160, 220 215, 175 215 C 130 215, 130 165, 172 118 L 185 85" stroke="#d9534f" stroke-width="12" fill="none" stroke-linecap="round"/>
+                                <!-- Tindihan lubang -->
+                                <path d="M 145 115 C 145 90, 180 86, 202 98" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 3: Bawa hujung tali merah mengelilingi bahagian BELAKANG tali utama ('pokok').",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <!-- Tali merah pusing belakang tali utama -->
+                                <path d="M 185 85 C 195 65, 220 65, 215 88" stroke="#d9534f" stroke-width="12" fill="none" stroke-linecap="round"/>
+                                <!-- Tali Utama -->
+                                <path d="M 200 20 L 200 100 C 200 145, 145 145, 145 115 C 145 85, 195 85, 215 115" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <!-- Gelung bawah -->
+                                <path d="M 215 115 C 245 160, 220 215, 175 215 C 130 215, 130 165, 172 118 L 185 85" stroke="#d9534f" stroke-width="12" fill="none" stroke-linecap="round"/>
+                                <path d="M 145 115 C 145 90, 180 86, 202 98" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 4: Masukkan semula hujung tali merah ke dalam lubang dari ATAS ke bawah, lalu tarik tali utama dan gelung bawah hingga ketat.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <path d="M 185 82 C 198 60, 222 62, 212 88 L 185 130" stroke="#d9534f" stroke-width="12" fill="none" stroke-linecap="round"/>
+                                <path d="M 200 20 L 200 100 C 200 145, 145 145, 145 115 C 145 85, 195 85, 215 115" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <path d="M 215 115 C 245 160, 220 215, 175 215 C 130 215, 130 165, 172 118 L 185 82" stroke="#d9534f" stroke-width="12" fill="none" stroke-linecap="round"/>
+                                <path d="M 145 115 C 145 90, 180 86, 202 98" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <rect x="255" y="105" width="125" height="28" rx="14" fill="#3e6041"/>
+                                <text x="317" y="123" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">Raja Segala Simpul</text>
+                              </svg>`
+                    }
+                ]
+            },
+            {
+                id: 4,
+                shortName: "Lilit Dua Simpul",
+                title: "5. Lilit Dua Simpul (Round Turn & Two Half Hitches)",
+                category: "Simpulan Tambatan",
+                hasSecondRope: false,
+                hasWood: true,
+                relatedGadgetId: 3,
+                gadgetPreviewText: "Sangat sesuai untuk menambat hujung tali ampaian kain atau tali khemah pada pokok/tiang dengan tegang.",
+                uses: [
+                    "Mengikat tali khemah pada pancang atau pokok.",
+                    "Menambat bot pada tiang jeti.",
+                    "Mengikat tali ampaian pada batang pokok kerana ia tidak mudah melonggar walaupun ditarik kuat."
+                ],
+                tips: "Dua lilitan penuh pada tiang (Round Turn) berfungsi menyerap geseran dan beban berat, manakala dua setengah belit (Two Half Hitches) bertindak sebagai kunci pengikat.",
+                steps: [
+                    {
+                        text: "Langkah 1: Lilitkan tali mengelilingi tiang kayu sebanyak DUA kali pusingan penuh.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="50" y="30" width="55" height="180" rx="8" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <!-- Tali utama dari kanan -->
+                                <path d="M 360 110 L 105 110" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <!-- 2 lilitan pada tiang -->
+                                <path d="M 48 110 L 107 100" stroke="#e6c89c" stroke-width="12" stroke-linecap="round"/>
+                                <path d="M 48 130 L 107 120" stroke="#e6c89c" stroke-width="12" stroke-linecap="round"/>
+                                <path d="M 105 125 L 185 155" stroke="#d9534f" stroke-width="12" fill="none" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 2: Bawa hujung tali (merah) melintasi di ATAS tali utama dan masuk ke bawah untuk membentuk setengah belit pertama.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="50" y="30" width="55" height="180" rx="8" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <path d="M 360 110 L 105 110" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <path d="M 48 110 L 107 100" stroke="#e6c89c" stroke-width="12" stroke-linecap="round"/>
+                                <path d="M 48 130 L 107 120" stroke="#e6c89c" stroke-width="12" stroke-linecap="round"/>
+                                <!-- Half hitch 1 -->
+                                <path d="M 105 125 C 145 155, 185 155, 185 110 C 185 80, 155 80, 165 135 L 175 165" stroke="#d9534f" stroke-width="11" fill="none" stroke-linecap="round"/>
+                                <path d="M 145 110 L 195 110" stroke="#c89d66" stroke-width="13" fill="none"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 3: Ulangi pergerakan yang sama di sebelah kanan belitan pertama untuk membuat setengah belit kedua (arah yang sama).",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="50" y="30" width="55" height="180" rx="8" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <path d="M 360 110 L 105 110" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <path d="M 48 110 L 107 100" stroke="#e6c89c" stroke-width="12" stroke-linecap="round"/>
+                                <path d="M 48 130 L 107 120" stroke="#e6c89c" stroke-width="12" stroke-linecap="round"/>
+                                <!-- Half hitch 1 & 2 -->
+                                <path d="M 105 125 C 140 150, 170 150, 170 110 C 170 85, 150 85, 155 135 C 175 155, 215 155, 215 110 C 215 85, 195 85, 200 135 L 220 175" stroke="#d9534f" stroke-width="11" fill="none" stroke-linecap="round"/>
+                                <path d="M 140 110 L 230 110" stroke="#c89d66" stroke-width="13" fill="none"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 4: Rapatkan kedua-dua simpul ke arah tiang dan tarik ketat. Ikatan kini sedia menahan tegangan tinggi.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="50" y="30" width="55" height="180" rx="8" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <path d="M 360 110 L 105 110" stroke="#c89d66" stroke-width="13" fill="none" stroke-linecap="round"/>
+                                <path d="M 48 110 L 107 100" stroke="#e6c89c" stroke-width="12" stroke-linecap="round"/>
+                                <path d="M 48 130 L 107 120" stroke="#e6c89c" stroke-width="12" stroke-linecap="round"/>
+                                <path d="M 105 125 C 130 145, 155 145, 155 110 C 155 88, 138 88, 142 132 C 160 148, 190 148, 190 110 C 190 88, 172 88, 176 132 L 210 165" stroke="#d9534f" stroke-width="11" fill="none" stroke-linecap="round"/>
+                                <path d="M 130 110 L 210 110" stroke="#c89d66" stroke-width="13" fill="none"/>
+                                <rect x="135" y="185" width="160" height="26" rx="13" fill="#3e6041"/>
+                                <text x="215" y="202" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">Tahan Tegangan Kuat</text>
+                              </svg>`
+                    }
+                ]
+            },
+            {
+                id: 5,
+                shortName: "Lilit Pemati Biasa",
+                title: "6. Lilit Pemati Biasa (Common Whipping)",
+                category: "Penjagaan Tali",
+                hasSecondRope: true,
+                hasWood: false,
+                relatedGadgetId: 0,
+                gadgetPreviewText: "Semua tali yang digunakan untuk membina gajet mesti dimatikan hujungnya dengan Lilit Pemati Biasa supaya tidak terburai.",
+                uses: [
+                    "Mematikan hujung tali pintal supaya serat tali tidak terburai dan rosak.",
+                    "Mengemaskan hujung tali sebelum disimpan atau digunakan dalam pembinaan gajet.",
+                    "Membuat pemegang sementara pada hulu alatan."
+                ],
+                tips: "Gunakan benang kasar atau tali halus (twine) yang kuat. Panjang lilitan pemati biasanya bersamaan dengan garis pusat (diameter) tali utama tersebut.",
+                steps: [
+                    {
+                        text: "Langkah 1: Letakkan tali halus (merah) membentuk gelung panjang di sepanjang hujung tali utama (emas).",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <!-- Tali Utama Tebal -->
+                                <rect x="40" y="95" width="310" height="50" rx="25" fill="#c89d66" stroke="#8c6239" stroke-width="2"/>
+                                <!-- Gelung tali pemati -->
+                                <path d="M 140 80 L 315 80 C 335 80, 335 160, 315 160 L 180 160" stroke="#d9534f" stroke-width="6" fill="none" stroke-linecap="round"/>
+                                <text x="230" y="65" fill="#9e2a27" font-size="12" font-weight="bold">Gelung Tali Pemati</text>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 2: Lilitkan tali pemati dengan kemas dan rapat mengelilingi tali utama serta gelung merah dari kiri ke kanan.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="40" y="95" width="310" height="50" rx="25" fill="#c89d66" stroke="#8c6239" stroke-width="2"/>
+                                <path d="M 140 80 L 315 80 C 335 80, 335 160, 315 160 L 240 160" stroke="#d9534f" stroke-width="6" fill="none"/>
+                                <!-- Lilitan kemas -->
+                                <line x1="185" y1="93" x2="185" y2="147" stroke="#d9534f" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="195" y1="93" x2="195" y2="147" stroke="#b53734" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="205" y1="93" x2="205" y2="147" stroke="#d9534f" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="215" y1="93" x2="215" y2="147" stroke="#b53734" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="225" y1="93" x2="225" y2="147" stroke="#d9534f" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="235" y1="93" x2="235" y2="147" stroke="#b53734" stroke-width="8" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 3: Setelah cukup panjang lilitan, masukkan hujung tali pemati ke dalam gelung merah di hujung kanan.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="40" y="95" width="310" height="50" rx="25" fill="#c89d66" stroke="#8c6239" stroke-width="2"/>
+                                <path d="M 140 80 L 315 80 C 335 80, 335 160, 315 160 L 265 160" stroke="#d9534f" stroke-width="6" fill="none"/>
+                                <line x1="185" y1="93" x2="185" y2="147" stroke="#d9534f" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="195" y1="93" x2="195" y2="147" stroke="#b53734" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="205" y1="93" x2="205" y2="147" stroke="#d9534f" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="215" y1="93" x2="215" y2="147" stroke="#b53734" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="225" y1="93" x2="225" y2="147" stroke="#d9534f" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="235" y1="93" x2="235" y2="147" stroke="#b53734" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="245" y1="93" x2="245" y2="147" stroke="#d9534f" stroke-width="8" stroke-linecap="round"/>
+                                <!-- Hujung masuk gelung -->
+                                <path d="M 245 147 C 275 147, 300 135, 322 120" stroke="#d9534f" stroke-width="7" fill="none" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 4: Tarik hujung tali di sebelah kiri supaya gelung kanan tertarik masuk ke bawah lilitan, kemudian potong lebihan tali.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="40" y="95" width="310" height="50" rx="25" fill="#c89d66" stroke="#8c6239" stroke-width="2"/>
+                                <line x1="190" y1="93" x2="190" y2="147" stroke="#d9534f" stroke-width="9" stroke-linecap="round"/>
+                                <line x1="201" y1="93" x2="201" y2="147" stroke="#b53734" stroke-width="9" stroke-linecap="round"/>
+                                <line x1="212" y1="93" x2="212" y2="147" stroke="#d9534f" stroke-width="9" stroke-linecap="round"/>
+                                <line x1="223" y1="93" x2="223" y2="147" stroke="#b53734" stroke-width="9" stroke-linecap="round"/>
+                                <line x1="234" y1="93" x2="234" y2="147" stroke="#d9534f" stroke-width="9" stroke-linecap="round"/>
+                                <line x1="245" y1="93" x2="245" y2="147" stroke="#b53734" stroke-width="9" stroke-linecap="round"/>
+                                <line x1="256" y1="93" x2="256" y2="147" stroke="#d9534f" stroke-width="9" stroke-linecap="round"/>
+                                <rect x="130" y="175" width="160" height="26" rx="13" fill="#3e6041"/>
+                                <text x="210" y="192" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">Simpulan Tersembunyi!</text>
+                              </svg>`
+                    }
+                ]
+            },
+            {
+                id: 6,
+                shortName: "Ikatan Seraya",
+                title: "7. Ikatan Seraya (Square Lashing)",
+                category: "Ikatan Binaan Gajet",
+                hasSecondRope: false,
+                hasWood: true,
+                relatedGadgetId: 1,
+                gadgetPreviewText: "Ikatan paling penting untuk membina meja makan, rak dapur, rak kasut dan pintu gerbang perkhemahan.",
+                uses: [
+                    "Mengikat dua batang kayu atau buluh yang bersilang pada sudut tepat (90 darjah).",
+                    "Membina rangka utama meja makan, bangku, rak alatan, dan menara tinjau.",
+                    "Menahan beban berat dari atas ke bawah."
+                ],
+                tips: "Sentiasa mulakan dengan Simpul Manuk pada tiang tegak. Semasa melilit (wrapping), tali mestilah berada di LUAR lilitan sebelumnya pada satu kayu, dan di DALAM pada kayu yang satu lagi. Akhiri dengan lilitan cekik (frapping) yang sangat ketat!",
+                steps: [
+                    {
+                        text: "Langkah 1: Mulakan dengan mengikat Simpul Manuk pada kayu tegak tepat di bawah kayu melintang.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <!-- Kayu Tegak -->
+                                <rect x="178" y="20" width="44" height="200" rx="6" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <!-- Kayu Melintang -->
+                                <rect x="70" y="98" width="260" height="44" rx="6" fill="#9c6b4e" stroke="#5c3a27" stroke-width="2"/>
+                                <!-- Simpul Manuk di bawah kayu melintang -->
+                                <path d="M 176 155 L 224 165" stroke="#c89d66" stroke-width="10" stroke-linecap="round"/>
+                                <path d="M 176 168 L 224 155" stroke="#e6c89c" stroke-width="10" stroke-linecap="round"/>
+                                <text x="240" y="166" fill="#3e6041" font-size="12" font-weight="bold">1. Simpul Manuk</text>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 2: Lilitkan tali (wrapping) mengelilingi kedua-dua batang kayu secara bergilir (atas kayu melintang, belakang kayu tegak, bawah kayu melintang) sebanyak 3 hingga 4 kali.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="178" y="20" width="44" height="200" rx="6" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <rect x="70" y="98" width="260" height="44" rx="6" fill="#9c6b4e" stroke="#5c3a27" stroke-width="2"/>
+                                <!-- Lilitan Seraya (3 pusingan kemas) -->
+                                <path d="M 168 96 L 168 144 M 158 96 L 158 144 M 148 96 L 148 144" stroke="#c89d66" stroke-width="8" stroke-linecap="round"/>
+                                <path d="M 232 96 L 232 144 M 242 96 L 242 144 M 252 96 L 252 144" stroke="#c89d66" stroke-width="8" stroke-linecap="round"/>
+                                <!-- Lilitan atas bawah -->
+                                <path d="M 176 88 L 224 88 M 176 78 L 224 78" stroke="#e6c89c" stroke-width="8" stroke-linecap="round"/>
+                                <path d="M 176 152 L 224 152 M 176 162 L 224 162" stroke="#e6c89c" stroke-width="8" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 3: Lakukan Lilitan Cekik (Frapping) di antara celah kedua-dua kayu sebanyak 2 hingga 3 kali pusingan dan tarik sekuat hati untuk mengetatkan ikatan.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="178" y="20" width="44" height="200" rx="6" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <rect x="70" y="98" width="260" height="44" rx="6" fill="#9c6b4e" stroke="#5c3a27" stroke-width="2"/>
+                                <path d="M 168 96 L 168 144 M 158 96 L 158 144 M 148 96 L 148 144" stroke="#c89d66" stroke-width="8" stroke-linecap="round"/>
+                                <path d="M 232 96 L 232 144 M 242 96 L 242 144 M 252 96 L 252 144" stroke="#c89d66" stroke-width="8" stroke-linecap="round"/>
+                                <!-- Lilitan Cekik (Merah untuk penegasan) -->
+                                <rect x="142" y="88" width="116" height="64" rx="10" stroke="#d9534f" stroke-width="7" fill="none"/>
+                                <rect x="148" y="93" width="104" height="54" rx="8" stroke="#b53734" stroke-width="5" fill="none"/>
+                                <text x="275" y="75" fill="#9e2a27" font-size="12" font-weight="bold">Lilitan Cekik</text>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 4: Matikan ikatan dengan Simpul Manuk pada kayu melintang. Ikatan Seraya kini siap dan kukuh!",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="178" y="20" width="44" height="200" rx="6" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <rect x="70" y="98" width="260" height="44" rx="6" fill="#9c6b4e" stroke="#5c3a27" stroke-width="2"/>
+                                <path d="M 168 96 L 168 144 M 158 96 L 158 144 M 148 96 L 148 144" stroke="#c89d66" stroke-width="8" stroke-linecap="round"/>
+                                <path d="M 232 96 L 232 144 M 242 96 L 242 144 M 252 96 L 252 144" stroke="#c89d66" stroke-width="8" stroke-linecap="round"/>
+                                <rect x="144" y="90" width="112" height="60" rx="8" stroke="#e6c89c" stroke-width="6" fill="none"/>
+                                <!-- Simpul Manuk Penutup di kayu melintang -->
+                                <path d="M 272 96 L 282 144 M 284 96 L 272 144" stroke="#d9534f" stroke-width="8" stroke-linecap="round"/>
+                                <rect x="130" y="192" width="140" height="26" rx="13" fill="#3e6041"/>
+                                <text x="200" y="209" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">Sudut 90° Kukuh</text>
+                              </svg>`
+                    }
+                ]
+            },
+            {
+                id: 7,
+                shortName: "Ikatan Serong",
+                title: "8. Ikatan Serong (Diagonal Lashing)",
+                category: "Ikatan Binaan Gajet",
+                hasSecondRope: false,
+                hasWood: true,
+                relatedGadgetId: 2,
+                gadgetPreviewText: "Digunakan untuk mengikat palang silang (X-brace) pada meja makan, jambatan, dan menara supaya struktur tidak bergoyang.",
+                uses: [
+                    "Mengikat dua batang kayu yang bersilang membentuk huruf 'X' (bukan sudut tepat).",
+                    "Merapatkan dua batang kayu yang renggang supaya bersentuhan rapat.",
+                    "Membuat palang pengukuh (bracing) pada kaki meja, menara atau pintu gerbang."
+                ],
+                tips: "Berbeza dengan Ikatan Seraya yang bermula dengan Simpul Manuk, Ikatan Serong MESTI dimulakan dengan Simpul Balak (Timber Hitch) untuk menarik rapat kedua-dua kayu yang bersilang.",
+                steps: [
+                    {
+                        text: "Langkah 1: Mulakan dengan Simpul Balak (Timber Hitch) mengelilingi kedua-dua batang kayu yang bersilang untuk merapatkannya.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <!-- Kayu Silang X -->
+                                <rect x="70" y="102" width="260" height="36" rx="6" transform="rotate(35 200 120)" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <rect x="70" y="102" width="260" height="36" rx="6" transform="rotate(-35 200 120)" fill="#9c6b4e" stroke="#5c3a27" stroke-width="2"/>
+                                <!-- Simpul Balak di tengah -->
+                                <ellipse cx="200" cy="120" rx="34" ry="26" stroke="#d9534f" stroke-width="9" fill="none"/>
+                                <text x="200" y="45" fill="#9e2a27" font-size="12" font-weight="bold" text-anchor="middle">1. Mula dengan Simpul Balak</text>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 2: Lilitkan tali sebanyak 3 hingga 4 kali mengikut arah paksi garisan menegak palang silang.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="70" y="102" width="260" height="36" rx="6" transform="rotate(35 200 120)" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <rect x="70" y="102" width="260" height="36" rx="6" transform="rotate(-35 200 120)" fill="#9c6b4e" stroke="#5c3a27" stroke-width="2"/>
+                                <!-- Lilitan paksi menegak -->
+                                <line x1="190" y1="82" x2="190" y2="158" stroke="#c89d66" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="200" y1="80" x2="200" y2="160" stroke="#e6c89c" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="210" y1="82" x2="210" y2="158" stroke="#c89d66" stroke-width="8" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 3: Tukar arah dan lilitkan tali sebanyak 3 hingga 4 kali mengikut paksi mendatar pula membentuk tanda tambah (+) di atas silang.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="70" y="102" width="260" height="36" rx="6" transform="rotate(35 200 120)" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <rect x="70" y="102" width="260" height="36" rx="6" transform="rotate(-35 200 120)" fill="#9c6b4e" stroke="#5c3a27" stroke-width="2"/>
+                                <!-- Menegak -->
+                                <line x1="190" y1="82" x2="190" y2="158" stroke="#c89d66" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="200" y1="80" x2="200" y2="160" stroke="#e6c89c" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="210" y1="82" x2="210" y2="158" stroke="#c89d66" stroke-width="8" stroke-linecap="round"/>
+                                <!-- Mendatar -->
+                                <line x1="158" y1="112" x2="242" y2="112" stroke="#d9534f" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="155" y1="120" x2="245" y2="120" stroke="#e6c89c" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="158" y1="128" x2="242" y2="128" stroke="#d9534f" stroke-width="8" stroke-linecap="round"/>
+                              </svg>`
+                    },
+                    {
+                        text: "Langkah 4: Lakukan Lilitan Cekik (Frapping) di antara celah kayu sebanyak 2-3 kali dan matikan dengan Simpul Manuk pada salah satu kayu.",
+                        svg: `<svg viewBox="0 0 400 240" class="w-full h-auto">
+                                <rect x="70" y="102" width="260" height="36" rx="6" transform="rotate(35 200 120)" fill="#85583f" stroke="#5c3a27" stroke-width="2"/>
+                                <rect x="70" y="102" width="260" height="36" rx="6" transform="rotate(-35 200 120)" fill="#9c6b4e" stroke="#5c3a27" stroke-width="2"/>
+                                <line x1="192" y1="82" x2="192" y2="158" stroke="#c89d66" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="208" y1="82" x2="208" y2="158" stroke="#c89d66" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="158" y1="113" x2="242" y2="113" stroke="#e6c89c" stroke-width="8" stroke-linecap="round"/>
+                                <line x1="158" y1="127" x2="242" y2="127" stroke="#e6c89c" stroke-width="8" stroke-linecap="round"/>
+                                <!-- Cekik keliling -->
+                                <circle cx="200" cy="120" r="36" stroke="#d9534f" stroke-width="6" fill="none"/>
+                                <!-- Simpul manuk penamat -->
+                                <path d="M 255 142 L 236 168 M 264 148 L 245 174" stroke="#d9534f" stroke-width="7" stroke-linecap="round"/>
+                                <rect x="125" y="195" width="150" height="26" rx="13" fill="#3e6041"/>
+                                <text x="200" y="212" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">Palang Anti-Goyang</text>
+                              </svg>`
+                    }
+                ]
+            }
+        ];
+
+        // Pangkalan Data 4 Model Gajet Perkhemahan Interaktif
+        const gadgetsData = [
+            {
+                id: 0,
+                name: "1. Tripod / Tungku Kaki Tiga",
+                subtitle: "Gajet asas menggantung periuk memasak atau besen air basuh tangan",
+                hotspots: [
+                    {
+                        x: 200, y: 78,
+                        partName: "Puncak Persilangan Tiga Kaki",
+                        knotName: "Ikatan Serong / Lilit Kacang",
+                        knotId: 7,
+                        desc: "Tiga batang kayu disusun selari atau bersilang di bahagian atas dan diikat rapat menggunakan Ikatan Serong (atau Lilit Kacang) supaya kaki dapat dibuka membentuk piramid stabil."
+                    },
+                    {
+                        x: 200, y: 155,
+                        partName: "Tali Penggantung Periuk / Cangkuk",
+                        knotName: "Simpul Manuk & Tindih Kasih",
+                        knotId: 3,
+                        desc: "Simpul Manuk diikat pada puncak tripod sebagai tambatan tali penggantung, manakala Tindih Kasih digunakan di hujung bawah untuk membentuk gelung pemegang cangkuk periuk."
+                    },
+                    {
+                        x: 255, y: 245,
+                        partName: "Hujung Tali Pengikat",
+                        knotName: "Lilit Pemati Biasa (Common Whipping)",
+                        knotId: 5,
+                        desc: "Semua hujung tali yang digunakan pada tripod dimatikan dengan Lilit Pemati Biasa supaya serat tali tidak terburai apabila terkena haba atau kelembapan."
+                    }
+                ],
+                renderSvg: (activeIdx) => `
+                    <svg viewBox="0 0 400 320" class="w-full h-auto">
+                        <!-- Bayang tanah -->
+                        <ellipse cx="200" cy="285" rx="135" ry="18" fill="#cbd5e1" opacity="0.6"/>
+                        <!-- Kaki Belakang -->
+                        <line x1="200" y1="60" x2="215" y2="275" stroke="#6b442e" stroke-width="14" stroke-linecap="round"/>
+                        <!-- Kaki Kiri -->
+                        <line x1="210" y1="55" x2="95" y2="285" stroke="#85583f" stroke-width="16" stroke-linecap="round"/>
+                        <!-- Kaki Kanan -->
+                        <line x1="190" y1="55" x2="305" y2="285" stroke="#9c6b4e" stroke-width="16" stroke-linecap="round"/>
+                        
+                        <!-- Ikatan Puncak -->
+                        <ellipse cx="200" cy="78" rx="22" ry="14" stroke="#c89d66" stroke-width="10" fill="none"/>
+                        <line x1="182" y1="74" x2="218" y2="82" stroke="#d9534f" stroke-width="6" stroke-linecap="round"/>
+
+                        <!-- Tali Penggantung & Periuk -->
+                        <line x1="200" y1="85" x2="200" y2="175" stroke="#c89d66" stroke-width="5"/>
+                        <circle cx="200" cy="162" r="10" stroke="#d9534f" stroke-width="4" fill="none"/>
+                        <!-- Periuk Perkhemahan -->
+                        <path d="M 168 185 L 232 185 L 226 230 C 225 236, 175 236, 174 230 Z" fill="#334155"/>
+                        <path d="M 172 185 C 172 168, 228 168, 228 185" stroke="#475569" stroke-width="3" fill="none"/>
+                        <rect x="164" y="182" width="72" height="6" rx="3" fill="#1e293b"/>
+
+                        <!-- Hotspots Interaktif -->
+                        ${renderHotspots([
+                            {x: 200, y: 78},
+                            {x: 200, y: 155},
+                            {x: 255, y: 245}
+                        ], activeIdx)}
+                    </svg>
+                `
+            },
+            {
+                id: 1,
+                name: "2. Rak Kasut / Rak Alatan Dapur",
+                subtitle: "Struktur bertingkat menggunakan gabungan Ikatan Seraya dan Simpul Manuk",
+                hotspots: [
+                    {
+                        x: 115, y: 110,
+                        partName: "Sambungan Sudut Tiang & Palang Utama",
+                        knotName: "Ikatan Seraya (Square Lashing)",
+                        knotId: 6,
+                        desc: "Setiap pertemuan 90 darjah antara tiang tegak dan palang penyokong lantai rak diikat menggunakan Ikatan Seraya untuk menampung berat kasut atau peralatan dapur."
+                    },
+                    {
+                        x: 285, y: 185,
+                        partName: "Permulaan & Penamat Ikatan Rangka",
+                        knotName: "Simpul Manuk (Clove Hitch)",
+                        knotId: 2,
+                        desc: "Setiap Ikatan Seraya pada bucu rak dimulakan dengan Simpul Manuk pada tiang tegak dan dimatikan dengan Simpul Manuk pada kayu melintang."
+                    },
+                    {
+                        x: 200, y: 185,
+                        partName: "Susunan Lantai Rak (Lilit Kacang)",
+                        knotName: "Simpul Manuk & Ikatan Seraya",
+                        knotId: 2,
+                        desc: "Kayu-kayu kecil disusun rapat membentuk lantai rak dan diikat kemas pada palang sisi supaya tidak bergolek jatuh."
+                    }
+                ],
+                renderSvg: (activeIdx) => `
+                    <svg viewBox="0 0 400 320" class="w-full h-auto">
+                        <ellipse cx="200" cy="285" rx="155" ry="15" fill="#cbd5e1" opacity="0.6"/>
+                        <!-- Tiang Belakang -->
+                        <line x1="135" y1="45" x2="135" y2="265" stroke="#6b442e" stroke-width="12" stroke-linecap="round"/>
+                        <line x1="305" y1="45" x2="305" y2="265" stroke="#6b442e" stroke-width="12" stroke-linecap="round"/>
+                        
+                        <!-- Palang Lantai Atas & Bawah -->
+                        <line x1="95" y1="110" x2="315" y2="110" stroke="#9c6b4e" stroke-width="12" stroke-linecap="round"/>
+                        <line x1="95" y1="185" x2="315" y2="185" stroke="#9c6b4e" stroke-width="12" stroke-linecap="round"/>
+                        
+                        <!-- Kayu Lantai Rak (Buluh kecil) -->
+                        <line x1="145" y1="104" x2="125" y2="116" stroke="#b08264" stroke-width="7" stroke-linecap="round"/>
+                        <line x1="175" y1="104" x2="155" y2="116" stroke="#b08264" stroke-width="7" stroke-linecap="round"/>
+                        <line x1="205" y1="104" x2="185" y2="116" stroke="#b08264" stroke-width="7" stroke-linecap="round"/>
+                        <line x1="235" y1="104" x2="215" y2="116" stroke="#b08264" stroke-width="7" stroke-linecap="round"/>
+                        <line x1="265" y1="104" x2="245" y2="116" stroke="#b08264" stroke-width="7" stroke-linecap="round"/>
+
+                        <line x1="145" y1="179" x2="125" y2="191" stroke="#b08264" stroke-width="7" stroke-linecap="round"/>
+                        <line x1="175" y1="179" x2="155" y2="191" stroke="#b08264" stroke-width="7" stroke-linecap="round"/>
+                        <line x1="205" y1="179" x2="185" y2="191" stroke="#b08264" stroke-width="7" stroke-linecap="round"/>
+                        <line x1="235" y1="179" x2="215" y2="191" stroke="#b08264" stroke-width="7" stroke-linecap="round"/>
+                        <line x1="265" y1="179" x2="245" y2="191" stroke="#b08264" stroke-width="7" stroke-linecap="round"/>
+
+                        <!-- Tiang Hadapan -->
+                        <line x1="115" y1="60" x2="115" y2="280" stroke="#85583f" stroke-width="14" stroke-linecap="round"/>
+                        <line x1="285" y1="60" x2="285" y2="280" stroke="#85583f" stroke-width="14" stroke-linecap="round"/>
+
+                        <!-- Ikatan Seraya pada 4 penjuru hadapan -->
+                        <rect x="106" y="101" width="18" height="18" rx="4" stroke="#c89d66" stroke-width="5" fill="none"/>
+                        <rect x="276" y="101" width="18" height="18" rx="4" stroke="#c89d66" stroke-width="5" fill="none"/>
+                        <rect x="106" y="176" width="18" height="18" rx="4" stroke="#c89d66" stroke-width="5" fill="none"/>
+                        <rect x="276" y="176" width="18" height="18" rx="4" stroke="#c89d66" stroke-width="5" fill="none"/>
+
+                        ${renderHotspots([
+                            {x: 115, y: 110},
+                            {x: 285, y: 185},
+                            {x: 200, y: 185}
+                        ], activeIdx)}
+                    </svg>
+                `
+            },
+            {
+                id: 2,
+                name: "3. Meja Makan Perkhemahan",
+                subtitle: "Gajet utama kumpulan dengan palang pengukuh silang (X-Brace)",
+                hotspots: [
+                    {
+                        x: 200, y: 195,
+                        partName: "Palang Silang Pengukuh Kaki (X-Brace)",
+                        knotName: "Ikatan Serong (Diagonal Lashing)",
+                        knotId: 7,
+                        desc: "Dua batang kayu panjang dipasang menyilang pada bahagian kaki meja dan diikat di tengah menggunakan Ikatan Serong supaya meja tidak bergoyang ke kiri dan kanan."
+                    },
+                    {
+                        x: 105, y: 115,
+                        partName: "Bucu Rangka Permukaan Meja",
+                        knotName: "Ikatan Seraya (Square Lashing)",
+                        knotId: 6,
+                        desc: "Rangka meja dan bangku duduk diikat pada tiang utama menggunakan Ikatan Seraya bagi menahan beban pinggan mangkuk dan makanan."
+                    },
+                    {
+                        x: 295, y: 115,
+                        partName: "Pengikat Alas Meja / Kanvas",
+                        knotName: "Buku Sila (Reef Knot)",
+                        knotId: 0,
+                        desc: "Tali pengikat kanvas permukaan meja atau bungkusan peralatan di bawah meja diikat menggunakan Buku Sila kerana ia rata dan kemas."
+                    }
+                ],
+                renderSvg: (activeIdx) => `
+                    <svg viewBox="0 0 400 320" class="w-full h-auto">
+                        <ellipse cx="200" cy="285" rx="165" ry="15" fill="#cbd5e1" opacity="0.6"/>
+                        
+                        <!-- Palang Silang X-Brace di tengah -->
+                        <line x1="108" y1="120" x2="292" y2="268" stroke="#b08264" stroke-width="11" stroke-linecap="round"/>
+                        <line x1="292" y1="120" x2="108" y2="268" stroke="#b08264" stroke-width="11" stroke-linecap="round"/>
+                        
+                        <!-- Ikatan Serong di persilangan X -->
+                        <circle cx="200" cy="194" r="14" stroke="#d9534f" stroke-width="6" fill="none"/>
+                        <line x1="190" y1="184" x2="210" y2="204" stroke="#c89d66" stroke-width="5"/>
+                        <line x1="210" y1="184" x2="190" y2="204" stroke="#c89d66" stroke-width="5"/>
+
+                        <!-- Tiang Meja -->
+                        <line x1="105" y1="90" x2="105" y2="280" stroke="#85583f" stroke-width="15" stroke-linecap="round"/>
+                        <line x1="295" y1="90" x2="295" y2="280" stroke="#85583f" stroke-width="15" stroke-linecap="round"/>
+
+                        <!-- Permukaan Meja -->
+                        <rect x="75" y="102" width="250" height="18" rx="6" fill="#9c6b4e" stroke="#5c3a27" stroke-width="2"/>
+                        
+                        <!-- Bangku Kiri & Kanan -->
+                        <line x1="55" y1="195" x2="140" y2="195" stroke="#85583f" stroke-width="11" stroke-linecap="round"/>
+                        <line x1="65" y1="195" x2="65" y2="280" stroke="#6b442e" stroke-width="11" stroke-linecap="round"/>
+                        
+                        <line x1="260" y1="195" x2="345" y2="195" stroke="#85583f" stroke-width="11" stroke-linecap="round"/>
+                        <line x1="335" y1="195" x2="335" y2="280" stroke="#6b442e" stroke-width="11" stroke-linecap="round"/>
+
+                        <!-- Ikatan Seraya bucu meja -->
+                        <rect x="96" y="102" width="18" height="20" rx="4" stroke="#c89d66" stroke-width="5" fill="none"/>
+                        <rect x="286" y="102" width="18" height="20" rx="4" stroke="#c89d66" stroke-width="5" fill="none"/>
+
+                        ${renderHotspots([
+                            {x: 200, y: 195},
+                            {x: 105, y: 115},
+                            {x: 295, y: 115}
+                        ], activeIdx)}
+                    </svg>
+                `
+            },
+            {
+                id: 3,
+                name: "4. Ampaian Kain & Khemah",
+                subtitle: "Aplikasi tali tegang menggunakan Lilit Dua Simpul dan Bunga Geti",
+                hotspots: [
+                    {
+                        x: 85, y: 115,
+                        partName: "Tambatan Utama Pada Tiang / Pokok",
+                        knotName: "Lilit Dua Simpul (Round Turn & Two Half Hitches)",
+                        knotId: 4,
+                        desc: "Hujung tali ampaian ditambat pada tiang kayu dengan Lilit Dua Simpul supaya tali kekal tegang dan mudah dilaraskan semula apabila mengendur."
+                    },
+                    {
+                        x: 205, y: 122,
+                        partName: "Penyambungan Dua Tali Berbeza Saiz",
+                        knotName: "Bunga Geti (Sheet Bend)",
+                        knotId: 1,
+                        desc: "Apabila tali ampaian tidak cukup panjang, dua tali yang berbeza ketebalan disambung dengan selamat menggunakan simpulan Bunga Geti."
+                    },
+                    {
+                        x: 315, y: 115,
+                        partName: "Kunci Permulaan Tiang Sokongan",
+                        knotName: "Simpul Manuk (Clove Hitch)",
+                        knotId: 2,
+                        desc: "Palang sokongan tiang penyidai diikat kukuh menggunakan Simpul Manuk dan Ikatan Seraya supaya tiang tidak tumbang ditiup angin."
+                    }
+                ],
+                renderSvg: (activeIdx) => `
+                    <svg viewBox="0 0 400 320" class="w-full h-auto">
+                        <ellipse cx="200" cy="285" rx="165" ry="15" fill="#cbd5e1" opacity="0.6"/>
+                        
+                        <!-- Tiang Kiri & Kanan -->
+                        <line x1="85" y1="65" x2="85" y2="280" stroke="#85583f" stroke-width="18" stroke-linecap="round"/>
+                        <line x1="315" y1="65" x2="315" y2="280" stroke="#85583f" stroke-width="18" stroke-linecap="round"/>
+                        
+                        <!-- Kayu Sokongan Kaki -->
+                        <line x1="45" y1="220" x2="125" y2="220" stroke="#9c6b4e" stroke-width="11" stroke-linecap="round"/>
+                        <line x1="275" y1="220" x2="355" y2="220" stroke="#9c6b4e" stroke-width="11" stroke-linecap="round"/>
+
+                        <!-- Tali Ampaian (2 bahagian disambung Bunga Geti) -->
+                        <path d="M 85 115 Q 145 125 205 122" stroke="#c89d66" stroke-width="7" fill="none"/>
+                        <path d="M 205 122 Q 260 125 315 115" stroke="#d9534f" stroke-width="5" fill="none"/>
+
+                        <!-- Lilit Dua Simpul pada Tiang Kiri -->
+                        <line x1="75" y1="112" x2="95" y2="112" stroke="#e6c89c" stroke-width="6"/>
+                        <line x1="75" y1="120" x2="95" y2="120" stroke="#e6c89c" stroke-width="6"/>
+
+                        <!-- Tuala / Pakaian disidai -->
+                        <path d="M 125 120 L 175 122 L 172 185 L 128 185 Z" fill="#38bdf8" opacity="0.85"/>
+                        <path d="M 235 122 L 280 119 L 278 175 L 237 175 Z" fill="#fbbf24" opacity="0.85"/>
+
+                        ${renderHotspots([
+                            {x: 85, y: 115},
+                            {x: 205, y: 122},
+                            {x: 315, y: 115}
+                        ], activeIdx)}
+                    </svg>
+                `
+            }
+        ];
+
+        // Pangkalan Data Kuiz Uji Minda
+        const quizQuestions = [
+            {
+                question: "Simpulan manakah yang paling sesuai digunakan untuk menyambung dua hujung tali yang TIDAK sama saiz?",
+                options: ["Buku Sila (Reef Knot)", "Bunga Geti (Sheet Bend)", "Simpul Manuk (Clove Hitch)", "Tindih Kasih (Bowline)"],
+                correct: 1,
+                explanation: "Tepat sekali! Bunga Geti direka khas untuk menyambung dua tali yang berbeza ketebalan atau licin."
+            },
+            {
+                question: "Setiap pembinaan Ikatan Seraya (Square Lashing) mestilah dimulakan dan dimatikan dengan simpulan apa?",
+                options: ["Simpul Manuk (Clove Hitch)", "Buku Sila (Reef Knot)", "Lilit Pemati Biasa", "Tindih Kasih (Bowline)"],
+                correct: 0,
+                explanation: "Betul! Simpul Manuk digunakan pada permulaan (tiang tegak) dan penamat (tiang melintang) Ikatan Seraya."
+            },
+            {
+                question: "Mengapakah simpulan Tindih Kasih (Bowline) digelar sebagai 'Raja Segala Simpul' dan digunakan dalam kerja menyelamat?",
+                options: [
+                    "Kerana ia mudah terlucut apabila ditarik",
+                    "Kerana ia menghasilkan gelung tetap yang tidak akan menjerut mangsa",
+                    "Kerana ia hanya memerlukan satu lilitan sahaja",
+                    "Kerana ia digunakan untuk mematikan hujung tali"
+                ],
+                correct: 1,
+                explanation: "Syabas! Gelung Tindih Kasih kekal saiznya dan tidak menjerut pinggang mangsa walaupun ditarik dengan beban berat."
+            },
+            {
+                question: "Apakah fungsi utama Lilitan Cekik (Frapping) dalam Ikatan Seraya dan Ikatan Serong?",
+                options: [
+                    "Menghias ikatan supaya kelihatan cantik",
+                    "Menarik dan mengetatkan lilitan tali di antara celah kayu supaya ikatan tidak longgar",
+                    "Menyambung tali yang putus di tengah",
+                    "Mengelakkan hujung tali daripada terburai"
+                ],
+                correct: 1,
+                explanation: "Tepat! Lilitan Cekik di celah kayu menarik lilitan utama menjadi tegang dan mengunci kayu dengan rapat."
+            },
+            {
+                question: "Anda ingin membina palang pengukuh berbentuk huruf 'X' pada kaki meja makan perkhemahan. Ikatan manakah yang paling sesuai?",
+                options: ["Ikatan Seraya", "Ikatan Serong", "Lilit Dua Simpul", "Buku Sila"],
+                correct: 1,
+                explanation: "Betul! Ikatan Serong (Diagonal Lashing) digunakan untuk mengikat dua kayu yang bersilang membentuk 'X'."
+            },
+            {
+                question: "Simpulan manakah yang digunakan untuk mengikat kain anduh pertolongan cemas kerana bentuknya yang leper dan kemas?",
+                options: ["Lilit Dua Simpul", "Bunga Geti", "Buku Sila", "Simpul Manuk"],
+                correct: 2,
+                explanation: "Cemerlang! Buku Sila menghasilkan ikatan yang rata/leper dan mudah dibuka semula."
+            }
+        ];
+
+        // Pemboleh Ubah Keadaan (State)
+        let currentKnotIndex = 0;
+        let currentStepIndex = 0;
+        let autoPlayInterval = null;
+
+        let currentGadgetIndex = 0;
+        let currentHotspotIndex = 0;
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let quizAnswered = false;
+
+        // =========================================================
+        // INISIALISASI APLIKASI
+        // =========================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            renderKnotSelector();
+            loadKnot(0);
+            renderGadgetSelector();
+            loadGadget(0);
+            loadQuizQuestion();
+        });
+
+        // Penukaran Tab Utama (Simpulan / Gajet / Kuiz)
+        function switchMode(mode) {
+            stopAutoPlay();
+            const sections = ['knots', 'gadgets', 'quiz'];
+            sections.forEach(sec => {
+                const el = document.getElementById(`section-${sec}`);
+                const btn = document.getElementById(`btn-mod-${sec}`);
+                if (sec === mode) {
+                    el.classList.remove('hidden');
+                    if (btn) {
+                        btn.classList.add('tab-active');
+                        btn.classList.remove('text-slate-600');
+                    }
+                } else {
+                    el.classList.add('hidden');
+                    if (btn) {
+                        btn.classList.remove('tab-active');
+                        btn.classList.add('text-slate-600');
+                    }
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // =========================================================
+        // LOGIK MODUL 1: 8 SIMPULAN & IKATAN
+        // =========================================================
+        function renderKnotSelector() {
+            const container = document.getElementById('knot-selector-grid');
+            container.innerHTML = knotsData.map((knot, idx) => `
+                <button onclick="loadKnot(${idx})" id="knot-tab-${idx}" 
+                    class="text-left p-2.5 sm:p-3 rounded-2xl border transition-all duration-200 flex flex-col justify-between
+                    ${idx === currentKnotIndex 
+                        ? 'bg-scout-700 text-white border-scout-700 shadow-md ring-2 ring-scout-500/30' 
+                        : 'bg-white text-slate-700 border-slate-200 hover:border-scout-400 hover:bg-scout-50/50'}">
+                    <span class="text-[11px] font-bold opacity-75">0${idx + 1}</span>
+                    <span class="text-xs sm:text-sm font-bold leading-snug mt-0.5 line-clamp-1">${knot.shortName}</span>
+                </button>
+            `).join('');
+        }
+
+        function loadKnot(index) {
+            stopAutoPlay();
+            currentKnotIndex = index;
+            currentStepIndex = 0;
+            const knot = knotsData[index];
+
+            // Kemas kini gaya butang pemilih
+            renderKnotSelector();
+
+            // Kemas kini maklumat teks
+            document.getElementById('knot-category-badge').textContent = knot.category;
+            document.getElementById('knot-title').textContent = knot.title;
+            document.getElementById('knot-tips').textContent = knot.tips;
+            document.getElementById('knot-gadget-preview').textContent = knot.gadgetPreviewText;
+
+            // Kemas kini senarai kegunaan
+            const usesList = document.getElementById('knot-uses-list');
+            usesList.innerHTML = knot.uses.map(use => `
+                <li class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-scout-100 text-scout-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">✓</span>
+                    <span>${use}</span>
+                </li>
+            `).join('');
+
+            // Petunjuk legenda warna
+            const legendRope2 = document.getElementById('legend-rope-2');
+            const legendWood = document.getElementById('legend-wood');
+            legendRope2.style.display = knot.hasSecondRope ? 'flex' : 'none';
+            legendWood.style.display = knot.hasWood ? 'flex' : 'none';
+
+            updateStepView();
+        }
+
+        function updateStepView() {
+            const knot = knotsData[currentKnotIndex];
+            const totalSteps = knot.steps.length;
+            const step = knot.steps[currentStepIndex];
+
+            // Suntik SVG simulasi
+            const canvas = document.getElementById('simulation-canvas');
+            canvas.innerHTML = step.svg;
+
+            // Kemas kini penunjuk langkah & arahan
+            document.getElementById('step-indicator').textContent = currentStepIndex + 1;
+            document.getElementById('total-steps').textContent = totalSteps;
+            document.getElementById('step-instruction').textContent = step.text;
+
+            // Bar kemajuan langkah
+            const progressContainer = document.getElementById('step-progress-bars');
+            progressContainer.innerHTML = knot.steps.map((_, i) => `
+                <button onclick="goToStep(${i})" class="h-2 flex-1 rounded-full transition-all duration-300 ${i <= currentStepIndex ? 'bg-scout-600' : 'bg-slate-200 hover:bg-slate-300'}" title="Langkah ${i + 1}"></button>
+            `).join('');
+
+            // Keadaan butang Sebelum / Seterusnya
+            document.getElementById('btn-prev-step').disabled = currentStepIndex === 0;
+            const nextBtn = document.getElementById('btn-next-step');
+            if (currentStepIndex === totalSteps - 1) {
+                nextBtn.innerHTML = `Ulang Semula <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>`;
+            } else {
+                nextBtn.innerHTML = `Seterusnya <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>`;
+            }
+        }
+
+        function nextStep() {
+            const totalSteps = knotsData[currentKnotIndex].steps.length;
+            if (currentStepIndex < totalSteps - 1) {
+                currentStepIndex++;
+            } else {
+                currentStepIndex = 0;
+            }
+            updateStepView();
+        }
+
+        function prevStep() {
+            if (currentStepIndex > 0) {
+                currentStepIndex--;
+                updateStepView();
+            }
+        }
+
+        function goToStep(stepIdx) {
+            stopAutoPlay();
+            currentStepIndex = stepIdx;
+            updateStepView();
+        }
+
+        function resetSimulation() {
+            stopAutoPlay();
+            currentStepIndex = 0;
+            updateStepView();
+        }
+
+        function toggleAutoPlay() {
+            if (autoPlayInterval) {
+                stopAutoPlay();
+            } else {
+                document.getElementById('text-autoplay').textContent = 'Berhenti';
+                document.getElementById('btn-autoplay').classList.replace('bg-scout-100', 'bg-amber-100');
+                document.getElementById('btn-autoplay').classList.replace('text-scout-800', 'text-amber-900');
+                autoPlayInterval = setInterval(() => {
+                    nextStep();
+                }, 2400);
+            }
+        }
+
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+            }
+            const txt = document.getElementById('text-autoplay');
+            const btn = document.getElementById('btn-autoplay');
+            if (txt && btn) {
+                txt.textContent = 'Main Auto';
+                btn.classList.replace('bg-amber-100', 'bg-scout-100');
+                btn.classList.replace('text-amber-900', 'text-scout-800');
+            }
+        }
+
+        function jumpToRelatedGadget() {
+            const relatedId = knotsData[currentKnotIndex].relatedGadgetId;
+            switchMode('gadgets');
+            loadGadget(relatedId);
+        }
+
+        // =========================================================
+        // LOGIK MODUL 2: SIMULASI GAJET PERKHEMAHAN
+        // =========================================================
+        function renderHotspots(points, activeIdx) {
+            return points.map((pt, idx) => {
+                const isActive = idx === activeIdx;
+                return `
+                    <g class="cursor-pointer" onclick="selectHotspot(${idx})">
+                        ${isActive ? `<circle cx="${pt.x}" cy="${pt.y}" r="18" fill="#d9534f" opacity="0.35" class="hotspot-ring"/>` : ''}
+                        <circle cx="${pt.x}" cy="${pt.y}" r="13" fill="${isActive ? '#d9534f' : '#f59e0b'}" stroke="#ffffff" stroke-width="3"/>
+                        <text x="${pt.x}" y="${pt.y + 4}" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">${idx + 1}</text>
+                    </g>
+                `;
+            }).join('');
+        }
+
+        function renderGadgetSelector() {
+            const container = document.getElementById('gadget-selector');
+            container.innerHTML = gadgetsData.map((g, idx) => `
+                <button onclick="loadGadget(${idx})" 
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold transition border
+                    ${idx === currentGadgetIndex 
+                        ? 'bg-scout-700 text-white border-scout-700 shadow-sm' 
+                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}">
+                    ${g.name}
+                </button>
+            `).join('');
+        }
+
+        function loadGadget(index) {
+            currentGadgetIndex = index;
+            currentHotspotIndex = 0;
+            renderGadgetSelector();
+
+            const gadget = gadgetsData[index];
+            document.getElementById('gadget-title').textContent = gadget.name;
+            document.getElementById('gadget-subtitle').textContent = gadget.subtitle;
+
+            selectHotspot(0);
+        }
+
+        function selectHotspot(hIdx) {
+            currentHotspotIndex = hIdx;
+            const gadget = gadgetsData[currentGadgetIndex];
+            const spot = gadget.hotspots[hIdx];
+
+            // Lukis semula SVG dengan titik aktif dikemas kini
+            document.getElementById('gadget-canvas').innerHTML = gadget.renderSvg(hIdx);
+
+            // Kemas kini kad perincian
+            document.getElementById('hotspot-step-badge').textContent = `Bahagian ${hIdx + 1} daripada ${gadget.hotspots.length}`;
+            document.getElementById('hotspot-part-name').textContent = spot.partName;
+            document.getElementById('hotspot-knot-name').textContent = spot.knotName;
+            document.getElementById('hotspot-desc').textContent = spot.desc;
+
+            const inspectBtn = document.getElementById('btn-inspect-knot');
+            inspectBtn.setAttribute('onclick', `inspectKnotFromGadget(${spot.knotId})`);
+
+            // Kemas kini senarai semak ikatan gajet
+            const checklist = document.getElementById('gadget-knots-checklist');
+            checklist.innerHTML = gadget.hotspots.map((item, i) => `
+                <div onclick="selectHotspot(${i})" class="p-3 rounded-2xl border cursor-pointer transition flex items-center justify-between
+                    ${i === hIdx ? 'bg-scout-50 border-scout-500' : 'bg-slate-50 border-slate-100 hover:border-slate-300'}">
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-full ${i === hIdx ? 'bg-red-500 text-white' : 'bg-amber-500 text-white'} text-xs font-bold flex items-center justify-center shrink-0">
+                            ${i + 1}
+                        </span>
+                        <div>
+                            <div class="text-xs font-bold text-slate-900">${item.partName}</div>
+                            <div class="text-xs text-scout-700 font-medium">${item.knotName}</div>
+                        </div>
+                    </div>
+                    <span class="text-xs text-slate-400">Lihat →</span>
+                </div>
+            `).join('');
+        }
+
+        function animateGadgetBuild() {
+            let step = 0;
+            const total = gadgetsData[currentGadgetIndex].hotspots.length;
+            selectHotspot(0);
+            const timer = setInterval(() => {
+                step++;
+                if (step < total) {
+                    selectHotspot(step);
+                } else {
+                    clearInterval(timer);
+                }
+            }, 1300);
+        }
+
+        function inspectKnotFromGadget(knotId) {
+            switchMode('knots');
+            loadKnot(knotId);
+        }
+
+        // =========================================================
+        // LOGIK MODUL 3: KUIZ INTERAKTIF
+        // =========================================================
+        function loadQuizQuestion() {
+            quizAnswered = false;
+            const q = quizQuestions[currentQuizIndex];
+            document.getElementById('quiz-current').textContent = currentQuizIndex + 1;
+            document.getElementById('quiz-total').textContent = quizQuestions.length;
+            document.getElementById('quiz-question').textContent = q.question;
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            document.getElementById('btn-next-question').classList.add('hidden');
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = q.options.map((opt, idx) => `
+                <button onclick="submitQuizAnswer(${idx})" id="quiz-opt-${idx}"
+                    class="w-full text-left p-4 rounded-2xl border border-slate-200 hover:border-scout-500 hover:bg-scout-50/50 transition font-medium text-sm sm:text-base flex items-center gap-3">
+                    <span class="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                    <span>${opt}</span>
+                </button>
+            `).join('');
+        }
+
+        function submitQuizAnswer(selectedIdx) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+
+            const q = quizQuestions[currentQuizIndex];
+            const isCorrect = selectedIdx === q.correct;
+            if (isCorrect) quizScore++;
+
+            // Kemas kini skor pada header
+            const percentage = Math.round((quizScore / quizQuestions.length) * 100);
+            document.getElementById('header-score').textContent = `${percentage}%`;
+
+            // Warnakan jawapan
+            q.options.forEach((_, idx) => {
+                const btn = document.getElementById(`quiz-opt-${idx}`);
+                btn.disabled = true;
+                if (idx === q.correct) {
+                    btn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900');
+                } else if (idx === selectedIdx && !isCorrect) {
+                    btn.classList.add('bg-red-50', 'border-red-500', 'text-red-900');
+                }
+            });
+
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'bg-red-50', 'text-red-800');
+            if (isCorrect) {
+                feedback.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
+                feedback.innerHTML = `✅ <strong>Jawapan Betul!</strong> ${q.explanation}`;
+            } else {
+                feedback.classList.add('bg-red-50', 'text-red-800', 'border', 'border-red-200');
+                feedback.innerHTML = `❌ <strong>Kurang Tepat.</strong> ${q.explanation}`;
+            }
+
+            const nextBtn = document.getElementById('btn-next-question');
+            nextBtn.classList.remove('hidden');
+            nextBtn.textContent = currentQuizIndex === quizQuestions.length - 1 ? 'Lihat Keputusan' : 'Soalan Seterusnya';
+        }
+
+        function nextQuizQuestion() {
+            if (currentQuizIndex < quizQuestions.length - 1) {
+                currentQuizIndex++;
+                loadQuizQuestion();
+            } else {
+                document.getElementById('quiz-body').classList.add('hidden');
+                document.getElementById('quiz-result').classList.remove('hidden');
+                document.getElementById('final-score-text').textContent = `${quizScore} / ${quizQuestions.length}`;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            document.getElementById('header-score').textContent = '0%';
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-body').classList.remove('hidden');
+            loadQuizQuestion();
+        }
+    </script>
+</body>
+</html>

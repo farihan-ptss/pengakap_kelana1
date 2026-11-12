@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub Pembelajaran: Asas Orienteering, Kompas & Penganggaran</title>
+    <!-- Tailwind CSS untuk penggayaan moden dan responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter untuk kejelasan bacaan -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Ikon Lucide untuk antara muka pengguna yang kemas -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        /* Animasi khas untuk jarum kompas yang lancar */
+        .compass-needle {
+            transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-origin: center;
+        }
+        /* Gaya custom scrollbar untuk kelihatan kemas */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .tab-active {
+            border-bottom: 3px solid #10b981;
+            color: #059669;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-900">
+
+    <!-- Header & Navigasi Utama -->
+    <header class="bg-emerald-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-emerald-500 p-2 rounded-xl shadow-inner">
+                        <i data-lucide="compass" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-extrabold text-lg sm:text-xl tracking-tight leading-none">NAVIGASI<span class="text-emerald-400">PRO</span></h1>
+                        <p class="text-xs text-emerald-200 font-medium">Hub Pembelajaran Orienteering & Ikhtiar Hidup</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bar Navigasi Tab Modul -->
+        <nav class="bg-white text-slate-600 border-b border-slate-200 overflow-x-auto">
+            <div class="max-w-7xl mx-auto px-4 flex space-x-6 sm:space-x-8 whitespace-nowrap">
+                <button onclick="switchTab('modul-orienteering')" id="btn-modul-orienteering" class="tab-btn tab-active py-3.5 px-2 text-sm font-medium flex items-center space-x-2 transition-colors hover:text-emerald-600">
+                    <i data-lucide="map" class="w-4 h-4"></i>
+                    <span>1. Asas Orienteering & Peta</span>
+                </button>
+                <button onclick="switchTab('modul-kompas')" id="btn-modul-kompas" class="tab-btn py-3.5 px-2 text-sm font-medium flex items-center space-x-2 transition-colors hover:text-emerald-600">
+                    <i data-lucide="navigation" class="w-4 h-4"></i>
+                    <span>2. Kompas & Bearing</span>
+                </button>
+                <button onclick="switchTab('modul-penganggaran')" id="btn-modul-penganggaran" class="tab-btn py-3.5 px-2 text-sm font-medium flex items-center space-x-2 transition-colors hover:text-emerald-600">
+                    <i data-lucide="ruler" class="w-4 h-4"></i>
+                    <span>3. Teknik Penganggaran</span>
+                </button>
+                <button onclick="switchTab('modul-kuiz')" id="btn-modul-kuiz" class="tab-btn py-3.5 px-2 text-sm font-medium flex items-center space-x-2 transition-colors hover:text-emerald-600">
+                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                    <span>4. Ujian Minda</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Kandungan Utama -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Kotak Mesej Notifikasi (Pengganti alert()) -->
+        <div id="toast-notification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+            <div class="bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 border border-slate-700">
+                <div id="toast-icon" class="text-emerald-400">
+                    <i data-lucide="info" class="w-5 h-5"></i>
+                </div>
+                <p id="toast-message" class="text-sm font-medium">Mesej sistem di sini</p>
+            </div>
+        </div>
+
+        <!-- ===================================================================== -->
+        <!-- MODUL 1: ASAS ORIENTEERING & SIMULASI PETA                            -->
+        <!-- ===================================================================== -->
+        <section id="modul-orienteering" class="modul-section space-y-8">
+            <!-- Pengenalan -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-6">
+                    <div>
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full mb-2">MODUL 01</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Asas Orienteering & Pembacaan Peta</h2>
+                        <p class="text-slate-600 mt-1">Memahami simbol peta topografi, garis kontur, dan teknik navigasi titik kawalan.</p>
+                    </div>
+                </div>
+
+                <!-- Kad Konsep Utama -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200/80">
+                        <div class="w-10 h-10 bg-amber-100 text-amber-700 rounded-lg flex items-center justify-center mb-3">
+                            <i data-lucide="mountain" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 mb-1">Garis Kontur (Contour)</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Garisan coklat pada peta yang menghubungkan titik-titik sama ketinggian. Semakin rapat garisan, semakin curam cerun bukit tersebut.</p>
+                    </div>
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200/80">
+                        <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-lg flex items-center justify-center mb-3">
+                            <i data-lucide="palette" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 mb-1">Kod Warna Peta (IOF)</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            <span class="font-semibold text-blue-600">Biru:</span> Air/Sungai &bull; 
+                            <span class="font-semibold text-amber-700">Coklat:</span> Bentuk Muka Bumi &bull; 
+                            <span class="font-semibold text-emerald-700">Hijau:</span> Hutan Tebal &bull; 
+                            <span class="font-semibold text-slate-800">Hitam:</span> Binaan/Batu.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200/80">
+                        <div class="w-10 h-10 bg-rose-100 text-rose-700 rounded-lg flex items-center justify-center mb-3">
+                            <i data-lucide="flag" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 mb-1">Titik Kawalan (Checkpoints)</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Ditanda dengan bulatan ungu/merah. Peserta mesti melawat titik kawalan mengikut turutan nombor (1, 2, 3...) dari titik Mula (Segitiga) ke Tamat (Bulatan Berkembar).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulasi 1: Peta Orienteering Interaktif -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="gamepad-2" class="w-5 h-5 text-emerald-600"></i>
+                            Simulasi 1: Misi Navigasi Peta Topografi
+                        </h3>
+                        <p class="text-sm text-slate-600">Pandu pengembara (ikon biru) ke semua Titik Kawalan mengikut urutan menggunakan peta. Elakkan meredah kawasan tasik atau tebing terlalu curam!</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="map-mission-status" class="px-3 py-1.5 bg-amber-100 text-amber-800 text-xs font-bold rounded-lg">Sasaran: Titik 1</span>
+                        <button onclick="resetMapSimulation()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition flex items-center gap-1.5">
+                            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Set Semula
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                    <!-- Kanvas Peta -->
+                    <div class="lg:col-span-2 bg-amber-50/50 rounded-xl border-2 border-slate-300 overflow-hidden relative shadow-inner">
+                        <canvas id="orienteeringCanvas" class="w-full h-80 sm:h-96 block cursor-crosshair"></canvas>
+                        <div class="absolute bottom-3 left-3 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg text-xs font-medium text-slate-700 border border-slate-200 shadow-sm">
+                            Klik pada peta untuk bergerak atau gunakan butang kawalan.
+                        </div>
+                    </div>
+
+                    <!-- Panel Kawalan & Petunjuk Peta -->
+                    <div class="space-y-5 bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Petunjuk Peta (Legend)</h4>
+                            <ul class="space-y-2 text-xs font-medium text-slate-700">
+                                <li class="flex items-center gap-2.5"><span class="w-4 h-4 inline-block border-2 border-fuchsia-600 transform rotate-45"></span> Mula (Start)</li>
+                                <li class="flex items-center gap-2.5"><span class="w-4 h-4 inline-block rounded-full border-2 border-fuchsia-600"></span> Titik Kawalan (1, 2, 3)</li>
+                                <li class="flex items-center gap-2.5"><span class="w-4 h-4 inline-block rounded-full border-4 border-double border-fuchsia-600"></span> Tamat (Finish)</li>
+                                <li class="flex items-center gap-2.5"><span class="w-4 h-4 inline-block bg-sky-400 rounded"></span> Tasik / Sungai (Halangan)</li>
+                                <li class="flex items-center gap-2.5"><span class="w-4 h-4 inline-block bg-emerald-200 border border-emerald-400 rounded"></span> Hutan Rimbun (Perlahan)</li>
+                                <li class="flex items-center gap-2.5"><span class="w-4 h-4 inline-block border border-amber-700 rounded-full"></span> Garis Kontur Bukit</li>
+                            </ul>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-4">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Kawalan Pergerakan (Sentuh/Klik)</h4>
+                            <div class="grid grid-cols-3 gap-2 max-w-[160px] mx-auto">
+                                <div></div>
+                                <button onclick="movePlayer(0, -25)" class="p-3 bg-white hover:bg-emerald-50 active:bg-emerald-100 border border-slate-300 rounded-xl shadow-sm flex justify-center"><i data-lucide="arrow-up" class="w-5 h-5 text-slate-700"></i></button>
+                                <div></div>
+                                <button onclick="movePlayer(-25, 0)" class="p-3 bg-white hover:bg-emerald-50 active:bg-emerald-100 border border-slate-300 rounded-xl shadow-sm flex justify-center"><i data-lucide="arrow-left" class="w-5 h-5 text-slate-700"></i></button>
+                                <button onclick="movePlayer(0, 25)" class="p-3 bg-white hover:bg-emerald-50 active:bg-emerald-100 border border-slate-300 rounded-xl shadow-sm flex justify-center"><i data-lucide="arrow-down" class="w-5 h-5 text-slate-700"></i></button>
+                                <button onclick="movePlayer(25, 0)" class="p-3 bg-white hover:bg-emerald-50 active:bg-emerald-100 border border-slate-300 rounded-xl shadow-sm flex justify-center"><i data-lucide="arrow-right" class="w-5 h-5 text-slate-700"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 text-xs">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-slate-500">Jarak Perjalanan:</span>
+                                <span id="map-distance" class="font-bold text-slate-800">0 m</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">Status Kawasan:</span>
+                                <span id="map-terrain" class="font-bold text-emerald-600">Tanah Lapang</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- MODUL 2: KOMPAS SILVA & PENGIRAAN BEARING                            -->
+        <!-- ===================================================================== -->
+        <section id="modul-kompas" class="modul-section hidden space-y-8">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <span class="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full mb-2">MODUL 02</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Kompas Silva & Mencari Bearing</h2>
+                <p class="text-slate-600 mt-1">Pelajari bahagian kompas orienteering dan cara menetapkan arah bearing dengan tepat.</p>
+
+                <!-- 3 Langkah Emas Kompas -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    <div class="border-l-4 border-emerald-500 bg-emerald-50/50 p-4 rounded-r-xl">
+                        <span class="text-xs font-extrabold text-emerald-700 uppercase">Langkah 1</span>
+                        <h4 class="font-bold text-slate-900 mt-1">Letak & Halakan</h4>
+                        <p class="text-sm text-slate-600 mt-1">Halakan <strong>Anak Panah Arah Perjalanan</strong> (Direction of Travel Arrow) ke sasaran atau garisan dari titik A ke B pada peta.</p>
+                    </div>
+                    <div class="border-l-4 border-blue-500 bg-blue-50/50 p-4 rounded-r-xl">
+                        <span class="text-xs font-extrabold text-blue-700 uppercase">Langkah 2</span>
+                        <h4 class="font-bold text-slate-900 mt-1">Pusing Perumah (Housing)</h4>
+                        <p class="text-sm text-slate-600 mt-1">Pusingkan perumah kompas sehingga <strong>Garisan Utara</strong> pada kompas selari dengan garisan Utara peta.</p>
+                    </div>
+                    <div class="border-l-4 border-rose-500 bg-rose-50/50 p-4 rounded-r-xl">
+                        <span class="text-xs font-extrabold text-rose-700 uppercase">Langkah 3</span>
+                        <h4 class="font-bold text-slate-900 mt-1">"Red in the Shed"</h4>
+                        <p class="text-sm text-slate-600 mt-1">Pusingkan badan anda sehingga <strong>Jarum Magnetik Merah</strong> masuk tepat ke dalam <strong>Anak Panah Orientasi</strong> (Shed).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulasi 2: Simulator Kompas Silva Interaktif -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="compass" class="w-5 h-5 text-blue-600"></i>
+                            Simulasi 2: Latihan "Red in the Shed" & Bearing
+                        </h3>
+                        <p class="text-sm text-slate-600">Tetapkan perumah kompas ke bearing sasaran, kemudian pusingkan badan anda sehingga jarum merah masuk tepat ke dalam rumah panah!</p>
+                    </div>
+                    <button onclick="generateNewBearingChallenge()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-2 self-start">
+                        <i data-lucide="shuffle" class="w-4 h-4"></i> Cabaran Bearing Baru
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <!-- Paparan Visual Kompas SVG -->
+                    <div class="lg:col-span-6 flex flex-col items-center justify-center bg-slate-900 rounded-2xl p-6 relative overflow-hidden shadow-inner">
+                        <div class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Pandangan Atas Kompas</div>
+                        
+                        <!-- SVG Kompas -->
+                        <svg id="compass-svg" viewBox="0 0 320 420" class="w-64 sm:w-72 h-auto select-none drop-shadow-2xl">
+                            <!-- Tapak Lutsinar (Baseplate) -->
+                            <rect x="60" y="20" width="200" height="380" rx="20" fill="rgba(255, 255, 255, 0.15)" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+                            
+                            <!-- Pembaris Sisi -->
+                            <line x1="70" y1="40" x2="70" y2="380" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="4 4"/>
+                            <line x1="250" y1="40" x2="250" y2="380" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="4 4"/>
+
+                            <!-- Anak Panah Arah Perjalanan (Direction of Travel Arrow) -->
+                            <line x1="160" y1="130" x2="160" y2="35" stroke="#fbbf24" stroke-width="4" stroke-linecap="round"/>
+                            <polygon points="160,25 150,45 170,45" fill="#fbbf24"/>
+                            <text x="160" y="18" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold">ARAH PERJALANAN</text>
+
+                            <!-- Garisan Indeks (Index Line) -->
+                            <line x1="160" y1="145" x2="160" y2="165" stroke="#ef4444" stroke-width="3"/>
+
+                            <!-- Kumpulan Perumah Kompas (Boleh Dipusing - Housing) -->
+                            <g id="compass-housing" transform="rotate(0, 160, 260)">
+                                <!-- Gelang Luar Perumah -->
+                                <circle cx="160" cy="260" r="95" fill="#1e293b" stroke="#94a3b8" stroke-width="6"/>
+                                <circle cx="160" cy="260" r="85" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+                                
+                                <!-- Garisan Meridian dalam Perumah -->
+                                <line x1="130" y1="185" x2="130" y2="335" stroke="rgba(239, 68, 68, 0.3)" stroke-width="1.5"/>
+                                <line x1="190" y1="185" x2="190" y2="335" stroke="rgba(239, 68, 68, 0.3)" stroke-width="1.5"/>
+
+                                <!-- Anak Panah Orientasi ("The Shed") -->
+                                <polygon points="160,185 148,210 155,210 155,260 165,260 165,210 172,210" fill="none" stroke="#ef4444" stroke-width="2.5"/>
+                                
+                                <!-- Tanda Arah Mata Angin -->
+                                <text x="160" y="178" text-anchor="middle" fill="#ef4444" font-size="14" font-weight="bold">N</text>
+                                <text x="242" y="265" text-anchor="middle" fill="#f8fafc" font-size="12" font-weight="bold">E</text>
+                                <text x="160" y="350" text-anchor="middle" fill="#f8fafc" font-size="12" font-weight="bold">S</text>
+                                <text x="78" y="265" text-anchor="middle" fill="#f8fafc" font-size="12" font-weight="bold">W</text>
+                                
+                                <!-- Senggatan Darjah -->
+                                <g id="compass-ticks"></g>
+                            </g>
+
+                            <!-- Jarum Magnetik (Sentiasa menunjuk ke Utara Sebenar berdasarkan pusingan badan) -->
+                            <g id="magnetic-needle" transform="rotate(0, 160, 260)">
+                                <!-- Jarum Utara (Merah) -->
+                                <polygon points="160,185 153,260 167,260" fill="#ef4444"/>
+                                <!-- Jarum Selatan (Putih) -->
+                                <polygon points="160,335 153,260 167,260" fill="#f8fafc"/>
+                                <!-- Pin Tengah -->
+                                <circle cx="160" cy="260" r="6" fill="#cbd5e1" stroke="#334155" stroke-width="2"/>
+                            </g>
+                        </svg>
+
+                        <!-- Status Penjajaran -->
+                        <div id="compass-alignment-badge" class="mt-3 px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700">
+                            Status: Belum Selari
+                        </div>
+                    </div>
+
+                    <!-- Kawalan Simulator Kompas -->
+                    <div class="lg:col-span-6 space-y-6 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <div class="bg-white p-4 rounded-xl border border-blue-200 shadow-sm flex items-center justify-between">
+                            <div>
+                                <span class="text-xs font-bold text-blue-600 uppercase">Misi Semasa</span>
+                                <h4 class="text-lg font-extrabold text-slate-900">Cari Bearing: <span id="target-bearing-display" class="text-blue-600">120°</span></h4>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs text-slate-500 block">Arah Mata Angin</span>
+                                <span id="target-cardinal-display" class="text-sm font-bold text-slate-800">Tenggara (SE)</span>
+                            </div>
+                        </div>
+
+                        <!-- Kawalan 1: Pusing Perumah Kompas -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm font-bold">
+                                <label for="housing-slider" class="text-slate-700 flex items-center gap-1.5">
+                                    <span class="w-5 h-5 rounded-full bg-slate-800 text-white text-xs flex items-center justify-center">1</span>
+                                    Pusing Perumah Kompas (Set Bearing)
+                                </label>
+                                <span id="housing-val" class="text-blue-600 font-mono">0°</span>
+                            </div>
+                            <input type="range" id="housing-slider" min="0" max="359" value="0" class="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                            <p class="text-xs text-slate-500">Selaraskan nilai darjah dengan garisan indeks merah di hadapan kompas.</p>
+                        </div>
+
+                        <!-- Kawalan 2: Pusing Badan Pengguna -->
+                        <div class="space-y-2 pt-2 border-t border-slate-200">
+                            <div class="flex justify-between text-sm font-bold">
+                                <label for="body-slider" class="text-slate-700 flex items-center gap-1.5">
+                                    <span class="w-5 h-5 rounded-full bg-rose-600 text-white text-xs flex items-center justify-center">2</span>
+                                    Pusing Badan Anda ("Red in the Shed")
+                                </label>
+                                <span id="body-val" class="text-rose-600 font-mono">0°</span>
+                            </div>
+                            <input type="range" id="body-slider" min="0" max="359" value="0" class="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-rose-600">
+                            <p class="text-xs text-slate-500">Pusing badan sehingga jarum merah bertindih tepat di dalam anak panah merah ("Shed").</p>
+                        </div>
+
+                        <!-- Butang Semak -->
+                        <button onclick="checkCompassSolution()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                            <i data-lucide="check-circle-2" class="w-5 h-5"></i> Sahkan Bacaan Bearing
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- MODUL 3: TEKNIK PENGANGGARAN (JARAK & KETINGGIAN)                     -->
+        <!-- ===================================================================== -->
+        <section id="modul-penganggaran" class="modul-section hidden space-y-8">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full mb-2">MODUL 03</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Teknik Penganggaran (Estimating)</h2>
+                <p class="text-slate-600 mt-1">Menganggar jarak dan ketinggian objek di lapangan tanpa peralatan moden.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <!-- Kaedah Kiraan Langkah -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-slate-900 flex items-center gap-2 mb-2">
+                            <i data-lucide="footprints" class="w-5 h-5 text-emerald-600"></i>
+                            1. Kiraan Langkah (Pace Counting)
+                        </h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                            Mengira setiap dua langkah (kaki kanan sahaja menyentuh tanah = 1 <em>double-pace</em>). Secara purata, <strong>60 hingga 65 langkah berkembar</strong> bersamaan dengan <strong>100 meter</strong> di tanah rata.
+                        </p>
+                        <div class="bg-white p-3 rounded-lg border border-slate-200 text-xs text-slate-700">
+                            <strong>Tip Lapangan:</strong> Jika mendaki bukit atau meredah semak, langkah menjadi lebih pendek (tambah 10-20% jumlah langkah untuk 100m).
+                        </div>
+                    </div>
+
+                    <!-- Kaedah Pensel / Nisbah -->
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-slate-900 flex items-center gap-2 mb-2">
+                            <i data-lucide="trees" class="w-5 h-5 text-amber-600"></i>
+                            2. Kaedah Pensel / Kayu (Mengukur Tinggi)
+                        </h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-3">
+                            Minta rakan berdiri di pangkal pokok. Pegang pensel tegak dengan tangan lurus ke hadapan. Tandakan tinggi rakan pada pensel, kemudian kira berapa kali ukuran itu muat sehingga ke puncak pokok.
+                        </p>
+                        <div class="bg-white p-3 rounded-lg border border-slate-200 text-xs text-slate-700 font-mono">
+                            Tinggi Pokok = Tinggi Rakan × Bilangan Gandaan
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulasi 3: Makmal Interaktif Penganggaran -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Simulator A: Penganggar Ketinggian (Kaedah Pensel) -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2 mb-1">
+                            <i data-lucide="maximize-2" class="w-5 h-5 text-amber-600"></i>
+                            Simulasi 3A: Anggar Tinggi Pokok
+                        </h3>
+                        <p class="text-xs text-slate-600 mb-4">Gunakan skala pengukur (kayu/pensel) untuk menganggar tinggi pokok berdasarkan ketinggian penanda (1.6m).</p>
+
+                        <!-- Visual Pokok & Skala -->
+                        <div class="bg-gradient-to-b from-sky-100 to-emerald-50 rounded-xl border border-slate-200 p-4 relative h-64 flex items-end justify-around overflow-hidden">
+                            <!-- Awan hiasan -->
+                            <div class="absolute top-4 left-6 w-16 h-5 bg-white/80 rounded-full"></div>
+                            <div class="absolute top-8 right-12 w-20 h-6 bg-white/80 rounded-full"></div>
+
+                            <!-- Pokok Sasaran -->
+                            <div class="flex flex-col items-center z-10">
+                                <div id="sim-tree-canopy" class="w-24 bg-emerald-700 rounded-t-full transition-all duration-300 flex items-center justify-center text-white text-xs font-bold shadow-md" style="height: 120px;">
+                                    ? m
+                                </div>
+                                <div class="w-4 h-8 bg-amber-800"></div>
+                            </div>
+
+                            <!-- Rakan Penanda (1.6m) -->
+                            <div class="flex flex-col items-center z-10">
+                                <span class="text-[10px] font-bold bg-white px-1.5 py-0.5 rounded shadow mb-1 text-slate-700">1.6m</span>
+                                <div class="w-3 h-3 rounded-full bg-rose-500"></div>
+                                <div class="w-4 h-6 bg-blue-600 rounded-t"></div>
+                            </div>
+
+                            <!-- Garisan Pengukur Interaktif -->
+                            <div id="ruler-overlay" class="absolute right-4 bottom-4 w-8 bg-amber-400/90 border border-amber-600 rounded flex flex-col justify-end items-center shadow-lg transition-all" style="height: 36px;">
+                                <span id="ruler-multiplier-text" class="text-[10px] font-extrabold text-amber-950">1x</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 space-y-3">
+                        <div class="flex items-center justify-between text-xs font-bold text-slate-700">
+                            <span>Laraskan Skala Gandaan Kayu:</span>
+                            <span id="scale-count-label" class="text-amber-600">1.0 kali tinggi rakan</span>
+                        </div>
+                        <input type="range" id="tree-scale-slider" min="1" max="6" step="0.5" value="1" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600">
+                        
+                        <div class="flex gap-2 pt-2">
+                            <input type="number" id="tree-guess-input" step="0.1" placeholder="Anggaran tinggi (m)" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <button onclick="checkTreeHeight()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl whitespace-nowrap transition">Semak</button>
+                        </div>
+                        <button onclick="newTreeChallenge()" class="text-xs text-slate-500 hover:text-slate-800 underline block text-center w-full">Tukar Pokok Baru</button>
+                    </div>
+                </div>
+
+                <!-- Simulator B: Kalibrasi Langkah & Jarak (Pace Counting) -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2 mb-1">
+                            <i data-lucide="footprints" class="w-5 h-5 text-emerald-600"></i>
+                            Simulasi 3B: Kalkulator & Ujian Kiraan Langkah
+                        </h3>
+                        <p class="text-xs text-slate-600 mb-4">Kira jarak sebenar di hutan berdasarkan jenis permukaan bumi dan jumlah langkah berkembar (<em>double-pace</em>) anda.</p>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">1. Kalibrasi Anda (Langkah Berkembar per 100m):</label>
+                                <input type="number" id="pace-calibration" value="62" min="40" max="100" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-bold text-slate-800">
+                                <span class="text-[11px] text-slate-500">Purata normal dewasa: 60 - 65 langkah berkembar / 100m.</span>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">2. Jenis Bentuk Muka Bumi (Terrain):</label>
+                                <select id="terrain-factor" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium text-slate-800">
+                                    <option value="1.0">Tanah Rata / Laluan Denai (Faktor 1.0x)</option>
+                                    <option value="0.85">Mendaki Bukit Sederhana (Langkah pendek -15%)</option>
+                                    <option value="0.70">Hutan Tebal / Berbatu (Langkah pendek -30%)</option>
+                                    <option value="1.10">Menuruni Cerun Landai (Langkah panjang +10%)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                                    <span>3. Jumlah Langkah Berkembar Diambil:</span>
+                                    <span id="steps-taken-display" class="text-emerald-600">124 langkah</span>
+                                </div>
+                                <input type="range" id="steps-slider" min="10" max="500" value="124" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Keputusan Anggaran Jarak -->
+                    <div class="mt-4 bg-emerald-900 text-white p-4 rounded-xl flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-emerald-300 block">Anggaran Jarak Ditempuhi:</span>
+                            <span id="estimated-distance-result" class="text-2xl font-extrabold">200.0 meter</span>
+                        </div>
+                        <div class="w-10 h-10 bg-emerald-800 rounded-full flex items-center justify-center">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-emerald-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===================================================================== -->
+        <!-- MODUL 4: UJIAN MINDA / KUIZ INTERAKTIF                                 -->
+        <!-- ===================================================================== -->
+        <section id="modul-kuiz" class="modul-section hidden">
+            <div class="max-w-3xl mx-auto bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-800 text-xs font-bold rounded-full mb-1">PENILAIAN</span>
+                        <h2 class="text-2xl font-extrabold text-slate-900">Ujian Penguasaan Navigasi</h2>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-slate-500 block">Soalan</span>
+                        <span id="quiz-progress" class="text-lg font-extrabold text-purple-600">1 / 5</span>
+                    </div>
+                </div>
+
+                <!-- Kontena Soalan -->
+                <div id="quiz-container" class="space-y-6">
+                    <h3 id="quiz-question" class="text-lg font-bold text-slate-800 leading-snug">Memuatkan soalan...</h3>
+                    <div id="quiz-options" class="space-y-3">
+                        <!-- Pilihan jawapan dijana melalui JS -->
+                    </div>
+                    <div id="quiz-feedback" class="hidden p-4 rounded-xl text-sm font-medium"></div>
+                    <div class="flex justify-end pt-2">
+                        <button id="quiz-next-btn" onclick="nextQuestion()" class="hidden px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl transition">
+                            Soalan Seterusnya &rarr;
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Keputusan Akhir Kuiz -->
+                <div id="quiz-result" class="hidden text-center py-8 space-y-4">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+                        <i data-lucide="trophy" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl font-extrabold text-slate-900">Tahniah! Ujian Selesai</h3>
+                    <p class="text-slate-600">Anda berjaya menjawab <span id="quiz-final-score" class="font-bold text-emerald-600">0/5</span> soalan dengan tepat.</p>
+                    <button onclick="restartQuiz()" class="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl transition">
+                        Ulang Semula Ujian
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            <p>&copy; 2026 Hub Pembelajaran Interaktif Orienteering, Kompas & Penganggaran. Dibina untuk pendidikan luar & kokurikulum.</p>
+        </div>
+    </footer>
+
+    <!-- ===================================================================== -->
+    <!-- LOGIK JAVASCRIPT & SIMULASI INTERAKTIF                                -->
+    <!-- ===================================================================== -->
+    <script>
+        // Inisialisasi ikon Lucide
+        lucide.createIcons();
+
+        /**
+         * Memaparkan maklum balas pencapaian tanpa skor XP
+         */
+        function notifyAchievement(reason) {
+            showToast(reason, 'success');
+        }
+
+        /**
+         * Papar mesej notifikasi moden (Menggantikan alert())
+         */
+        let toastTimeout;
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            const msgEl = document.getElementById('toast-message');
+            const iconEl = document.getElementById('toast-icon');
+
+            msgEl.textContent = message;
+            if (type === 'success') {
+                iconEl.innerHTML = '<i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>';
+            } else if (type === 'error') {
+                iconEl.innerHTML = '<i data-lucide="alert-triangle" class="w-5 h-5 text-rose-400"></i>';
+            } else {
+                iconEl.innerHTML = '<i data-lucide="info" class="w-5 h-5 text-blue-400"></i>';
+            }
+            lucide.createIcons();
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3500);
+        }
+
+        /**
+         * Penukaran Tab Modul Pembelajaran
+         */
+        function switchTab(tabId) {
+            // Sembunyikan semua modul
+            document.querySelectorAll('.modul-section').forEach(sec => sec.classList.add('hidden'));
+            // Nyahaktif gaya semua butang tab
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('tab-active'));
+
+            // Papar modul dipilih
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).classList.add('tab-active');
+
+            // Lukis semula kanvas jika membuka tab orienteering
+            if (tabId === 'modul-orienteering') {
+                resizeAndDrawMap();
+            }
+        }
+
+        // =====================================================================
+        // LOGIK SIMULASI 1: PETA ORIENTEERING INTERAKTIF (CANVAS)
+        // =====================================================================
+        const canvas = document.getElementById('orienteeringCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Koordinat relatif (0.0 hingga 1.0) supaya responsif pada semua skrin
+        let player = { x: 0.12, y: 0.82 };
+        let totalDistance = 0;
+        let currentTargetIndex = 0;
+
+        // Definisi Titik Kawalan (Start -> 1 -> 2 -> 3 -> Finish)
+        const checkpoints = [
+            { id: 1, label: '1', x: 0.28, y: 0.28, reached: false },
+            { id: 2, label: '2', x: 0.72, y: 0.25, reached: false },
+            { id: 3, label: '3', x: 0.65, y: 0.78, reached: false },
+            { id: 4, label: 'TAMAT', x: 0.88, y: 0.55, reached: false }
+        ];
+
+        // Halangan Tasik (Elips relatif)
+        const lake = { x: 0.48, y: 0.52, rx: 0.14, ry: 0.18 };
+        // Kawasan Hutan Tebal
+        const forest = { x: 0.55, y: 0.10, w: 0.35, h: 0.30 };
+
+        function resizeAndDrawMap() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            drawMap();
+        }
+
+        function drawMap() {
+            const w = canvas.width;
+            const h = canvas.height;
+
+            // Latar tanah lapang (kuning cair peta orienteering)
+            ctx.fillStyle = '#fef9c3';
+            ctx.fillRect(0, 0, w, h);
+
+            // Kawasan Hutan Tebal (Hijau)
+            ctx.fillStyle = '#bbf7d0';
+            ctx.fillRect(forest.x * w, forest.y * h, forest.w * w, forest.h * h);
+
+            // Garis Kontur Bukit (Coklat)
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 1.2;
+            for (let i = 1; i <= 4; i++) {
+                ctx.beginPath();
+                ctx.ellipse(0.25 * w, 0.30 * h, i * 28, i * 20, 0.3, 0, Math.PI * 2);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.ellipse(0.75 * w, 0.75 * h, i * 25, i * 18, -0.4, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Garisan Utara Peta (Meridian biru menegak)
+            ctx.strokeStyle = 'rgba(14, 165, 233, 0.25)';
+            ctx.lineWidth = 1;
+            for (let gx = 40; gx < w; gx += 60) {
+                ctx.beginPath();
+                ctx.moveTo(gx, 0);
+                ctx.lineTo(gx, h);
+                ctx.stroke();
+            }
+
+            // Tasik (Biru dengan sempadan hitam nipis)
+            ctx.fillStyle = '#38bdf8';
+            ctx.strokeStyle = '#0284c7';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.ellipse(lake.x * w, lake.y * h, lake.rx * w, lake.ry * h, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Garisan Laluan Orienteering (Ungu/Magenta)
+            ctx.strokeStyle = '#c026d3';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([6, 4]);
+            ctx.beginPath();
+            ctx.moveTo(0.12 * w, 0.82 * h);
+            checkpoints.forEach(cp => ctx.lineTo(cp.x * w, cp.y * h));
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Simbol Mula (Segitiga Ungu)
+            const sx = 0.12 * w, sy = 0.82 * h;
+            ctx.strokeStyle = '#c026d3';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(sx, sy - 12);
+            ctx.lineTo(sx - 11, sy + 9);
+            ctx.lineTo(sx + 11, sy + 9);
+            ctx.closePath();
+            ctx.stroke();
+
+            // Lukis Titik Kawalan
+            checkpoints.forEach((cp, idx) => {
+                const cx = cp.x * w;
+                const cy = cp.y * h;
+
+                ctx.strokeStyle = cp.reached ? '#10b981' : '#c026d3';
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                ctx.arc(cx, cy, 13, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Bulatan berkembar untuk Tamat
+                if (idx === checkpoints.length - 1) {
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 17, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+
+                // Label nombor
+                ctx.fillStyle = cp.reached ? '#059669' : '#a21caf';
+                ctx.font = 'bold 12px Inter';
+                ctx.fillText(cp.label, cx + 16, cy - 8);
+            });
+
+            // Lukis Ikon Pengembara (Pemain)
+            const px = player.x * w;
+            const py = player.y * h;
+            ctx.fillStyle = '#1d4ed8';
+            ctx.beginPath();
+            ctx.arc(px, py, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+        }
+
+        // Gerakkan pemain berdasarkan piksel
+        function movePlayer(dx, dy) {
+            const w = canvas.width;
+            const h = canvas.height;
+            let newX = player.x + (dx / w);
+            let newY = player.y + (dy / h);
+
+            // Had sempadan peta
+            newX = Math.max(0.03, Math.min(0.97, newX));
+            newY = Math.max(0.03, Math.min(0.97, newY));
+
+            // Semak perlanggaran dengan Tasik
+            const normX = (newX - lake.x) / lake.rx;
+            const normY = (newY - lake.y) / lake.ry;
+            if (normX * normX + normY * normY < 0.92) {
+                showToast('Halangan Air! Anda tidak boleh meredah tasik dalam.', 'error');
+                return;
+            }
+
+            // Kira jarak bergerak (Skala 1 kanvas = ~500m)
+            const stepDist = Math.hypot((newX - player.x) * 500, (newY - player.y) * 500);
+            totalDistance += stepDist;
+            document.getElementById('map-distance').textContent = Math.round(totalDistance) + ' m';
+
+            player.x = newX;
+            player.y = newY;
+
+            // Semak jenis bentuk muka bumi semasa
+            const inForest = (player.x >= forest.x && player.x <= forest.x + forest.w &&
+                              player.y >= forest.y && player.y <= forest.y + forest.h);
+            const terrainEl = document.getElementById('map-terrain');
+            if (inForest) {
+                terrainEl.textContent = 'Hutan Tebal (Perlahan)';
+                terrainEl.className = 'font-bold text-amber-600';
+            } else {
+                terrainEl.textContent = 'Tanah Lapang (Laju)';
+                terrainEl.className = 'font-bold text-emerald-600';
+            }
+
+            // Semak ketibaan di Titik Kawalan semasa
+            if (currentTargetIndex < checkpoints.length) {
+                const target = checkpoints[currentTargetIndex];
+                const distToTarget = Math.hypot((player.x - target.x) * w, (player.y - target.y) * h);
+                if (distToTarget < 20) {
+                    target.reached = true;
+                    currentTargetIndex++;
+                    if (currentTargetIndex < checkpoints.length) {
+                        const nextLabel = checkpoints[currentTargetIndex].label;
+                        document.getElementById('map-mission-status').textContent = `Sasaran: Titik ${nextLabel}`;
+                        notifyAchievement(`Titik Kawalan ${target.label} ditemui!`);
+                    } else {
+                        document.getElementById('map-mission-status').textContent = 'MISI SELESAI!';
+                        document.getElementById('map-mission-status').className = 'px-3 py-1.5 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg';
+                        notifyAchievement('Tahniah! Semua titik kawalan berjaya dilengkapkan!');
+                    }
+                }
+            }
+
+            drawMap();
+        }
+
+        // Klik terus pada kanvas peta untuk bergerak ke arah titik klik
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+            const px = player.x * canvas.width;
+            const py = player.y * canvas.height;
+
+            const angle = Math.atan2(clickY - py, clickX - px);
+            movePlayer(Math.cos(angle) * 28, Math.sin(angle) * 28);
+        });
+
+        function resetMapSimulation() {
+            player = { x: 0.12, y: 0.82 };
+            totalDistance = 0;
+            currentTargetIndex = 0;
+            checkpoints.forEach(cp => cp.reached = false);
+            document.getElementById('map-distance').textContent = '0 m';
+            document.getElementById('map-mission-status').textContent = 'Sasaran: Titik 1';
+            document.getElementById('map-mission-status').className = 'px-3 py-1.5 bg-amber-100 text-amber-800 text-xs font-bold rounded-lg';
+            drawMap();
+            showToast('Peta telah ditetapkan semula.');
+        }
+
+        window.addEventListener('resize', resizeAndDrawMap);
+
+        // =====================================================================
+        // LOGIK SIMULASI 2: KOMPAS SILVA INTERAKTIF
+        // =====================================================================
+        let targetBearing = 120;
+        const housingSlider = document.getElementById('housing-slider');
+        const bodySlider = document.getElementById('body-slider');
+        const compassHousing = document.getElementById('compass-housing');
+        const magneticNeedle = document.getElementById('magnetic-needle');
+
+        // Jana senggatan darjah pada SVG kompas
+        function initCompassTicks() {
+            const ticksGroup = document.getElementById('compass-ticks');
+            for (let deg = 0; deg < 360; deg += 15) {
+                const rad = (deg - 90) * Math.PI / 180;
+                const r1 = deg % 45 === 0 ? 76 : 80;
+                const r2 = 85;
+                const x1 = 160 + r1 * Math.cos(rad);
+                const y1 = 260 + r1 * Math.sin(rad);
+                const x2 = 160 + r2 * Math.cos(rad);
+                const y2 = 260 + r2 * Math.sin(rad);
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', x1);
+                line.setAttribute('y1', y1);
+                line.setAttribute('x2', x2);
+                line.setAttribute('y2', y2);
+                line.setAttribute('stroke', '#94a3b8');
+                line.setAttribute('stroke-width', deg % 45 === 0 ? '2' : '1');
+                ticksGroup.appendChild(line);
+            }
+        }
+
+        function updateCompassVisuals() {
+            const housingDeg = parseInt(housingSlider.value);
+            const bodyDeg = parseInt(bodySlider.value);
+
+            document.getElementById('housing-val').textContent = housingDeg + '°';
+            document.getElementById('body-val').textContent = bodyDeg + '°';
+
+            // Pusing perumah berlawanan arah supaya bacaan selari dengan indeks atas
+            compassHousing.setAttribute('transform', `rotate(${-housingDeg}, 160, 260)`);
+            // Jarum magnetik menunjuk ke Utara sebenar (-bodyDeg relatif kepada kompas)
+            magneticNeedle.setAttribute('transform', `rotate(${-bodyDeg}, 160, 260)`);
+
+            // Semak sama ada "Red in the Shed" (jarum merah selari dengan anak panah orientasi)
+            const diff = Math.abs(((housingDeg - bodyDeg + 540) % 360) - 180);
+            const badge = document.getElementById('compass-alignment-badge');
+            if (diff <= 4) {
+                badge.textContent = 'Status: RED IN THE SHED! (Selari)';
+                badge.className = 'mt-3 px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-900/80 text-emerald-300 border border-emerald-500';
+            } else {
+                badge.textContent = 'Status: Jarum belum masuk ke dalam Shed';
+                badge.className = 'mt-3 px-4 py-1.5 rounded-full text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700';
+            }
+        }
+
+        housingSlider.addEventListener('input', updateCompassVisuals);
+        bodySlider.addEventListener('input', updateCompassVisuals);
+
+        function getCardinalDirection(deg) {
+            const dirs = ['Utara (N)', 'Timur Laut (NE)', 'Timur (E)', 'Tenggara (SE)', 'Selatan (S)', 'Barat Daya (SW)', 'Barat (W)', 'Barat Laut (NW)'];
+            return dirs[Math.round(deg / 45) % 8];
+        }
+
+        function generateNewBearingChallenge() {
+            targetBearing = Math.floor(Math.random() * 72) * 5; // Gandaan 5 darjah
+            document.getElementById('target-bearing-display').textContent = targetBearing + '°';
+            document.getElementById('target-cardinal-display').textContent = getCardinalDirection(targetBearing);
+            showToast(`Cabaran baru: Cari arah bearing ${targetBearing}°`);
+        }
+
+        function checkCompassSolution() {
+            const housingDeg = parseInt(housingSlider.value);
+            const bodyDeg = parseInt(bodySlider.value);
+
+            const housingError = Math.abs(((housingDeg - targetBearing + 540) % 360) - 180);
+            const needleError = Math.abs(((housingDeg - bodyDeg + 540) % 360) - 180);
+
+            if (housingError <= 5 && needleError <= 5) {
+                notifyAchievement(`Tepat sekali! Bearing ${targetBearing}° berjaya dikunci.`);
+                generateNewBearingChallenge();
+            } else if (housingError > 5) {
+                showToast(`Perumah kompas belum tepat ke ${targetBearing}°. Semak gelung darjah!`, 'error');
+            } else {
+                showToast('Bearing sudah betul, tetapi pusing badan anda sehingga jarum merah masuk ke dalam Shed!', 'error');
+            }
+        }
+
+        // =====================================================================
+        // LOGIK SIMULASI 3: PENGANGGARAN (TINGGI POKOK & KIRAAN LANGKAH)
+        // =====================================================================
+        let actualTreeHeight = 6.4; // dalam meter (gandaan 1.6m)
+        const treeScaleSlider = document.getElementById('tree-scale-slider');
+
+        function newTreeChallenge() {
+            const multiplier = (Math.floor(Math.random() * 8) + 3) * 0.5; // 1.5x hingga 5.0x
+            actualTreeHeight = +(1.6 * multiplier).toFixed(1);
+            const visualHeightPx = Math.min(180, Math.max(54, multiplier * 36));
+            document.getElementById('sim-tree-canopy').style.height = visualHeightPx + 'px';
+            document.getElementById('sim-tree-canopy').textContent = '? m';
+            document.getElementById('tree-guess-input').value = '';
+        }
+
+        treeScaleSlider.addEventListener('input', (e) => {
+            const mult = parseFloat(e.target.value);
+            document.getElementById('scale-count-label').textContent = `${mult.toFixed(1)} kali tinggi rakan`;
+            document.getElementById('ruler-multiplier-text').textContent = `${mult}x`;
+            document.getElementById('ruler-overlay').style.height = `${mult * 36}px`;
+        });
+
+        function checkTreeHeight() {
+            const guess = parseFloat(document.getElementById('tree-guess-input').value);
+            if (isNaN(guess)) {
+                showToast('Sila masukkan nilai anggaran tinggi pokok dalam meter.', 'error');
+                return;
+            }
+            if (Math.abs(guess - actualTreeHeight) <= 0.4) {
+                document.getElementById('sim-tree-canopy').textContent = actualTreeHeight + ' m';
+                notifyAchievement(`Anggaran tepat! Tinggi sebenar pokok ialah ${actualTreeHeight}m.`);
+            } else {
+                showToast(`Kurang tepat. Petunjuk: Darabkan 1.6m dengan bilangan gandaan skala kayu!`, 'error');
+            }
+        }
+
+        // Kalkulator Kiraan Langkah
+        function updatePaceCalculator() {
+            const calib = parseFloat(document.getElementById('pace-calibration').value) || 62;
+            const factor = parseFloat(document.getElementById('terrain-factor').value);
+            const steps = parseInt(document.getElementById('steps-slider').value);
+
+            document.getElementById('steps-taken-display').textContent = `${steps} langkah`;
+            // Formula: (Langkah / Langkah_per_100m) * 100 * Faktor_Muka_Bumi
+            const distance = (steps / calib) * 100 * factor;
+            document.getElementById('estimated-distance-result').textContent = `${distance.toFixed(1)} meter`;
+        }
+
+        document.getElementById('pace-calibration').addEventListener('input', updatePaceCalculator);
+        document.getElementById('terrain-factor').addEventListener('change', updatePaceCalculator);
+        document.getElementById('steps-slider').addEventListener('input', updatePaceCalculator);
+
+        // =====================================================================
+        // LOGIK MODUL 4: KUIZ INTERAKTIF
+        // =====================================================================
+        const quizData = [
+            {
+                q: "Apakah maksud garisan kontur yang dilukis sangat rapat pada peta orienteering?",
+                options: ["Kawasan tersebut sangat rata dan lapang", "Cerun bukit di kawasan tersebut sangat curam", "Terdapat aliran sungai di bawah tanah", "Kawasan hutan tebal yang sukar dilalui"],
+                answer: 1,
+                exp: "Garis kontur yang rapat menunjukkan perubahan ketinggian yang mendadak dalam jarak mendatar yang pendek (cerun curam)."
+            },
+            {
+                q: "Dalam penggunaan kompas Silva, apakah yang dimaksudkan dengan prinsip 'Red in the Shed'?",
+                options: ["Meletakkan kompas di tempat redup", "Memasukkan jarum magnetik merah ke dalam anak panah orientasi", "Menghalakan kompas ke arah matahari terbenam", "Melukis garisan merah di atas peta"],
+                answer: 1,
+                exp: "Jarum magnetik merah mesti bertindih tepat di dalam anak panah orientasi ('Shed') sebelum anda bergerak mengikut anak panah arah perjalanan."
+            },
+            {
+                q: "Warna biru pada peta orienteering standard (IOF) mewakili elemen apa?",
+                options: ["Jalan raya berturap", "Kawasan berbatu dan tebing", "Elemen air seperti tasik, sungai dan paya", "Kawasan padang rumput terbuka"],
+                answer: 2,
+                exp: "Warna biru sentiasa merujuk kepada ciri-ciri hidrografi/air seperti sungai, tasik, kolam dan kawasan berpaya."
+            },
+            {
+                q: "Jika 60 langkah berkembar (double-pace) anda bersamaan 100 meter di tanah rata, berapakah anggaran jarak jika anda berjalan sebanyak 150 langkah berkembar?",
+                options: ["150 meter", "200 meter", "250 meter", "300 meter"],
+                answer: 2,
+                exp: "(150 / 60) × 100 meter = 250 meter."
+            },
+            {
+                q: "Apakah simbol yang digunakan untuk menandakan titik MULA (Start) pada peta orienteering?",
+                options: ["Bulatan berkembar", "Segitiga sama sisi", "Segi empat tepat", "Tanda pangkah (X)"],
+                answer: 1,
+                exp: "Titik Mula ditanda dengan simbol Segitiga, manakala titik Tamat ditanda dengan Bulatan Berkembar."
+            }
+        ];
+
+        let currentQuizIdx = 0;
+        let quizScore = 0;
+        let answeredCurrent = false;
+
+        function loadQuizQuestion() {
+            answeredCurrent = false;
+            const data = quizData[currentQuizIdx];
+            document.getElementById('quiz-progress').textContent = `${currentQuizIdx + 1} / ${quizData.length}`;
+            document.getElementById('quiz-question').textContent = data.q;
+            document.getElementById('quiz-feedback').classList.add('hidden');
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+
+            const optionsDiv = document.getElementById('quiz-options');
+            optionsDiv.innerHTML = '';
+
+            data.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-4 rounded-xl border border-slate-200 hover:border-purple-400 hover:bg-purple-50/50 text-sm font-medium text-slate-700 transition flex items-center justify-between';
+                btn.innerHTML = `<span>${opt}</span>`;
+                btn.onclick = () => selectQuizAnswer(idx, btn);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function selectQuizAnswer(selectedIdx, btnElement) {
+            if (answeredCurrent) return;
+            answeredCurrent = true;
+
+            const data = quizData[currentQuizIdx];
+            const feedbackEl = document.getElementById('quiz-feedback');
+            const allBtns = document.getElementById('quiz-options').children;
+
+            if (selectedIdx === data.answer) {
+                quizScore++;
+                btnElement.className = 'w-full text-left p-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-sm font-bold text-emerald-900 flex items-center justify-between';
+                feedbackEl.className = 'p-4 rounded-xl text-sm font-medium bg-emerald-100 text-emerald-900';
+                feedbackEl.textContent = 'Tepat! ' + data.exp;
+                notifyAchievement('Jawapan kuiz tepat!');
+            } else {
+                btnElement.className = 'w-full text-left p-4 rounded-xl border-2 border-rose-500 bg-rose-50 text-sm font-bold text-rose-900 flex items-center justify-between';
+                allBtns[data.answer].className = 'w-full text-left p-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-sm font-bold text-emerald-900 flex items-center justify-between';
+                feedbackEl.className = 'p-4 rounded-xl text-sm font-medium bg-rose-100 text-rose-900';
+                feedbackEl.textContent = 'Kurang tepat. ' + data.exp;
+            }
+
+            feedbackEl.classList.remove('hidden');
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuizIdx++;
+            if (currentQuizIdx < quizData.length) {
+                loadQuizQuestion();
+            } else {
+                document.getElementById('quiz-container').classList.add('hidden');
+                document.getElementById('quiz-result').classList.remove('hidden');
+                document.getElementById('quiz-final-score').textContent = `${quizScore} / ${quizData.length}`;
+            }
+        }
+
+        function restartQuiz() {
+            currentQuizIdx = 0;
+            quizScore = 0;
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            loadQuizQuestion();
+        }
+
+        // Inisialisasi aplikasi semasa halaman dimuatkan
+        window.onload = function() {
+            resizeAndDrawMap();
+            initCompassTicks();
+            updateCompassVisuals();
+            newTreeChallenge();
+            updatePaceCalculator();
+            loadQuizQuestion();
+        };
+    </script>
+</body>
+</html>

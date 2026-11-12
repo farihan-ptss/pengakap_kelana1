@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topik 11: Hab Pembelajaran Kawad Pengakap</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Tone.js untuk kesan bunyi hentakan kaki / wisel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .font-mono-cmd {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Corak Latar Belakang Padang Kawad Halus */
+        .padang-grid {
+            background-color: #064e3b;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+        /* Skrolbar kemas */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header / Navigasi Utama -->
+    <header class="bg-emerald-950 text-white shadow-lg border-b-4 border-amber-500 sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+                <!-- Lencana Pengakap SVG -->
+                <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center shrink-0 shadow-inner">
+                    <svg class="w-7 h-7 text-amber-400" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C10.5 5 9 7.5 9 10.5C9 12.2 10 13.5 11.2 14.2C9.5 14.2 7.5 13.2 6.5 11.5C5.5 13.5 6 16.5 8.5 17.5C7.5 18.2 6 18.5 5 18.5C6.5 20.5 9.5 21 11.2 19.8V22H12.8V19.8C14.5 21 17.5 20.5 19 18.5C18 18.5 16.5 18.2 15.5 17.5C18 16.5 18.5 13.5 17.5 11.5C16.5 13.2 14.5 14.2 12.8 14.2C14 13.5 15 12.2 15 10.5C15 7.5 13.5 5 12 2Z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold uppercase tracking-wider bg-amber-500 text-emerald-950 px-2 py-0.5 rounded-md">Topik 11</span>
+                        <span class="text-xs text-emerald-300 font-medium">Persekutuan Pengakap Malaysia</span>
+                    </div>
+                    <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white mt-0.5">Tatacara & Hukuman Kawad Pengakap</h1>
+                </div>
+            </div>
+
+            <!-- Penukar Mod Utama -->
+            <div class="flex bg-emerald-900/90 p-1 rounded-xl border border-emerald-700/70 w-full sm:w-auto justify-center">
+                <button id="btn-mode-kaki" onclick="switchCategory('kaki')" class="flex-1 sm:flex-initial px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 bg-amber-500 text-emerald-950 shadow-sm flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    Kawad Kaki
+                </button>
+                <button id="btn-mode-tongkat" onclick="switchCategory('tongkat')" class="flex-1 sm:flex-initial px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 text-emerald-200 hover:text-white flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m-4-14h8"/></svg>
+                    Kawad Tongkat
+                </button>
+                <button id="btn-mode-kuiz" onclick="switchCategory('kuiz')" class="flex-1 sm:flex-initial px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 text-emerald-200 hover:text-white flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Uji Minda
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Kandungan Utama -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        
+        <!-- Banner Pengenalan Ringkas -->
+        <div id="info-banner" class="bg-white border border-slate-200 rounded-2xl p-4 mb-6 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-start gap-3">
+                <div class="p-2.5 bg-emerald-100 text-emerald-800 rounded-xl shrink-0 mt-0.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div>
+                    <h2 id="banner-title" class="font-bold text-slate-900 text-base">Modul 1: Kawad Kaki Asas Pengakap</h2>
+                    <p id="banner-desc" class="text-sm text-slate-600 mt-0.5">Pilih mana-mana bahasa hukuman di panel kiri untuk melihat simulasi pergerakan kaki, postur badan, dan tatacara pelaksanaan yang betul.</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+                <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-amber-100 text-amber-900 border border-amber-200">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                    Simulasi Interaktif Aktif
+                </span>
+            </div>
+        </div>
+
+        <!-- Paparan Utama Pembelajaran (Simulasi + Senarai Arahan) -->
+        <div id="learning-workspace" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            
+            <!-- Kolum Kiri: Senarai Bahasa Hukuman (5 kolum pada desktop) -->
+            <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+                <div class="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-sm uppercase tracking-wider">Senarai Bahasa Hukuman</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Klik arahan untuk memulakan simulasi</p>
+                    </div>
+                    <span id="command-count" class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg">10 Arahan</span>
+                </div>
+                
+                <!-- Senarai Butang Arahan -->
+                <div id="command-list" class="p-3 space-y-2 max-h-[540px] overflow-y-auto">
+                    <!-- Dijana oleh JavaScript -->
+                </div>
+            </div>
+
+            <!-- Kolum Kanan: Pentas Visual Simulasi & Tatacara Terperinci (7 kolum pada desktop) -->
+            <div class="lg:col-span-7 space-y-6">
+                
+                <!-- Kad Kanvas Simulasi Visual -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                    <!-- Bar Atas Kanvas -->
+                    <div class="bg-slate-900 text-white px-4 py-3 flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Pentas Simulasi Visual 2D</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <!-- Kawalan Bunyi Hentakan -->
+                            <button id="btn-sound-toggle" onclick="toggleSound()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1.5 transition">
+                                <span id="sound-icon">🔊</span>
+                                <span id="sound-label">Kesan Bunyi: ON</span>
+                            </button>
+                            <!-- Butang Ulang Animasi -->
+                            <button onclick="replayCurrentCommand()" class="text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition shadow-sm">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                Ulang Pergerakan
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Paparan Bahasa Hukuman Semasa (Banner Komander) -->
+                    <div class="bg-emerald-900 text-white px-5 py-3.5 border-b border-emerald-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <span class="text-[11px] uppercase tracking-widest text-amber-300 font-bold block">Bahasa Hukuman Komander:</span>
+                            <p id="active-command-phrase" class="font-mono-cmd text-base sm:text-lg font-bold text-white mt-0.5 leading-snug">
+                                "Skuad... Sedia!"
+                            </p>
+                        </div>
+                        <button onclick="speakCommand()" class="self-start sm:self-center shrink-0 bg-emerald-800 hover:bg-emerald-700 text-emerald-100 border border-emerald-600/60 px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition">
+                            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+                            Sebut Hukuman
+                        </button>
+                    </div>
+
+                    <!-- Kawasan Kanvas Responsif -->
+                    <div class="relative w-full h-[340px] sm:h-[380px] padang-grid overflow-hidden select-none">
+                        <canvas id="drillCanvas" class="w-full h-full block"></canvas>
+                        
+                        <!-- Petunjuk Sudut Pandangan & Fasa -->
+                        <div class="absolute top-3 left-3 bg-slate-950/75 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg border border-white/10 text-xs flex items-center gap-2">
+                            <span class="text-amber-400 font-bold">Pandangan:</span>
+                            <span id="view-angle-badge">Hadapan (Komander)</span>
+                        </div>
+
+                        <div class="absolute bottom-3 left-3 right-3 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+                            <div id="step-indicator-pill" class="bg-slate-950/80 backdrop-blur-sm text-emerald-300 px-3 py-1.5 rounded-lg border border-emerald-500/30 text-xs font-semibold">
+                                Status: Sedia menerima arahan
+                            </div>
+                            <div class="bg-slate-950/75 backdrop-blur-sm text-slate-300 px-3 py-1.5 rounded-lg border border-white/10 text-[11px]">
+                                Seragam Pengakap Malaysia + Skaf
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kad Penerangan Tatacara & Butiran Teknikal -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+                    <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-slate-100">
+                        <div>
+                            <span id="detail-category-tag" class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md">Kawad Kaki</span>
+                            <h3 id="detail-title" class="text-xl font-extrabold text-slate-900 mt-2">1. Sedia</h3>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-500 block">Kiraan Masa / Rentak</span>
+                            <span id="detail-timing" class="text-sm font-bold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-lg inline-block mt-1">1 Pergerakan Pantas</span>
+                        </div>
+                    </div>
+
+                    <!-- Langkah demi Langkah Tatacara -->
+                    <div class="mt-4">
+                        <h4 class="text-sm font-bold text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                            Tatacara Pelaksanaan (Langkah Demi Langkah)
+                        </h4>
+                        <ol id="detail-steps" class="space-y-2.5 text-sm text-slate-700">
+                            <!-- Dijana oleh JS -->
+                        </ol>
+                    </div>
+
+                    <!-- Kotak Kesalahan Lazim / Peringatan Penting -->
+                    <div class="mt-5 bg-amber-50/80 border border-amber-200/80 rounded-xl p-4 flex items-start gap-3">
+                        <div class="text-amber-600 shrink-0 mt-0.5">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        </div>
+                        <div>
+                            <h5 class="text-xs font-bold uppercase tracking-wider text-amber-900">Peringatan & Kesalahan Lazim</h5>
+                            <p id="detail-tips" class="text-xs sm:text-sm text-amber-800 mt-1 leading-relaxed">
+                                Pastikan tumit dirapatkan dengan kemas dan hujung kaki dibuka membentuk sudut 30 darjah. Tangan tidak boleh dikepal terlalu longgar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bahagian Kuiz Interaktif (Tersembunyi secara lalai) -->
+        <div id="quiz-workspace" class="hidden max-w-3xl mx-auto">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-emerald-900 text-white p-6">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider bg-amber-500 text-emerald-950 px-2.5 py-1 rounded-md">Penilaian Topik 11</span>
+                        <span id="quiz-progress-text" class="text-sm font-semibold text-emerald-200">Soalan 1 / 6</span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-extrabold mt-3">Uji Kefahaman Bahasa Hukuman & Tatacara Kawad</h2>
+                    <p class="text-sm text-emerald-200 mt-1">Pilih jawapan yang paling tepat berdasarkan tatacara Kawad Kaki dan Kawad Tongkat Pengakap.</p>
+                </div>
+
+                <div id="quiz-body" class="p-6">
+                    <div class="mb-6">
+                        <span id="quiz-topic-badge" class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-md">Kawad Kaki</span>
+                        <h3 id="quiz-question" class="text-lg font-bold text-slate-900 mt-3 leading-snug">Soalan akan dipaparkan di sini...</h3>
+                    </div>
+
+                    <div id="quiz-options" class="space-y-3">
+                        <!-- Pilihan jawapan dijana JS -->
+                    </div>
+
+                    <!-- Maklum balas jawapan -->
+                    <div id="quiz-feedback" class="hidden mt-5 p-4 rounded-xl border text-sm"></div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <div class="text-sm font-bold text-slate-600">
+                            Markah Semasa: <span id="quiz-score" class="text-emerald-700">0</span>
+                        </div>
+                        <button id="btn-next-question" onclick="nextQuizQuestion()" class="hidden bg-emerald-800 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">
+                            Soalan Seterusnya &rarr;
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Skrin Tamat Kuiz -->
+                <div id="quiz-result" class="hidden p-8 text-center">
+                    <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl font-bold">
+                        🏆
+                    </div>
+                    <h3 class="text-2xl font-extrabold text-slate-900">Tahniah! Kuiz Selesai</h3>
+                    <p class="text-slate-600 mt-2">Anda telah melengkapkan penilaian Topik 11: Tatacara dan Hukuman Kawad.</p>
+                    <div class="my-6 inline-block bg-slate-50 border border-slate-200 rounded-2xl px-8 py-4">
+                        <span class="text-xs uppercase tracking-wider font-bold text-slate-500 block">Skor Akhir Anda</span>
+                        <span id="final-score-display" class="text-4xl font-extrabold text-emerald-700 mt-1 block">6 / 6</span>
+                    </div>
+                    <div>
+                        <button onclick="restartQuiz()" class="bg-amber-500 hover:bg-amber-400 text-emerald-950 font-bold px-6 py-3 rounded-xl text-sm transition shadow-sm">
+                            Cuba Semula Kuiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+            <p>Hab Pembelajaran Interaktif Kokurikulum Pengakap &bull; Topik 11: Tatacara & Hukuman Kawad</p>
+            <p>Gunakan simulasi visual untuk memahami perbezaan Kawad Kaki dan Kawad Tongkat.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================================
+        // 1. PANGKALAN DATA ARAHAN KAWAD KAKI & KAWAD TONGKAT PENGAKAP
+        // ============================================================================
+        const drillData = {
+            kaki: [
+                {
+                    id: 'kaki_sedia',
+                    title: '1. Sedia',
+                    command: '"Skuad... Sedia!"',
+                    timing: '1 Pergerakan Pantas',
+                    viewAngle: 'Hadapan (Komander)',
+                    steps: [
+                        'Angkat kaki kiri setinggi 90 darjah (peha selari dengan bumi) dan hentak rapat ke sebelah tumit kaki kanan.',
+                        'Kedua-dua tumit dirapatkan dan hujung kaki dibuka membentuk sudut 30 darjah.',
+                        'Kedua-dua tangan diluruskan ke bawah rapat ke sisi seluar dengan ibu jari menghala ke hadapan (jari digenggam kemas).',
+                        'Badan ditegakkan, dada diangkat sedikit, dagu didongakkan dan pandangan terus ke hadapan.'
+                    ],
+                    tips: 'Jangan membongkokkan badan semasa menghentak kaki. Bunyi hentakan mestilah satu bunyi yang padu dan serentak.',
+                    poseType: 'sedia'
+                },
+                {
+                    id: 'kaki_senang_diri',
+                    title: '2. Senang Diri',
+                    command: '"Senang... Diri!"',
+                    timing: '1 Pergerakan Pantas',
+                    viewAngle: 'Hadapan (Komander)',
+                    steps: [
+                        'Angkat kaki kiri setinggi 90 darjah dan bawa ke sebelah kiri sejauh kira-kira 12 inci (30 cm) lalu dihentak ke bumi.',
+                        'Pada masa yang sama, kedua-dua tangan dibawa ke belakang pinggang.',
+                        'Tapak tangan kanan diletakkan di atas tapak tangan kiri (kedua-dua tapak tangan menghadap ke atas/belakang) dengan ibu jari bersilang.',
+                        'Kepala dan pandangan masih kekal lurus ke hadapan tanpa bergerak.'
+                    ],
+                    tips: 'Hanya kaki kiri yang bergerak; kaki kanan kekal terpaku di tempat asal.',
+                    poseType: 'senang_diri'
+                },
+                {
+                    id: 'kaki_rehatkan_diri',
+                    title: '3. Rehatkan Diri',
+                    command: '"Rehatkan... Diri!"',
+                    timing: 'Kiraan 1 - 2 - 3 Rehat',
+                    viewAngle: 'Hadapan (Komander)',
+                    steps: [
+                        'Dilakukan selepas kedudukan Senang Diri.',
+                        'Kendurkan bahagian pinggang ke atas (bahu dan kepala boleh digerakkan sedikit untuk keselesaan).',
+                        'Kedudukan kedua-dua kaki tidak boleh bergerak atau beralih dari tempat asal.',
+                        'Tangan di belakang dinaikkan sedikit di atas pinggang dan dikekalkan bersilang.'
+                    ],
+                    tips: 'Ahli tidak dibenarkan bercakap, menoleh ke belakang secara berlebihan atau mengeluarkan sapu tangan tanpa kebenaran.',
+                    poseType: 'rehatkan_diri'
+                },
+                {
+                    id: 'kaki_ke_kanan_lurus',
+                    title: '4. Ke Kanan Lurus',
+                    command: '"Ke Kanan... Lurus!"',
+                    timing: 'Kiraan 1 - 2 (Pergerakan)',
+                    viewAngle: 'Hadapan (Komander)',
+                    steps: [
+                        'Penanda kanan (orang paling kanan) diam dan memandang hadapan.',
+                        'Ahli lain mengangkat tangan kanan lurus ke sisi kanan sehingga hujung jari menyentuh bahu rakan di sebelah kanan (paras bahu).',
+                        'Pada masa yang sama, palingkan muka ke kanan dengan pantas.',
+                        'Hentak kaki kiri dan kanan berturut-turut dengan langkah kecil untuk meluruskan barisan.',
+                        'Apabila komander memberi arahan "Pandang... Depan!", turunkan tangan kanan ke sisi (kedudukan Sedia) dan palingkan muka ke hadapan serentak.'
+                    ],
+                    tips: 'Pastikan lengan kanan lurus dan tidak bengkok. Barisan belakang meluruskan jarak ke hadapan sejauh satu depa.',
+                    poseType: 'ke_kanan_lurus'
+                },
+                {
+                    id: 'kaki_ke_kanan_pusing',
+                    title: '5. Bergerak ke Kanan (Ke Kanan Pusing)',
+                    command: '"Bergerak ke Kanan, Ke Kanan... Pusing!"',
+                    timing: '2 Pergerakan (Pusing - Hentak)',
+                    viewAngle: 'Hadapan -> Menghadap Kanan (90°)',
+                    steps: [
+                        'Pusingkan badan sebanyak 90 darjah ke arah kanan dengan menggunakan tumit kaki kanan dan hujung kaki kiri sebagai paksi.',
+                        'Tangan kekal lurus rapat di sisi badan semasa berpusing.',
+                        'Angkat kaki kiri ke hadapan (peha selari bumi) dan hentak rapat ke sebelah kaki kanan untuk kembali ke kedudukan Sedia.'
+                    ],
+                    tips: 'Jangan hayunkan tangan semasa berpusing. Pastikan sudut pusingan tepat 90 darjah.',
+                    poseType: 'pusing_kanan'
+                },
+                {
+                    id: 'kaki_ke_kiri_pusing',
+                    title: '6. Bergerak ke Kiri (Ke Kiri Pusing)',
+                    command: '"Bergerak ke Kiri, Ke Kiri... Pusing!"',
+                    timing: '2 Pergerakan (Pusing - Hentak)',
+                    viewAngle: 'Hadapan -> Menghadap Kiri (90°)',
+                    steps: [
+                        'Pusingkan badan sebanyak 90 darjah ke arah kiri menggunakan tumit kaki kiri dan hujung kaki kanan.',
+                        'Tangan kekal rapat lurus di sisi badan.',
+                        'Angkat kaki kanan dan hentak rapat ke sebelah kaki kiri untuk membentuk kedudukan Sedia.'
+                    ],
+                    tips: 'Ingat formula mudah: Pusing ke arah mana, tumit kaki arah itu menjadi paksi utama.',
+                    poseType: 'pusing_kiri'
+                },
+                {
+                    id: 'kaki_belakang_pusing',
+                    title: '7. Menghadap ke Belakang (Ke Belakang Pusing)',
+                    command: '"Menghadap ke Belakang, Ke Belakang... Pusing!"',
+                    timing: '2 Pergerakan (Pusing 180° - Hentak)',
+                    viewAngle: 'Hadapan -> Membelakangi (180°)',
+                    steps: [
+                        'Pusingkan badan sebanyak 180 darjah mengikut arah pusingan jam (melalui bahu kanan) menggunakan tumit kaki kanan dan hujung kaki kiri.',
+                        'Tangan kekal lurus rapat di sisi seluar.',
+                        'Angkat kaki kiri setinggi 90 darjah dan hentak rapat di sebelah kaki kanan.'
+                    ],
+                    tips: 'Pusingan ke belakang sentiasa dibuat melalui bahu kanan (ikut arah jam) bagi mengelakkan pelanggaran dalam barisan.',
+                    poseType: 'pusing_belakang'
+                },
+                {
+                    id: 'kaki_hormat',
+                    title: '8. Hormat ke Hadapan (Tabik Pengakap)',
+                    command: '"Hormat, Hormat ke Hadapan... Hormat!"',
+                    timing: '2 Pergerakan (Naik - Turun)',
+                    viewAngle: 'Hadapan (Komander)',
+                    steps: [
+                        'Dalam kedudukan Sedia, angkat tangan kanan dengan pantas melalui sisi badan ke arah dahi.',
+                        'Bentuk isyarat Tabik Pengakap (3 jari tengah rapat dan lurus, ibu jari menekan jari kelengkeng).',
+                        'Hujung jari telunjuk menyentuh hujung kening kanan atau tepi topi/forage cap dengan tapak tangan menghadap ke hadapan.',
+                        'Lengan kanan diangkat selari dengan bahu (membentuk sudut 45 darjah ke hadapan sedikit), manakala tangan kiri kekal rapat di sisi.',
+                        'Turunkan tangan kanan terus ke sisi setelah selesai memberi hormat.'
+                    ],
+                    tips: 'Pengakap menggunakan 3 jari untuk hormat (melambangkan 3 Persetiaan Pengakap), berbeza dengan tentera/kadet yang menggunakan 5 jari.',
+                    poseType: 'hormat_kaki'
+                },
+                {
+                    id: 'kaki_cepat_jalan',
+                    title: '9. Cepat Jalan & Berhenti',
+                    command: '"Dari Kiri/Kanan... Cepat Jalan!" / "Skuad... Henti!"',
+                    timing: '116 - 120 Langkah Seminit',
+                    viewAngle: 'Sisi (Pergerakan Melangkah)',
+                    steps: [
+                        'Mulakan langkah pertama dengan kaki kiri ke hadapan sejauh 30 inci (tumit mencecah bumi dahulu).',
+                        'Hayunkan tangan kanan ke hadapan paras bahu dan tangan kiri ke belakang seberapa jauh yang boleh (tangan lurus, jari digenggam).',
+                        'Apabila hukuman "Skuad... Henti!" diberi (hukuman jatuh pada kaki kiri), ambil satu langkah lagi dengan kaki kanan (Check), kemudian bawa kaki kiri hentak rapat ke kaki kanan (1 - 2).'
+                    ],
+                    tips: 'Hayunan tangan mestilah lurus dari sendi bahu tanpa membengkokkan siku.',
+                    poseType: 'cepat_jalan'
+                }
+            ],
+            tongkat: [
+                {
+                    id: 'tongkat_sedia',
+                    title: '1. Sedia (Dengan Tongkat)',
+                    command: '"Skuad... Sedia!"',
+                    timing: '1 Pergerakan Pantas',
+                    viewAngle: 'Hadapan (Komander)',
+                    steps: [
+                        'Kedudukan kaki sama seperti Sedia kawad kaki (tumit rapat, hujung kaki buka 30 darjah).',
+                        'Tongkat dipegang tegak di sebelah kanan badan dengan tapak/hujung bawah tongkat berada di bumi tepat di sebelah luar jari kelengkeng kaki kanan.',
+                        'Tangan kanan memegang tongkat dengan ibu jari di sebelah dalam dan empat jari lain menggenggam di bahagian luar.',
+                        'Siku kanan dirapatkan ke rusuk badan dan lengan bawah selari dengan bumi (sudut 90 darjah). Tangan kiri lurus rapat di sisi kiri.'
+                    ],
+                    tips: 'Tongkat mestilah berdiri tegak lurus (90 darjah dengan bumi), tidak condong ke hadapan atau ke tepi.',
+                    poseType: 'tongkat_sedia'
+                },
+                {
+                    id: 'tongkat_senang_diri',
+                    title: '2. Senang Diri (Dengan Tongkat)',
+                    command: '"Senang... Diri!"',
+                    timing: '1 Pergerakan Pantas',
+                    viewAngle: 'Hadapan (Komander)',
+                    steps: [
+                        'Angkat kaki kiri dan hentak ke sebelah kiri sejauh 12 inci.',
+                        'Pada masa yang sama, tangan kanan menolak bahagian atas tongkat ke hadapan sehingga lengan kanan lurus sepenuhnya.',
+                        'Tapak bawah tongkat tetap berada di tempat asal (sebelah luar kaki kanan), menyebabkan tongkat condong ke hadapan.',
+                        'Tangan kiri dibawa ke belakang pinggang (tapak tangan menghadap ke luar).'
+                    ],
+                    tips: 'Tapak tongkat tidak boleh diangkat atau dialih semasa menolak tongkat ke hadapan.',
+                    poseType: 'tongkat_senang_diri'
+                },
+                {
+                    id: 'tongkat_bawa',
+                    title: '3. Bawa Tongkat (Dari Sedia)',
+                    command: '"Bawa... Tongkat!"',
+                    timing: '2 Pergerakan (1 - 2)',
+                    viewAngle: 'Hadapan (Komander)',
+                    steps: [
+                        'Pergerakan 1: Tangan kanan mengangkat tongkat secara menegak ke atas sehingga tapak tongkat berada kira-kira 3 inci dari bumi (siku kanan rapat ke badan).',
+                        'Pergerakan 2: Tangan kiri melintas badan dengan pantas dan menampar/memegang tongkat di bawah pegangan tangan kanan untuk mengimbangi tongkat (atau kekal di sisi mengikut tatacara pergerakan berjalan).',
+                        'Dalam keadaan Bawa Tongkat semasa berjalan, tongkat dipegang pada titik imbangan di sisi kanan selari dengan bumi.'
+                    ],
+                    tips: 'Digunakan sebelum memulakan pergerakan berjalan ("Cepat Jalan") atau berpusing supaya tongkat tidak terseret di tanah.',
+                    poseType: 'tongkat_bawa'
+                },
+                {
+                    id: 'tongkat_turun',
+                    title: '4. Turun Tongkat (Dari Bawa Tongkat)',
+                    command: '"Turun... Tongkat!"',
+                    timing: '2 Pergerakan (1 - 2)',
+                    viewAngle: 'Hadapan (Komander)',
+                    steps: [
+                        'Pergerakan 1: Tangan kiri dibawa melintas untuk memegang dan mengawal bahagian atas tongkat manakala tangan kanan melepaskan pegangan.',
+                        'Pergerakan 2: Turunkan tongkat perlahan-lahan tanpa bunyi hentakan kuat sehingga tapak tongkat mencecah bumi di sebelah kaki kanan, dan tangan kiri kembali rapat ke sisi kiri (kedudukan Sedia).'
+                    ],
+                    tips: 'Tongkat tidak boleh dihentak dengan kuat ke bumi kerana boleh merosakkan hujung tongkat.',
+                    poseType: 'tongkat_sedia'
+                },
+                {
+                    id: 'tongkat_kalih',
+                    title: '5. Kalih Tongkat (Dari Sedia)',
+                    command: '"Kalih... Tongkat!"',
+                    timing: '3 Pergerakan (1 - 2 - 3)',
+                    viewAngle: 'Hadapan (Komander)',
+                    steps: [
+                        'Pergerakan 1: Tangan kanan mengangkat tongkat ke hadapan tengah badan; tangan kiri menyambut dan memegang bahagian atas tongkat.',
+                        'Pergerakan 2: Tangan kanan dilepaskan dan turun ke bawah memegang bahagian bawah tongkat, lalu memindahkan tongkat ke sebelah kiri badan.',
+                        'Pergerakan 3: Tongkat diletakkan tegak di sebelah luar kaki kiri (pegangan tangan kiri) dan tangan kanan kembali lurus ke sisi kanan.'
+                    ],
+                    tips: 'Bertujuan memberi rehat kepada tangan kanan atau semasa upacara tertentu yang memerlukan tangan kanan bebas.',
+                    poseType: 'tongkat_kalih'
+                },
+                {
+                    id: 'tongkat_hormat',
+                    title: '6. Hormat dengan Tongkat (Dalam Kedudukan Sedia)',
+                    command: '"Hormat, Hormat ke Hadapan... Hormat!"',
+                    timing: '2 Pergerakan (1 - 2)',
+                    viewAngle: 'Hadapan (Komander)',
+                    steps: [
+                        'Dalam kedudukan Sedia dengan tongkat di sebelah kanan.',
+                        'Angkat tangan kiri melintas di hadapan dada secara mendatar (selari dengan bumi).',
+                        'Bentuk isyarat Tabik Pengakap (3 jari) dengan tangan kiri dan sentuhkan hujung jari telunjuk pada batang tongkat di paras bahu kanan (tapak tangan menghadap ke bawah).',
+                        'Tangan kanan kekal memegang tongkat dengan kemas dan pandangan lurus ke hadapan.',
+                        'Setelah selesai, turunkan tangan kiri terus ke sisi kiri.'
+                    ],
+                    tips: 'Hormat dengan tongkat menggunakan TANGAN KIRI melintas dada menyentuh tongkat, bukan mengangkat tangan kanan ke dahi!',
+                    poseType: 'tongkat_hormat'
+                },
+                {
+                    id: 'tongkat_rusuk',
+                    title: '7. Rusuk Tongkat (Untuk Kawad Kehormatan)',
+                    command: '"Rusuk... Tongkat!"',
+                    timing: '2 Pergerakan (1 - 2)',
+                    viewAngle: 'Hadapan (Komander)',
+                    steps: [
+                        'Pergerakan 1: Angkat tongkat dengan tangan kanan ke atas bahu kanan sehingga tongkat berada tegak di lekuk bahu kanan; tangan kiri melintas memegang tongkat di paras dada.',
+                        'Pergerakan 2: Tangan kanan turun memegang pangkal/bahagian bawah tongkat (siku rapat ke rusuk) dan tangan kiri kembali pantas ke sisi kiri.'
+                    ],
+                    tips: 'Kedudukan ini biasanya digunakan semasa kawad kehormatan atau semasa berbaris menerima pemeriksaan tetamu kehormat.',
+                    poseType: 'tongkat_rusuk'
+                }
+            ]
+        };
+
+        // ============================================================================
+        // 2. DATA KUIZ INTERAKTIF TOPIK 11
+        // ============================================================================
+        const quizQuestions = [
+            {
+                category: 'Kawad Kaki',
+                question: 'Berapakah sudut bukaan hujung kaki yang betul semasa berada dalam kedudukan "Sedia"?',
+                options: [
+                    '15 darjah',
+                    '30 darjah',
+                    '45 darjah',
+                    '90 darjah'
+                ],
+                correct: 1,
+                explanation: 'Dalam kedudukan Sedia, kedua-dua tumit dirapatkan dan hujung kaki dibuka membentuk sudut 30 darjah.'
+            },
+            {
+                category: 'Kawad Tongkat',
+                question: 'Bagaimanakah cara memberi "Hormat ke Hadapan" apabila seorang Pengakap sedang memegang tongkat dalam kedudukan Sedia?',
+                options: [
+                    'Angkat tangan kanan ke dahi dengan 3 jari',
+                    'Angkat tongkat ke atas kepala dengan kedua-dua tangan',
+                    'Angkat tangan kiri melintas dada dan sentuh tongkat dengan isyarat 3 jari',
+                    'Tundukkan kepala sedikit tanpa mengangkat tangan'
+                ],
+                correct: 2,
+                explanation: 'Apabila memegang tongkat di sebelah kanan, hormat dilakukan dengan mengangkat tangan kiri melintas dada secara mendatar dan menyentuh batang tongkat menggunakan 3 jari Pengakap.'
+            },
+            {
+                category: 'Kawad Kaki',
+                question: 'Semasa hukuman "Menghadap ke Belakang, Ke Belakang... Pusing!", ke arah manakah pusingan 180 darjah mesti dilakukan?',
+                options: [
+                    'Melalui bahu kanan (ikut arah pusingan jam)',
+                    'Melalui bahu kiri (lawan arah pusingan jam)',
+                    'Bebas mengikut keselesaan ahli',
+                    'Melompat berpusing 180 darjah'
+                ],
+                correct: 0,
+                explanation: 'Pusingan ke belakang sentiasa dilakukan melalui bahu kanan (ikut arah jam) dengan tumit kaki kanan sebagai paksi.'
+            },
+            {
+                category: 'Kawad Tongkat',
+                question: 'Apakah kedudukan tongkat semasa hukuman "Senang... Diri!" diberikan?',
+                options: [
+                    'Tongkat diangkat 3 inci dari bumi',
+                    'Tapak tongkat kekal di tempat asal dan bahagian atas ditolak condong ke hadapan',
+                    'Tongkat dipindahkan ke sebelah kiri',
+                    'Tongkat diletakkan di atas bahu kanan'
+                ],
+                correct: 1,
+                explanation: 'Semasa Senang Diri, tapak bawah tongkat kekal di sebelah luar kaki kanan manakala tangan kanan diluruskan menolak tongkat condong ke hadapan.'
+            },
+            {
+                category: 'Kawad Kaki',
+                question: 'Apakah perbezaan utama antara "Senang Diri" dengan "Rehatkan Diri"?',
+                options: [
+                    'Rehatkan Diri membenarkan ahli duduk di padang',
+                    'Rehatkan Diri mengendurkan bahagian pinggang ke atas tanpa menggerakkan kaki',
+                    'Senang Diri membenarkan ahli bercakap perlahan',
+                    'Tiada perbezaan antara kedua-dua arahan tersebut'
+                ],
+                correct: 1,
+                explanation: 'Dalam Rehatkan Diri, bahagian pinggang ke atas dikendurkan untuk keselesaan, tetapi kaki tetap tidak boleh bergerak atau beralih.'
+            },
+            {
+                category: 'Kawad Tongkat',
+                question: 'Apakah tujuan utama hukuman "Bawa... Tongkat!" diberikan sebelum hukuman "Cepat Jalan"?',
+                options: [
+                    'Supaya tongkat tidak terseret di tanah semasa berjalan',
+                    'Untuk menunjuk kekuatan lengan kanan',
+                    'Untuk menukar tongkat kepada rakan di sebelah',
+                    'Sebagai tanda tamat latihan kawad'
+                ],
+                correct: 0,
+                explanation: 'Arahan Bawa Tongkat mengangkat tongkat kira-kira 3 inci dari bumi supaya tongkat tidak terseret atau tersekat semasa skuad bergerak berjalan.'
+            }
+        ];
+
+        // ============================================================================
+        // 3. PEMBOLEH UBAH KEADAAN APLIKASI & ANIMASI KANVAS
+        // ============================================================================
+        let currentCategory = 'kaki'; // 'kaki', 'tongkat', 'kuiz'
+        let currentCommandIndex = 0;
+        let soundEnabled = true;
+
+        // Pemboleh ubah Animasi
+        let animProgress = 0; // 0 hingga 1
+        let animStartTime = 0;
+        let animDuration = 700; // ms
+        let hasPlayedStepSound = false;
+        let walkCycleTime = 0;
+
+        // Pemboleh ubah Kuiz
+        let currentQuizIdx = 0;
+        let quizScore = 0;
+        let quizAnswered = false;
+
+        // Kanvas
+        const canvas = document.getElementById('drillCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // ============================================================================
+        // 4. SINTESIS BUNYI HENTAKAN KAKI (TONE.JS) & PERTUTURAN (WEB SPEECH)
+        // ============================================================================
+        let stompSynth = null;
+
+        function playStompSound() {
+            if (!soundEnabled) return;
+            try {
+                if (typeof Tone !== 'undefined') {
+                    if (Tone.context.state !== 'running') {
+                        Tone.start();
+                    }
+                    if (!stompSynth) {
+                        stompSynth = new Tone.MembraneSynth({
+                            pitchDecay: 0.04,
+                            octaves: 3,
+                            oscillator: { type: 'sine' },
+                            envelope: { attack: 0.001, decay: 0.18, sustain: 0, release: 0.1 }
+                        }).toDestination();
+                        stompSynth.volume.value = -4;
+                    }
+                    stompSynth.triggerAttackRelease('C2', '16n');
+                }
+            } catch (e) {
+                // Abaikan jika pelayar menyekat audio sebelum interaksi
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const iconEl = document.getElementById('sound-icon');
+            const labelEl = document.getElementById('sound-label');
+            if (soundEnabled) {
+                iconEl.textContent = '🔊';
+                labelEl.textContent = 'Kesan Bunyi: ON';
+                playStompSound();
+            } else {
+                iconEl.textContent = '🔇';
+                labelEl.textContent = 'Kesan Bunyi: OFF';
+            }
+        }
+
+        function speakCommand() {
+            const cmdObj = drillData[currentCategory][currentCommandIndex];
+            if (!cmdObj) return;
+            
+            // Mainkan semula animasi juga supaya selari
+            replayCurrentCommand();
+
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const cleanText = cmdObj.command.replace(/["\.]/g, ' ');
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.lang = 'ms-MY';
+                utterance.rate = 0.92;
+                utterance.pitch = 0.9; // Nada tegas komander
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // ============================================================================
+        // 5. KAWALAN ANTARA MUKA (UI) & PENUKARAN MOD
+        // ============================================================================
+        function switchCategory(category) {
+            currentCategory = category;
+
+            // Kemaskini gaya butang tab
+            const tabs = ['kaki', 'tongkat', 'kuiz'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`btn-mode-${t}`);
+                if (t === category) {
+                    btn.className = 'flex-1 sm:flex-initial px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 bg-amber-500 text-emerald-950 shadow-sm flex items-center justify-center gap-2';
+                } else {
+                    btn.className = 'flex-1 sm:flex-initial px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200 text-emerald-200 hover:text-white flex items-center justify-center gap-2';
+                }
+            });
+
+            const learningWorkspace = document.getElementById('learning-workspace');
+            const quizWorkspace = document.getElementById('quiz-workspace');
+            const infoBanner = document.getElementById('info-banner');
+
+            if (category === 'kuiz') {
+                learningWorkspace.classList.add('hidden');
+                infoBanner.classList.add('hidden');
+                quizWorkspace.classList.remove('hidden');
+                restartQuiz();
+                return;
+            }
+
+            // Mod Pembelajaran (Kaki atau Tongkat)
+            quizWorkspace.classList.add('hidden');
+            learningWorkspace.classList.remove('hidden');
+            infoBanner.classList.remove('hidden');
+
+            const bannerTitle = document.getElementById('banner-title');
+            const bannerDesc = document.getElementById('banner-desc');
+            const detailCatTag = document.getElementById('detail-category-tag');
+
+            if (category === 'kaki') {
+                bannerTitle.textContent = 'Modul 1: Kawad Kaki Asas Pengakap';
+                bannerDesc.textContent = 'Pelajari bahasa hukuman statik, pusingan, hormat 3 jari Pengakap, dan pergerakan berjalan dengan simulasi visual.';
+                detailCatTag.textContent = 'Kawad Kaki Pengakap';
+            } else {
+                bannerTitle.textContent = 'Modul 2: Kawad Tongkat Pengakap';
+                bannerDesc.textContent = 'Ketahui tatacara pengendalian tongkat Pengakap (Sedia, Senang Diri, Bawa, Kalih, Hormat & Rusuk Tongkat).';
+                detailCatTag.textContent = 'Kawad Tongkat Pengakap';
+            }
+
+            currentCommandIndex = 0;
+            renderCommandList();
+            selectCommand(0);
+            resizeCanvas();
+        }
+
+        function renderCommandList() {
+            const listContainer = document.getElementById('command-list');
+            const commands = drillData[currentCategory];
+            document.getElementById('command-count').textContent = `${commands.length} Arahan`;
+
+            listContainer.innerHTML = commands.map((item, idx) => {
+                const isSelected = idx === currentCommandIndex;
+                return `
+                    <button onclick="selectCommand(${idx})" 
+                        class="w-full text-left p-3.5 rounded-xl border transition-all duration-150 flex items-center justify-between gap-3 ${
+                            isSelected 
+                            ? 'bg-emerald-900 text-white border-emerald-800 shadow-md ring-2 ring-amber-400/60' 
+                            : 'bg-slate-50 hover:bg-emerald-50/70 text-slate-800 border-slate-200/80'
+                        }">
+                        <div class="min-w-0">
+                            <div class="font-bold text-sm truncate">${item.title}</div>
+                            <div class="font-mono-cmd text-xs mt-1 truncate ${isSelected ? 'text-amber-300' : 'text-emerald-700'}">
+                                ${item.command}
+                            </div>
+                        </div>
+                        <div class="shrink-0 w-7 h-7 rounded-lg flex items-center justify-center ${
+                            isSelected ? 'bg-amber-500 text-emerald-950' : 'bg-white text-slate-400 border border-slate-200'
+                        }">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectCommand(index) {
+            currentCommandIndex = index;
+            renderCommandList();
+
+            const cmdObj = drillData[currentCategory][index];
+            document.getElementById('active-command-phrase').textContent = cmdObj.command;
+            document.getElementById('view-angle-badge').textContent = cmdObj.viewAngle;
+            document.getElementById('detail-title').textContent = cmdObj.title;
+            document.getElementById('detail-timing').textContent = cmdObj.timing;
+            document.getElementById('detail-tips').textContent = cmdObj.tips;
+
+            // Papar senarai langkah
+            const stepsContainer = document.getElementById('detail-steps');
+            stepsContainer.innerHTML = cmdObj.steps.map((step, i) => `
+                <li class="flex items-start gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                    <span class="w-6 h-6 rounded-full bg-emerald-800 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">${i + 1}</span>
+                    <span class="leading-relaxed">${step}</span>
+                </li>
+            `).join('');
+
+            replayCurrentCommand();
+        }
+
+        function replayCurrentCommand() {
+            animProgress = 0;
+            animStartTime = performance.now();
+            hasPlayedStepSound = false;
+            document.getElementById('step-indicator-pill').textContent = 'Status: Melaksanakan pergerakan...';
+        }
+
+        // ============================================================================
+        // 6. ENJIN LUKISAN SIMULASI VISUAL PENGAKAP (HTML5 CANVAS 2D)
+        // ============================================================================
+        function resizeCanvas() {
+            if (!canvas || !canvas.parentElement) return;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        // Fungsi pembantu interpolasi lancar (easeOutBack / easeInOutCubic)
+        function easeOutCubic(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+
+        function drawScoutSimulation(timestamp) {
+            if (currentCategory === 'kuiz') {
+                requestAnimationFrame(drawScoutSimulation);
+                return;
+            }
+
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const W = rect.width;
+            const H = rect.height;
+
+            ctx.clearRect(0, 0, W, H);
+
+            // Kemaskini kemajuan animasi
+            const elapsed = timestamp - animStartTime;
+            const rawT = Math.min(elapsed / animDuration, 1);
+            animProgress = easeOutCubic(rawT);
+
+            if (rawT >= 0.75 && !hasPlayedStepSound) {
+                hasPlayedStepSound = true;
+                playStompSound();
+                const cmdObj = drillData[currentCategory][currentCommandIndex];
+                document.getElementById('step-indicator-pill').textContent = `Status: Kedudukan "${cmdObj.title.replace(/^\d+\.\s*/, '')}" Selesai`;
+            }
+
+            const cmdObj = drillData[currentCategory][currentCommandIndex];
+            const pose = cmdObj ? cmdObj.poseType : 'sedia';
+
+            // Lukis Lantai Padang Kawad & Garisan Perspektif
+            const groundY = H * 0.84;
+            
+            // Bayang-bayang kawasan lantai
+            const floorGrad = ctx.createLinearGradient(0, groundY - 30, 0, H);
+            floorGrad.addColorStop(0, 'rgba(2, 44, 34, 0.2)');
+            floorGrad.addColorStop(1, 'rgba(2, 44, 34, 0.85)');
+            ctx.fillStyle = floorGrad;
+            ctx.fillRect(0, groundY - 30, W, H - (groundY - 30));
+
+            // Garisan kapur putih padang kawad
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(W * 0.15, groundY);
+            ctx.lineTo(W * 0.85, groundY);
+            ctx.stroke();
+
+            // Penanda arah komander di bawah
+            ctx.fillStyle = 'rgba(251, 191, 36, 0.85)';
+            ctx.font = 'bold 11px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('▲ ARAH KOMANDER / HADAPAN BARISAN ▲', W / 2, H - 14);
+
+            // Pusat karakter Pengakap
+            const cx = W / 2;
+            const scale = Math.min(W / 420, H / 360) * 1.05;
+
+            ctx.save();
+            ctx.translate(cx, groundY);
+            ctx.scale(scale, scale);
+
+            // Lukis bayang di bawah tapak kaki
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+            ctx.beginPath();
+            ctx.ellipse(0, 2, 42, 8, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Panggil fungsi lukisan mengikut jenis pose
+            if (pose === 'cepat_jalan') {
+                drawWalkingScout(timestamp);
+            } else if (pose === 'pusing_kanan' || pose === 'pusing_kiri' || pose === 'pusing_belakang') {
+                drawTurningScout(pose, animProgress, rawT);
+            } else {
+                drawFrontScout(pose, animProgress, rawT);
+            }
+
+            ctx.restore();
+
+            // Lukis Petunjuk Visual Tambahan (Anak Panah Pergerakan / Sudut)
+            drawVisualGuides(ctx, W, H, groundY, pose, animProgress);
+
+            requestAnimationFrame(drawScoutSimulation);
+        }
+
+        // ============================================================================
+        // LUKISAN KARAKTER PENGAKAP DARI HADAPAN (STATIK & TONGKAT)
+        // ============================================================================
+        function drawFrontScout(pose, t, rawT) {
+            // Parameter dinamik berdasarkan pose
+            let leftFootX = -12;
+            let leftFootY = 0;
+            let leftFootAngle = -0.26; // ~15 deg keluar (jumlah 30 deg)
+            let rightFootX = 12;
+            let rightFootAngle = 0.26;
+
+            // Tangan kiri (di sebelah kanan skrin) & Tangan kanan (di sebelah kiri skrin)
+            // Nota: Dari pandangan hadapan (viewer melihat muka pengakap):
+            // Kiri skrin = Sisi KANAN Pengakap!
+            // Kanan skrin = Sisi KIRI Pengakap!
+            let scoutRightArmAngle = 0.05; // sisi kanan pengakap (kiri skrin)
+            let scoutLeftArmAngle = -0.05; // sisi kiri pengakap (kanan skrin)
+            let scoutRightForearm = null;
+            let scoutLeftForearm = null;
+
+            let headTurn = 0;
+            let torsoTilt = 0;
+            let showHandsBehind = false;
+
+            // Konfigurasi Tongkat
+            let hasStaff = pose.startsWith('tongkat_');
+            let staffBottomX = -32; // Sebelah luar kaki kanan pengakap (kiri skrin)
+            let staffBottomY = 0;
+            let staffTopX = -32;
+            let staffTopY = -205;
+
+            // Pelarasan mengikut arahan
+            if (pose === 'sedia') {
+                // Hentakan kaki kiri pada fasa awal
+                if (rawT < 0.5) {
+                    const lift = Math.sin((rawT / 0.5) * Math.PI);
+                    leftFootX = 12 + (1 - rawT * 2) * 16;
+                    leftFootY = -lift * 28;
+                } else {
+                    leftFootX = 12;
+                    leftFootY = 0;
+                }
+                rightFootX = -12;
+            } else if (pose === 'senang_diri') {
+                leftFootX = 12 + t * 24; // Kaki kiri (kanan skrin) buka ke kiri
+                leftFootY = -Math.sin(rawT * Math.PI) * 24 * (rawT < 0.8 ? 1 : 0);
+                rightFootX = -12;
+                showHandsBehind = t > 0.4;
+                scoutRightArmAngle = -0.15 * t;
+                scoutLeftArmAngle = 0.15 * t;
+            } else if (pose === 'rehatkan_diri') {
+                leftFootX = 36;
+                rightFootX = -12;
+                showHandsBehind = true;
+                torsoTilt = Math.sin(t * Math.PI * 0.5) * 0.04;
+                headTurn = 0.08 * t;
+            } else if (pose === 'ke_kanan_lurus') {
+                leftFootX = 12;
+                rightFootX = -12;
+                // Tangan kanan pengakap (kiri skrin) angkat lurus ke kanan (paras bahu)
+                scoutRightArmAngle = (Math.PI / 2) * t;
+                headTurn = -0.35 * t; // Paling muka ke kanan (kiri skrin)
+            } else if (pose === 'hormat_kaki') {
+                leftFootX = 12;
+                rightFootX = -12;
+                // Tangan kanan pengakap (kiri skrin) angkat tabik 3 jari ke dahi
+                scoutRightForearm = {
+                    elbowX: -48 * t - 22 * (1 - t),
+                    elbowY: -125 * t - 85 * (1 - t),
+                    handX: -16 * t - 24 * (1 - t),
+                    handY: -168 * t - 45 * (1 - t),
+                    salute: t > 0.6
+                };
+            } else if (pose === 'tongkat_sedia') {
+                leftFootX = 12;
+                rightFootX = -12;
+                staffBottomX = -32;
+                staffTopX = -32;
+                // Tangan kanan pengakap memegang tongkat di paras pinggang/rusuk
+                scoutRightForearm = {
+                    elbowX: -28,
+                    elbowY: -105,
+                    handX: -32,
+                    handY: -102,
+                    grip: true
+                };
+            } else if (pose === 'tongkat_senang_diri') {
+                leftFootX = 12 + t * 24;
+                leftFootY = -Math.sin(rawT * Math.PI) * 20 * (rawT < 0.75 ? 1 : 0);
+                rightFootX = -12;
+                // Tapak tongkat tetap di -32, atas condong keluar ke kiri skrin
+                staffBottomX = -32;
+                staffTopX = -32 - 36 * t;
+                staffTopY = -205 + 6 * t;
+                scoutRightForearm = {
+                    elbowX: -34,
+                    elbowY: -108,
+                    handX: -32 - 18 * t,
+                    handY: -104,
+                    grip: true
+                };
+                scoutLeftArmAngle = 0.15 * t;
+            } else if (pose === 'tongkat_bawa') {
+                leftFootX = 12;
+                rightFootX = -12;
+                // Tongkat diangkat 3 inci (14px) dari bumi
+                const liftY = -16 * t;
+                staffBottomX = -32;
+                staffBottomY = liftY;
+                staffTopX = -32;
+                staffTopY = -205 + liftY;
+                scoutRightForearm = {
+                    elbowX: -28,
+                    elbowY: -105 + liftY,
+                    handX: -32,
+                    handY: -102 + liftY,
+                    grip: true
+                };
+                // Tangan kiri melintas mengawal tongkat seketika
+                if (t > 0.3) {
+                    const crossT = Math.min((t - 0.3) / 0.7, 1);
+                    scoutLeftForearm = {
+                        elbowX: 24 * (1 - crossT) + 8 * crossT,
+                        elbowY: -95,
+                        handX: 26 * (1 - crossT) - 30 * crossT,
+                        handY: -88,
+                        grip: true
+                    };
+                }
+            } else if (pose === 'tongkat_kalih') {
+                leftFootX = 12;
+                rightFootX = -12;
+                // Tongkat berpindah dari kanan (-32) ke kiri (+32)
+                const moveX = -32 + 64 * t;
+                const arcY = -Math.sin(t * Math.PI) * 18;
+                staffBottomX = moveX;
+                staffBottomY = arcY;
+                staffTopX = moveX;
+                staffTopY = -205 + arcY;
+                scoutLeftForearm = {
+                    elbowX: 28,
+                    elbowY: -105,
+                    handX: moveX > 0 ? moveX : 26,
+                    handY: -102,
+                    grip: t > 0.5
+                };
+                if (t < 0.7) {
+                    scoutRightForearm = {
+                        elbowX: -28,
+                        elbowY: -105,
+                        handX: moveX,
+                        handY: -102,
+                        grip: true
+                    };
+                }
+            } else if (pose === 'tongkat_hormat') {
+                leftFootX = 12;
+                rightFootX = -12;
+                staffBottomX = -32;
+                staffTopX = -32;
+                scoutRightForearm = {
+                    elbowX: -28,
+                    elbowY: -105,
+                    handX: -32,
+                    handY: -102,
+                    grip: true
+                };
+                // Tangan kiri (kanan skrin) melintas dada mendatar menyentuh tongkat
+                scoutLeftForearm = {
+                    elbowX: 28 * (1 - t) + 14 * t,
+                    elbowY: -95 * (1 - t) - 132 * t,
+                    handX: 26 * (1 - t) - 29 * t,
+                    handY: -45 * (1 - t) - 134 * t,
+                    saluteStick: t > 0.6
+                };
+            } else if (pose === 'tongkat_rusuk') {
+                leftFootX = 12;
+                rightFootX = -12;
+                // Tongkat diangkat ke lekuk bahu kanan
+                const liftY = -36 * t;
+                staffBottomX = -28;
+                staffBottomY = liftY;
+                staffTopX = -26;
+                staffTopY = -205 + liftY;
+                scoutRightForearm = {
+                    elbowX: -26,
+                    elbowY: -88,
+                    handX: -28,
+                    handY: -66,
+                    grip: true
+                };
+            }
+
+            // 1. LUKIS KAKI & SEPATU HITAM BERKILAT
+            // Kaki Kanan Pengakap (kiri skrin)
+            drawLeg(rightFootX, 0, rightFootAngle, -11);
+            // Kaki Kiri Pengakap (kanan skrin)
+            drawLeg(leftFootX, leftFootY, leftFootAngle, 11);
+
+            // 2. LUKIS BADAN (BAJU SERAGAM PENGAKAP KELABU ASAP)
+            ctx.save();
+            ctx.translate(0, -82);
+            ctx.rotate(torsoTilt);
+
+            // Baju kemeja kelabu pengakap
+            ctx.fillStyle = '#94a3b8'; // Kelabu asap seragam Pengakap Malaysia
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.roundRect(-23, -58, 46, 62, [10, 10, 4, 4]);
+            ctx.fill();
+            ctx.stroke();
+
+            // Poket Baju Kiri & Kanan
+            ctx.fillStyle = '#cbd5e1';
+            ctx.fillRect(-17, -40, 12, 14);
+            ctx.strokeRect(-17, -40, 12, 14);
+            ctx.fillRect(5, -40, 12, 14);
+            ctx.strokeRect(5, -40, 12, 14);
+
+            // Butang tengah baju
+            ctx.fillStyle = '#334155';
+            for (let by = -42; by <= -10; by += 10) {
+                ctx.beginPath();
+                ctx.arc(0, by, 1.5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Tali Pinggang Pengakap (Hitam dengan Kepala Tali Pinggang Emas)
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(-23, -2, 46, 7);
+            ctx.fillStyle = '#f59e0b';
+            ctx.fillRect(-5, -3, 10, 9);
+
+            // SKAF PENGAKAP (Segi Tiga di Leher dengan Woggle)
+            ctx.fillStyle = '#047857'; // Hijau Pengakap / Negeri
+            ctx.beginPath();
+            ctx.moveTo(-14, -58);
+            ctx.lineTo(14, -58);
+            ctx.lineTo(0, -28);
+            ctx.closePath();
+            ctx.fill();
+
+            // Jalur kuning/merah tepi skaf
+            ctx.strokeStyle = '#fbbf24';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(-12, -57);
+            ctx.lineTo(0, -30);
+            ctx.lineTo(12, -57);
+            ctx.stroke();
+
+            // Woggle (Cincin Skaf)
+            ctx.fillStyle = '#92400e';
+            ctx.fillRect(-3.5, -48, 7, 5);
+
+            // 3. KEPALA & FORAGE CAP PENGAKAP
+            ctx.save();
+            ctx.translate(headTurn * 10, -74);
+
+            // Leher
+            ctx.fillStyle = '#f1c27d';
+            ctx.fillRect(-6, 8, 12, 10);
+
+            // Muka
+            ctx.fillStyle = '#f1c27d';
+            ctx.beginPath();
+            ctx.arc(0, 0, 14, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Mata (bergerak mengikut palingan kepala)
+            const eyeOffset = headTurn * 8;
+            ctx.fillStyle = '#1e293b';
+            ctx.beginPath();
+            ctx.arc(-5 + eyeOffset, -2, 1.8, 0, Math.PI * 2);
+            ctx.arc(5 + eyeOffset, -2, 1.8, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Mulut tegas
+            ctx.strokeStyle = '#78350f';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(-4 + eyeOffset, 6);
+            ctx.lineTo(4 + eyeOffset, 6);
+            ctx.stroke();
+
+            // Forage Cap / Beret Pengakap (Biru Gelap dengan Lencana Emas)
+            ctx.fillStyle = '#1e3a8a';
+            ctx.beginPath();
+            ctx.ellipse(0, -11, 16, 7, -0.08, 0, Math.PI * 2);
+            ctx.fill();
+            // Lencana kecil pada topi
+            ctx.fillStyle = '#fbbf24';
+            ctx.beginPath();
+            ctx.arc(6 + eyeOffset * 0.5, -11, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore(); // Tamat Kepala
+            ctx.restore(); // Tamat Badan
+
+            // 4. LUKIS TANGAN (Jika tidak di belakang pinggang)
+            if (!showHandsBehind) {
+                // Tangan Kanan Pengakap (kiri skrin)
+                if (scoutRightForearm) {
+                    drawBentArm(-23, -136, scoutRightForearm.elbowX, scoutRightForearm.elbowY, scoutRightForearm.handX, scoutRightForearm.handY, scoutRightForearm.salute);
+                } else {
+                    drawStraightArm(-23, -136, scoutRightArmAngle);
+                }
+
+                // Tangan Kiri Pengakap (kanan skrin)
+                if (scoutLeftForearm) {
+                    drawBentArm(23, -136, scoutLeftForearm.elbowX, scoutLeftForearm.elbowY, scoutLeftForearm.handX, scoutLeftForearm.handY, false, scoutLeftForearm.saluteStick);
+                } else {
+                    drawStraightArm(23, -136, scoutLeftArmAngle);
+                }
+            } else {
+                // Lengan di belakang pinggang
+                drawStraightArm(-23, -136, -0.18);
+                drawStraightArm(23, -136, 0.18);
+            }
+
+            // 5. LUKIS TONGKAT PENGAKAP (Jika Mod Tongkat)
+            if (hasStaff) {
+                drawScoutStaff(staffBottomX, staffBottomY, staffTopX, staffTopY);
+            }
+        }
+
+        function drawLeg(footX, footY, footAngle, hipX) {
+            // Seluar panjang biru gelap Pengakap
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 13;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(hipX, -82);
+            ctx.lineTo(footX, footY - 8);
+            ctx.stroke();
+
+            // Garis lipatan seluar
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(hipX, -78);
+            ctx.lineTo(footX, footY - 12);
+            ctx.stroke();
+
+            // Kasut kawad hitam
+            ctx.save();
+            ctx.translate(footX, footY - 3);
+            ctx.rotate(footAngle);
+            ctx.fillStyle = '#090d16';
+            ctx.beginPath();
+            ctx.ellipse(0, 2, 7, 11, 0, 0, Math.PI * 2);
+            ctx.fill();
+            // Kilatan kasut
+            ctx.fillStyle = 'rgba(255,255,255,0.25)';
+            ctx.beginPath();
+            ctx.ellipse(-2, 4, 2, 4, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawStraightArm(shoulderX, shoulderY, angle) {
+            ctx.save();
+            ctx.translate(shoulderX, shoulderY);
+            ctx.rotate(angle);
+
+            // Lengan baju kelabu
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 10;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, 26);
+            ctx.stroke();
+
+            // Lengan bawah kulit
+            ctx.strokeStyle = '#f1c27d';
+            ctx.lineWidth = 8.5;
+            ctx.beginPath();
+            ctx.moveTo(0, 26);
+            ctx.lineTo(0, 54);
+            ctx.stroke();
+
+            // Genggaman tangan
+            ctx.fillStyle = '#e0ac69';
+            ctx.beginPath();
+            ctx.arc(0, 56, 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function drawBentArm(sx, sy, ex, ey, hx, hy, isSalute = false, isSaluteStick = false) {
+            // Lengan atas (baju)
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 10;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(sx, sy);
+            ctx.lineTo(ex, ey);
+            ctx.stroke();
+
+            // Lengan bawah (kulit)
+            ctx.strokeStyle = '#f1c27d';
+            ctx.lineWidth = 8.5;
+            ctx.beginPath();
+            ctx.moveTo(ex, ey);
+            ctx.lineTo(hx, hy);
+            ctx.stroke();
+
+            // Tapak tangan / Isyarat 3 jari Pengakap
+            ctx.fillStyle = '#e0ac69';
+            ctx.beginPath();
+            ctx.arc(hx, hy, 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (isSalute || isSaluteStick) {
+                // Lukis 3 jari lurus (Isyarat Pengakap)
+                ctx.strokeStyle = '#fbbf24';
+                ctx.lineWidth = 2;
+                for (let i = -2; i <= 2; i += 2) {
+                    ctx.beginPath();
+                    ctx.moveTo(hx, hy);
+                    ctx.lineTo(hx + (isSalute ? 4 : -7), hy + i - (isSalute ? 5 : 0));
+                    ctx.stroke();
+                }
+            }
+        }
+
+        function drawScoutStaff(bx, by, tx, ty) {
+            // Batang tongkat kayu rotan/kayu keras
+            ctx.strokeStyle = '#b45309';
+            ctx.lineWidth = 5.5;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(bx, by);
+            ctx.lineTo(tx, ty);
+            ctx.stroke();
+
+            // Sorotan cahaya pada kayu tongkat
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(bx - 1, by);
+            ctx.lineTo(tx - 1, ty);
+            ctx.stroke();
+
+            // Penutup logam di bahagian bawah (ferrule) & atas tongkat
+            ctx.fillStyle = '#cbd5e1';
+            ctx.beginPath();
+            ctx.arc(bx, by, 3.2, 0, Math.PI * 2);
+            ctx.arc(tx, ty, 3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // ============================================================================
+        // LUKISAN PUSINGAN (KE KANAN, KE KIRI, KE BELAKANG)
+        // ============================================================================
+        function drawTurningScout(pose, t, rawT) {
+            // Fasa 1 (0 - 0.5): Badan berpusing
+            // Fasa 2 (0.5 - 1.0): Kaki diangkat dan dihentak rapat
+            const turnPhase = Math.min(rawT / 0.55, 1);
+            const stompPhase = rawT > 0.55 ? (rawT - 0.55) / 0.45 : 0;
+
+            let facing = 'front';
+            if (turnPhase > 0.5) {
+                if (pose === 'pusing_kanan') facing = 'right_profile';
+                if (pose === 'pusing_kiri') facing = 'left_profile';
+                if (pose === 'pusing_belakang') facing = 'back';
+            }
+
+            if (facing === 'front') {
+                drawFrontScout('sedia', 1, 1);
+                return;
+            }
+
+            const stompLift = stompPhase > 0 && stompPhase < 0.85 ? Math.sin((stompPhase / 0.85) * Math.PI) * 24 : 0;
+
+            if (facing === 'back') {
+                // Pandangan Belakang (180 darjah)
+                drawLeg(-12, -stompLift, 0, -11);
+                drawLeg(12, 0, 0, 11);
+
+                // Badan belakang
+                ctx.fillStyle = '#94a3b8';
+                ctx.beginPath();
+                ctx.roundRect(-23, -140, 46, 62, [10, 10, 4, 4]);
+                ctx.fill();
+
+                // Tali pinggang
+                ctx.fillStyle = '#0f172a';
+                ctx.fillRect(-23, -84, 46, 7);
+
+                // Kain Skaf Segi Tiga di belakang bahu
+                ctx.fillStyle = '#047857';
+                ctx.beginPath();
+                ctx.moveTo(-18, -140);
+                ctx.lineTo(18, -140);
+                ctx.lineTo(0, -104);
+                ctx.closePath();
+                ctx.fill();
+                ctx.strokeStyle = '#fbbf24';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Kepala dari belakang (rambut hitam & topi biru)
+                ctx.fillStyle = '#1e293b';
+                ctx.beginPath();
+                ctx.arc(0, -156, 14, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#1e3a8a';
+                ctx.beginPath();
+                ctx.ellipse(0, -166, 16, 7, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                drawStraightArm(-23, -136, 0.04);
+                drawStraightArm(23, -136, -0.04);
+            } else {
+                // Pandangan Sisi (Menghadap Kanan atau Kiri)
+                const dir = facing === 'right_profile' ? 1 : -1;
+
+                // Kaki belakang & kaki hadapan
+                drawLeg(0, -stompLift, 0, 0);
+                drawLeg(0, 0, 0, 0);
+
+                // Badan sisi
+                ctx.fillStyle = '#94a3b8';
+                ctx.beginPath();
+                ctx.roundRect(-14, -140, 28, 62, 8);
+                ctx.fill();
+
+                // Tali pinggang
+                ctx.fillStyle = '#0f172a';
+                ctx.fillRect(-14, -84, 28, 7);
+
+                // Skaf sisi
+                ctx.fillStyle = '#047857';
+                ctx.beginPath();
+                ctx.moveTo(-10, -140);
+                ctx.lineTo(10, -140);
+                ctx.lineTo(0, -112);
+                ctx.closePath();
+                ctx.fill();
+
+                // Kepala sisi
+                ctx.fillStyle = '#f1c27d';
+                ctx.beginPath();
+                ctx.arc(0, -156, 13, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Hidung & Mata menghadap arah pusingan
+                ctx.fillStyle = '#1e293b';
+                ctx.beginPath();
+                ctx.arc(dir * 7, -158, 1.8, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Topi sisi
+                ctx.fillStyle = '#1e3a8a';
+                ctx.beginPath();
+                ctx.ellipse(dir * 2, -166, 15, 6, dir * 0.1, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Tangan lurus di sisi seluar
+                drawStraightArm(0, -136, 0);
+            }
+        }
+
+        // ============================================================================
+        // LUKISAN PERGERAKAN CEPAT JALAN (ANIMASI BERTERUSAN)
+        // ============================================================================
+        function drawWalkingScout(timestamp) {
+            const cycle = (timestamp / 260); // Rentak ~116 langkah seminit
+            const swing = Math.sin(cycle);
+
+            const legAngle1 = swing * 0.48;
+            const legAngle2 = -swing * 0.48;
+            const armAngle1 = -swing * 0.65; // Hayunan tangan bertentangan dengan kaki
+            const armAngle2 = swing * 0.65;
+
+            // Kaki Belakang
+            drawWalkingLimb(0, -82, legAngle2, 78, '#1e293b', 12, true);
+            // Tangan Belakang
+            drawWalkingLimb(0, -136, armAngle2, 54, '#94a3b8', 9, false);
+
+            // Badan (Pandangan Sisi Bergerak ke Kanan)
+            ctx.fillStyle = '#94a3b8';
+            ctx.beginPath();
+            ctx.roundRect(-14, -140, 28, 62, 8);
+            ctx.fill();
+
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(-14, -84, 28, 7);
+
+            // Skaf
+            ctx.fillStyle = '#047857';
+            ctx.beginPath();
+            ctx.moveTo(-10, -140);
+            ctx.lineTo(10, -140);
+            ctx.lineTo(0, -112);
+            ctx.closePath();
+            ctx.fill();
+
+            // Kepala menghadap kanan
+            ctx.fillStyle = '#f1c27d';
+            ctx.beginPath();
+            ctx.arc(0, -156, 13, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#1e293b';
+            ctx.beginPath();
+            ctx.arc(7, -158, 1.8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#1e3a8a';
+            ctx.beginPath();
+            ctx.ellipse(2, -166, 15, 6, 0.1, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Kaki Hadapan
+            drawWalkingLimb(0, -82, legAngle1, 78, '#334155', 12, true);
+            // Tangan Hadapan
+            drawWalkingLimb(0, -136, armAngle1, 54, '#cbd5e1', 9, false);
+        }
+
+        function drawWalkingLimb(x, y, angle, length, color, width, isLeg) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, length);
+            ctx.stroke();
+
+            if (isLeg) {
+                // Kasut hitam
+                ctx.fillStyle = '#090d16';
+                ctx.beginPath();
+                ctx.roundRect(-5, length - 4, 18, 8, 4);
+                ctx.fill();
+            } else {
+                // Genggaman tangan
+                ctx.fillStyle = '#e0ac69';
+                ctx.beginPath();
+                ctx.arc(0, length + 2, 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            ctx.restore();
+        }
+
+        // ============================================================================
+        // PETUNJUK VISUAL ANAK PANAH & SUDUT PADA KANVAS
+        // ============================================================================
+        function drawVisualGuides(ctx, W, H, groundY, pose, t) {
+            ctx.save();
+            ctx.font = '600 12px Inter, sans-serif';
+            ctx.fillStyle = '#fde68a';
+            ctx.strokeStyle = '#fbbf24';
+            ctx.lineWidth = 2;
+
+            const cx = W / 2;
+
+            if (pose === 'senang_diri' || pose === 'tongkat_senang_diri') {
+                // Anak panah tunjuk kaki kiri buka 12 inci
+                ctx.beginPath();
+                ctx.moveTo(cx + 15, groundY + 16);
+                ctx.lineTo(cx + 46, groundY + 16);
+                ctx.stroke();
+                ctx.fillText('Buka kaki kiri 12 inci →', cx + 85, groundY + 20);
+            } else if (pose === 'ke_kanan_lurus') {
+                ctx.fillText('← Luruskan lengan kanan (paras bahu) & paling muka', cx - 120, groundY - 145);
+            } else if (pose === 'pusing_kanan') {
+                ctx.fillText('Pusing 90° ke Kanan (Tumit kanan sebagai paksi) →', cx, groundY - 215);
+            } else if (pose === 'pusing_kiri') {
+                ctx.fillText('← Pusing 90° ke Kiri (Tumit kiri sebagai paksi)', cx, groundY - 215);
+            } else if (pose === 'pusing_belakang') {
+                ctx.fillText('↻ Pusing 180° melalui Bahu Kanan (Ikut arah jam)', cx, groundY - 215);
+            } else if (pose === 'tongkat_hormat') {
+                ctx.fillText('Tangan kiri melintas dada menyentuh tongkat (3 Jari)', cx + 10, groundY - 195);
+            } else if (pose === 'tongkat_bawa') {
+                ctx.fillText('↑ Angkat tongkat 3 inci dari bumi', cx - 95, groundY + 20);
+            } else if (pose === 'tongkat_kalih') {
+                ctx.fillText('Pindahkan tongkat dari sisi kanan ke sisi kiri ↔', cx, groundY - 215);
+            }
+
+            ctx.restore();
+        }
+
+        // ============================================================================
+        // 7. LOGIK KUIZ INTERAKTIF
+        // ============================================================================
+        function restartQuiz() {
+            currentQuizIdx = 0;
+            quizScore = 0;
+            quizAnswered = false;
+            document.getElementById('quiz-body').classList.remove('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            quizAnswered = false;
+            const q = quizQuestions[currentQuizIdx];
+            document.getElementById('quiz-progress-text').textContent = `Soalan ${currentQuizIdx + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-topic-badge').textContent = q.category;
+            document.getElementById('quiz-question').textContent = q.question;
+            document.getElementById('quiz-score').textContent = quizScore;
+
+            const feedbackEl = document.getElementById('quiz-feedback');
+            feedbackEl.classList.add('hidden');
+            document.getElementById('btn-next-question').classList.add('hidden');
+
+            const optionsEl = document.getElementById('quiz-options');
+            optionsEl.innerHTML = q.options.map((opt, idx) => `
+                <button onclick="checkQuizAnswer(${idx})" id="quiz-opt-${idx}"
+                    class="w-full text-left p-4 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 transition font-medium text-slate-800 flex items-center gap-3">
+                    <span class="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">${String.fromCharCode(65 + idx)}</span>
+                    <span>${opt}</span>
+                </button>
+            `).join('');
+        }
+
+        function checkQuizAnswer(selectedIdx) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+
+            const q = quizQuestions[currentQuizIdx];
+            const isCorrect = selectedIdx === q.correct;
+
+            if (isCorrect) {
+                quizScore++;
+                document.getElementById('quiz-score').textContent = quizScore;
+                playStompSound();
+            }
+
+            // Warnakan pilihan
+            q.options.forEach((_, idx) => {
+                const btn = document.getElementById(`quiz-opt-${idx}`);
+                btn.disabled = true;
+                if (idx === q.correct) {
+                    btn.className = 'w-full text-left p-4 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-emerald-950 font-bold flex items-center gap-3';
+                } else if (idx === selectedIdx && !isCorrect) {
+                    btn.className = 'w-full text-left p-4 rounded-xl border-2 border-rose-500 bg-rose-50 text-rose-950 font-medium flex items-center gap-3';
+                } else {
+                    btn.className = 'w-full text-left p-4 rounded-xl border border-slate-200 opacity-60 text-slate-500 flex items-center gap-3';
+                }
+            });
+
+            const feedbackEl = document.getElementById('quiz-feedback');
+            feedbackEl.classList.remove('hidden');
+            if (isCorrect) {
+                feedbackEl.className = 'mt-5 p-4 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-900 text-sm';
+                feedbackEl.innerHTML = `<strong>✓ Tepat Sekali!</strong> ${q.explanation}`;
+            } else {
+                feedbackEl.className = 'mt-5 p-4 rounded-xl border border-rose-200 bg-rose-50 text-rose-900 text-sm';
+                feedbackEl.innerHTML = `<strong>✗ Kurang Tepat.</strong> ${q.explanation}`;
+            }
+
+            const nextBtn = document.getElementById('btn-next-question');
+            nextBtn.textContent = currentQuizIdx < quizQuestions.length - 1 ? 'Soalan Seterusnya →' : 'Lihat Keputusan Akhir →';
+            nextBtn.classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            if (currentQuizIdx < quizQuestions.length - 1) {
+                currentQuizIdx++;
+                renderQuizQuestion();
+            } else {
+                document.getElementById('quiz-body').classList.add('hidden');
+                document.getElementById('quiz-result').classList.remove('hidden');
+                document.getElementById('final-score-display').textContent = `${quizScore} / ${quizQuestions.length}`;
+            }
+        }
+
+        // ============================================================================
+        // 8. PERMULAAN APLIKASI (ONLOAD)
+        // ============================================================================
+        window.onload = function () {
+            resizeCanvas();
+            switchCategory('kaki');
+            requestAnimationFrame(drawScoutSimulation);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,2348 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub Pembelajaran Topik 10: Projek Perintis & Kuartermaster</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js CDN for Real 3D Modelling -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cabinet+Grotesk:wght@700;800;900&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b1320;
+            color: #e2e8f0;
+        }
+        
+        h1, h2, h3, .heading-font {
+            font-family: 'Cabinet Grotesk', sans-serif;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2563eb;
+            border-radius: 9999px;
+        }
+
+        /* 3D Canvas Container Styling */
+        #threeCanvasContainer {
+            touch-action: none;
+            background: radial-gradient(circle at center, #1e293b 0%, #090e17 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-amber-400 selection:text-slate-900 custom-scrollbar">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-emerald-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20">
+                    <i data-lucide="compass" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-black tracking-wide text-white flex items-center gap-2">
+                        TOPIK 10 <span class="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-medium">PENGAKAP / KADET</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Projek Perintis, Pemodelan Skala & Kuartermaster</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="hidden md:flex items-center space-x-1 bg-slate-800/80 p-1.5 rounded-xl border border-slate-700/60 text-sm">
+                <button onclick="switchTab('perintis')" id="nav-perintis" class="tab-btn px-4 py-1.5 rounded-lg font-medium transition-all duration-200 bg-amber-500 text-slate-950 font-bold shadow-sm">
+                    1. Tiga Kategori Projek
+                </button>
+                <button onclick="switchTab('model')" id="nav-model" class="tab-btn px-4 py-1.5 rounded-lg font-medium transition-all duration-200 text-slate-400 hover:text-white">
+                    2. Studio Pemodelan Skala
+                </button>
+                <button onclick="switchTab('kuartermaster')" id="nav-kuartermaster" class="tab-btn px-4 py-1.5 rounded-lg font-medium transition-all duration-200 text-slate-400 hover:text-white">
+                    3. Pengurusan Kuartermaster
+                </button>
+                <button onclick="switchTab('kuiz')" id="nav-kuiz" class="tab-btn px-4 py-1.5 rounded-lg font-medium transition-all duration-200 text-slate-400 hover:text-white flex items-center gap-1.5">
+                    <i data-lucide="award" class="w-4 h-4 text-emerald-400"></i> Uji Kefahaman
+                </button>
+            </nav>
+
+            <div class="flex items-center gap-2">
+                <button onclick="toggleSound()" id="soundToggle" class="p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white border border-slate-700 hover:bg-slate-700" title="Kesan Audio Interaktif">
+                    <i data-lucide="volume-2" class="w-5 h-5"></i>
+                </button>
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobileMenu" class="hidden md:hidden px-4 pb-4 pt-2 border-t border-slate-800 bg-slate-900 flex flex-col space-y-2">
+            <button onclick="switchTab('perintis'); toggleMobileMenu()" class="text-left py-2 px-3 rounded-lg text-slate-200 hover:bg-slate-800">1. Tiga Kategori Projek Perintis</button>
+            <button onclick="switchTab('model'); toggleMobileMenu()" class="text-left py-2 px-3 rounded-lg text-slate-200 hover:bg-slate-800">2. Studio Pemodelan Skala</button>
+            <button onclick="switchTab('kuartermaster'); toggleMobileMenu()" class="text-left py-2 px-3 rounded-lg text-slate-200 hover:bg-slate-800">3. Pengurusan Kuartermaster</button>
+            <button onclick="switchTab('kuiz'); toggleMobileMenu()" class="text-left py-2 px-3 rounded-lg text-slate-200 hover:bg-slate-800 flex items-center gap-2">
+                <i data-lucide="award" class="w-4 h-4 text-emerald-400"></i> Uji Minda & Cabaran
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ========================================== -->
+        <!-- BAHAGIAN 1: PROJEK PERINTIS MENGIKUT KATEGORI -->
+        <!-- ========================================== -->
+        <section id="section-perintis" class="space-y-8 animate-fadeIn">
+            <!-- Hero Info -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950/60 to-slate-900 border border-slate-800 p-6 md:p-8">
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-3">
+                        <i data-lucide="hammer" class="w-3.5 h-3.5"></i> Bahagian 1: Rekaan & Struktur
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                        Penerokaan Projek Perintis (Pioneering Projects)
+                    </h2>
+                    <p class="mt-2 text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Projek perintis ialah kemahiran mereka cipta dan membina struktur kayu/buluh menggunakan tali temali melalui ikatan dan simpulan khusus tanpa menggunakan paku. Terokai 3 kategori utama di bawah:
+                    </p>
+                </div>
+                <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+                    <i data-lucide="anchor" class="w-72 h-72 text-white"></i>
+                </div>
+            </div>
+
+            <!-- Categories Tabs -->
+            <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
+                <button onclick="filterCategory('jambatan')" id="cat-btn-jambatan" class="cat-pill active-pill px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 bg-amber-500 text-slate-950 shadow-md transition">
+                    <i data-lucide="split" class="w-4 h-4"></i> A. Kategori Jambatan
+                </button>
+                <button onclick="filterCategory('menara')" id="cat-btn-menara" class="cat-pill px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+                    <i data-lucide="shield-alert" class="w-4 h-4"></i> B. Kategori Menara
+                </button>
+                <button onclick="filterCategory('lain')" id="cat-btn-lain" class="cat-pill px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+                    <i data-lucide="package-plus" class="w-4 h-4"></i> C. Lain-Lain (Pengangkutan & Permainan)
+                </button>
+            </div>
+
+            <!-- Content Kategori: Jambatan -->
+            <div id="cat-content-jambatan" class="category-block grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-slate-800/60 rounded-2xl p-6 border border-slate-700/60">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs uppercase tracking-wider text-amber-400 font-bold">Struktur Rentangan (3 Jenis Utama)</span>
+                                <h3 class="text-2xl font-bold text-white mt-1">Projek Perintis Kategori Jambatan</h3>
+                            </div>
+                            <span class="px-3 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-lg border border-blue-500/30">Beban Dinamik</span>
+                        </div>
+                        <p class="text-slate-300 mt-3 text-sm leading-relaxed">
+                            Kategori ini membuktikan kepelbagaian seni perintis di luar struktur statik. Meliputi peralatan permainan rekreasi kem, tiang bendera istiadat, dan pintu gerbang selamat datang dengan teknik ikatan tali kreatif.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                            <!-- Model 7: Tiang Bendera Tapak Segi Empat (bendera1.jpg) -->
+                            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 hover:border-purple-500/50 transition flex flex-col justify-between gap-3">
+                                <div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="px-2 py-0.5 text-[10px] font-bold bg-purple-500/20 text-purple-300 rounded border border-purple-500/30">MODEL 7 • ISTIADAT</span>
+                                        <i data-lucide="flag" class="w-4 h-4 text-rose-400"></i>
+                                    </div>
+                                    <h4 class="font-bold text-white text-sm mt-2">Tiang Bendera Tapak Segi Empat (Square-Base Flagpole)</h4>
+                                    <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                                        Menggunakan tapak rangka segi empat sama berpalang silang di bawah dengan tiang sokongan tengah menegak, diperkukuh 4 tali penegang (guy lines) ke setiap penjuru tapak untuk kestabilan tinggi tanpa menggali lubang.
+                                    </p>
+                                </div>
+                                <button onclick="openSimulation('flagpole')" class="w-full py-2 bg-purple-500/20 hover:bg-purple-500 text-purple-300 hover:text-white border border-purple-500/40 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                                    <i data-lucide="box" class="w-3.5 h-3.5"></i> Papar Model 3D
+                                </button>
+                            </div>
+
+                            <!-- Model 8: Jungkitan Perintis (mainan1.jpg) -->
+                            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 hover:border-purple-500/50 transition flex flex-col justify-between gap-3">
+                                <div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="px-2 py-0.5 text-[10px] font-bold bg-amber-500/20 text-amber-300 rounded border border-amber-500/30">MODEL 8 • PERMAINAN</span>
+                                        <i data-lucide="scale" class="w-4 h-4 text-amber-400"></i>
+                                    </div>
+                                    <h4 class="font-bold text-white text-sm mt-2">Jungkitan Perintis (Pioneering Seesaw)</h4>
+                                    <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                                        Dibina menggunakan dua rangka kaki-A selari yang diikat pada palang paksi gandar tengah (pivot axle) dengan papan jungkitan berpemegang di kedua-dua hujung.
+                                    </p>
+                                </div>
+                                <button onclick="openSimulation('seesaw')" class="w-full py-2 bg-purple-500/20 hover:bg-purple-500 text-purple-300 hover:text-white border border-purple-500/40 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                                    <i data-lucide="box" class="w-3.5 h-3.5"></i> Papar Model 3D
+                                </button>
+                            </div>
+
+                            <!-- Model 9: Buaian Perintis (swing.jpg) -->
+                            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 hover:border-purple-500/50 transition flex flex-col justify-between gap-3">
+                                <div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="px-2 py-0.5 text-[10px] font-bold bg-amber-500/20 text-amber-300 rounded border border-amber-500/30">MODEL 9 • PERMAINAN</span>
+                                        <i data-lucide="smile" class="w-4 h-4 text-amber-400"></i>
+                                    </div>
+                                    <h4 class="font-bold text-white text-sm mt-2">Buaian Perintis Kaki-A (A-Frame Swing)</h4>
+                                    <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                                        Dua struktur kaki-A dengan palang pengukuh tapak dan sisi yang menampung rasuk galang melintang di puncak, menggantung tempat duduk kayu menggunakan dua tali gantung.
+                                    </p>
+                                </div>
+                                <button onclick="openSimulation('swing')" class="w-full py-2 bg-purple-500/20 hover:bg-purple-500 text-purple-300 hover:text-white border border-purple-500/40 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                                    <i data-lucide="box" class="w-3.5 h-3.5"></i> Papar Model 3D
+                                </button>
+                            </div>
+
+                            <!-- Model 10: Pintu Gerbang Kaki-A (gerbang2.jpg) -->
+                            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 hover:border-purple-500/50 transition flex flex-col justify-between gap-3">
+                                <div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="px-2 py-0.5 text-[10px] font-bold bg-cyan-500/20 text-cyan-300 rounded border border-cyan-500/30">MODEL 10 • GERBANG</span>
+                                        <i data-lucide="door-open" class="w-4 h-4 text-cyan-400"></i>
+                                    </div>
+                                    <h4 class="font-bold text-white text-sm mt-2">Pintu Gerbang Kaki-A Jaring Tali (A-Frame Gateway)</h4>
+                                    <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                                        Dua menara sisi berbentuk segitiga bersudut tegak menyokong alang puncak melintang, dihiasi anyaman tali mendatar serta tali regangan bersudut ke pasak sauh tanah.
+                                    </p>
+                                </div>
+                                <button onclick="openSimulation('gateway_a')" class="w-full py-2 bg-purple-500/20 hover:bg-purple-500 text-purple-300 hover:text-white border border-purple-500/40 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                                    <i data-lucide="box" class="w-3.5 h-3.5"></i> Papar Model 3D
+                                </button>
+                            </div>
+
+                            <!-- Model 11: Pintu Gerbang Lengkungan Tali (gerbang1.jpg) -->
+                            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 hover:border-purple-500/50 transition md:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 text-[10px] font-bold bg-cyan-500/20 text-cyan-300 rounded border border-cyan-500/30">MODEL 11 • GERBANG</span>
+                                        <h4 class="font-bold text-white text-sm">Pintu Gerbang Lengkungan Parabolik Tali (String-Art Arch Gateway)</h4>
+                                    </div>
+                                    <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                                        Menggunakan dua tiang utama tegak dengan dua palang melintang selari di bahagian atas. Tali diregangkan secara bersilang dari titik-titik pada palang mendatar ke tiang menegak untuk membentuk gerbang lengkungan parabolik yang estetik.
+                                    </p>
+                                </div>
+                                <button onclick="openSimulation('gateway_arch')" class="shrink-0 px-3.5 py-2 bg-purple-500/20 hover:bg-purple-500 text-purple-300 hover:text-white border border-purple-500/40 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
+                                    <i data-lucide="box" class="w-4 h-4"></i> Papar Model 3D
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/40 rounded-2xl p-6 border border-slate-700/60 flex flex-col justify-between">
+                    <div>
+                        <h4 class="font-bold text-white text-base flex items-center gap-2 mb-4">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-purple-400"></i> Simpulan Khusus Lain-Lain
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-slate-900/70 rounded-xl border border-slate-800">
+                                <span class="text-xs font-semibold text-purple-300">Ikatan Silang Gunting (Shear Lashing)</span>
+                                <p class="text-xs text-slate-400 mt-1">Untuk mencantumkan puncak kaki-A pada Buaian & Jungkitan serta menyambung tiang bendera tinggi.</p>
+                            </div>
+                            <div class="p-3 bg-slate-900/70 rounded-xl border border-slate-800">
+                                <span class="text-xs font-semibold text-purple-300">Simpul Manuk & Lilit Dua Simpul</span>
+                                <p class="text-xs text-slate-400 mt-1">Digunakan untuk menambat tali regangan pada tiang bendera dan anyaman lengkungan parabolik pintu gerbang.</p>
+                            </div>
+                            <div class="p-3 bg-slate-900/70 rounded-xl border border-slate-800">
+                                <span class="text-xs font-semibold text-purple-300">Ikatan Seraya (Square Lashing)</span>
+                                <p class="text-xs text-slate-400 mt-1">Mengunci palang melintang pada Pintu Gerbang, tapak Tiang Bendera dan paksi Jungkitan.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="openSimulation('flagpole')" class="mt-6 w-full py-2.5 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white font-bold rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition">
+                        <i data-lucide="eye" class="w-4 h-4"></i> Lihat Visualisasi 3D Kategori Lain
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Kategori: Menara -->
+            <div id="cat-content-menara" class="category-block hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-slate-800/60 rounded-2xl p-6 border border-slate-700/60">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs uppercase tracking-wider text-emerald-400 font-bold">Struktur Menegak (3 Jenis Utama)</span>
+                                <h3 class="text-2xl font-bold text-white mt-1">Projek Perintis Kategori Menara</h3>
+                            </div>
+                            <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 text-xs rounded-lg border border-emerald-500/30">Ketinggian & Kestabilan</span>
+                        </div>
+                        <p class="text-slate-300 mt-3 text-sm leading-relaxed">
+                            Menara perintis dibina untuk tujuan kawalan, menara tinjau, dan komunikasi isyarat. Pemilihan jenis menara bergantung pada bentuk muka bumi dan bilangan ahli patrol:
+                        </p>
+
+                        <!-- Sub-jenis Menara (3 Model Rujukan) -->
+                        <div class="grid grid-cols-1 gap-4 mt-6">
+                            <!-- Menara 1: Four-Legged / Square -->
+                            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 hover:border-emerald-500/50 transition flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-500/20 text-emerald-300 rounded border border-emerald-500/30">MODEL 4</span>
+                                        <h4 class="font-bold text-white text-sm">Menara Kawalan Empat Kaki (Four-Legged / Square Tower)</h4>
+                                    </div>
+                                    <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                                        Menggunakan <strong>empat tiang utama</strong> yang membentuk tapak dan pelantar segi empat sama, diperkukuh dengan <strong>kayu palang pepenjuru (diagonal bracing)</strong> di bahagian sisi serta dilengkapi pagar pelantar berpagar kayu dan tangga tali.
+                                    </p>
+                                    <div class="mt-2 text-xs text-amber-400">
+                                        Ikatan Utama: <span class="font-mono text-slate-300">Ikatan Seraya, Ikatan Serong (Bracing Sisi)</span>
+                                    </div>
+                                </div>
+                                <button onclick="openSimulation('tower_square')" class="shrink-0 px-3.5 py-2 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
+                                    <i data-lucide="box" class="w-4 h-4"></i> Papar 3D
+                                </button>
+                            </div>
+
+                            <!-- Menara 2: Hourglass -->
+                            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 hover:border-emerald-500/50 transition flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-500/20 text-emerald-300 rounded border border-emerald-500/30">MODEL 5</span>
+                                        <h4 class="font-bold text-white text-sm">Menara Jam Pasir (Hourglass Tower)</h4>
+                                    </div>
+                                    <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                                        Dibina daripada <strong>tiga tiang utama yang diikat bersilang di bahagian tengah</strong> menggunakan ikatan silang tungku (tripod lashing), menghasilkan bentuk seakan-akan jam pasir dengan tapak bawah dan pelantar atas berbentuk segi tiga serta pagar tali.
+                                    </p>
+                                    <div class="mt-2 text-xs text-amber-400">
+                                        Ikatan Utama: <span class="font-mono text-slate-300">Ikatan Silang Tungku (Tripod Lashing), Ikatan Seraya</span>
+                                    </div>
+                                </div>
+                                <button onclick="openSimulation('tower_hourglass')" class="shrink-0 px-3.5 py-2 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
+                                    <i data-lucide="box" class="w-4 h-4"></i> Papar 3D
+                                </button>
+                            </div>
+
+                            <!-- Menara 3: Tripod Observation -->
+                            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 hover:border-emerald-500/50 transition flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-500/20 text-emerald-300 rounded border border-emerald-500/30">MODEL 6</span>
+                                        <h4 class="font-bold text-white text-sm">Menara Tinjau / Kawalan Tiga Kaki (Tripod Observation Tower)</h4>
+                                    </div>
+                                    <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                                        Menggunakan tiga tiang utama yang bersilang di bahagian bawah/tengah membentuk tapak segi tiga yang sangat stabil di tanah tidak rata, dengan <strong>pelantar tinjau berpagar jaring tali</strong> di bahagian atas serta dilengkapi tangga tali untuk memanjat.
+                                    </p>
+                                    <div class="mt-2 text-xs text-amber-400">
+                                        Ikatan Utama: <span class="font-mono text-slate-300">Ikatan Silang Tungku, Ikatan Tangga Tali</span>
+                                    </div>
+                                </div>
+                                <button onclick="openSimulation('tower_tripod')" class="shrink-0 px-3.5 py-2 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-300 hover:text-slate-950 border border-emerald-500/40 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
+                                    <i data-lucide="box" class="w-4 h-4"></i> Papar 3D
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/40 rounded-2xl p-6 border border-slate-700/60 flex flex-col justify-between">
+                    <div>
+                        <h4 class="font-bold text-white text-base flex items-center gap-2 mb-4">
+                            <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400"></i> SOP & Komponen Kritikal Menara
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-slate-900/70 rounded-xl border border-slate-800">
+                                <span class="text-xs font-semibold text-emerald-300">Ikatan Silang Tungku (Tripod Lashing)</span>
+                                <p class="text-xs text-slate-400 mt-1">Digunakan pada leher Menara Jam Pasir & Tripod bagi membolehkan 3 tiang dibuka menjadi piramid.</p>
+                            </div>
+                            <div class="p-3 bg-slate-900/70 rounded-xl border border-slate-800">
+                                <span class="text-xs font-semibold text-emerald-300">Pengikat Pepenjuru (Diagonal Bracing)</span>
+                                <p class="text-xs text-slate-400 mt-1">Wajib dipasang pada sisi Menara Empat Kaki untuk mengelakkan struktur condong dan bergoyang.</p>
+                            </div>
+                            <div class="p-3 bg-slate-900/70 rounded-xl border border-slate-800">
+                                <span class="text-xs font-semibold text-emerald-300">Pagar Pelantar & Tangga Tali</span>
+                                <p class="text-xs text-slate-400 mt-1">Pelantar atas mesti mempunyai pagar keselamatan (kayu atau jaring tali) dan tangga tali beranak kayu.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="openSimulation('tower_square')" class="mt-6 w-full py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-bold rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition">
+                        <i data-lucide="eye" class="w-4 h-4"></i> Terokai Model 3D Menara
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Kategori: Lain-lain -->
+            <div id="cat-content-lain" class="category-block hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-slate-800/60 rounded-2xl p-6 border border-slate-700/60">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs uppercase tracking-wider text-purple-400 font-bold">Inovasi & Kegunaan Khusus</span>
+                                <h3 class="text-2xl font-bold text-white mt-1">Kategori Pengangkutan, Permainan & Utiliti</h3>
+                            </div>
+                            <span class="px-3 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-lg border border-purple-500/30">Dinamik & Rekreasi</span>
+                        </div>
+                        <p class="text-slate-300 mt-3 text-sm leading-relaxed">
+                            Kategori ini membuktikan kepelbagaian seni perintis di luar struktur statik. Meliputi mekanisme pengangkutan peralatan di tapak perkhemahan, peralatan sukan lasak, dan ameniti perkhemahan.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                            <!-- Pengangkutan -->
+                            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 hover:border-purple-500/40 transition">
+                                <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center mb-2">
+                                    <i data-lucide="truck" class="w-4 h-4"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-sm">A. Pengangkutan</h4>
+                                <ul class="text-xs text-slate-400 mt-2 space-y-1">
+                                    <li>• <strong>Rakit Perintis:</strong> Gabungan tong drum plastik + kayu buluh + ikatan silang gunting.</li>
+                                    <li>• <strong>Usungan Kecemasan:</strong> Menggunakan 2 spar dan tali webbing.</li>
+                                    <li>• <strong>Kereta Sorong Kayu (Travois):</strong> Alat tarikan beban dua kaki.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Permainan -->
+                            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 hover:border-purple-500/40 transition">
+                                <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center mb-2">
+                                    <i data-lucide="gamepad-2" class="w-4 h-4"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-sm">B. Permainan</h4>
+                                <ul class="text-xs text-slate-400 mt-2 space-y-1">
+                                    <li>• <strong>Lastik Gergasi (Ballista/Catapult):</strong> Pelancar belon air untuk aktiviti sukan.</li>
+                                    <li>• <strong>Buaian Berpusing (Ferris Wheel Kayu):</strong> Struktur paksi berpusing.</li>
+                                    <li>• <strong>Jungkitan Raksasa:</strong> Papan seimbang berengsel ikatan.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Utiliti Khemah -->
+                            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 hover:border-purple-500/40 transition">
+                                <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center mb-2">
+                                    <i data-lucide="tent" class="w-4 h-4"></i>
+                                </div>
+                                <h4 class="font-bold text-white text-sm">C. Utiliti Tapak</h4>
+                                <ul class="text-xs text-slate-400 mt-2 space-y-1">
+                                    <li>• <strong>Pintu Gerbang Kem:</strong> Gerbang selamat datang dengan bendera.</li>
+                                    <li>• <strong>Rak Dapur & Makanan:</strong> Menjaga kebersihan dari haiwan tanah.</li>
+                                    <li>• <strong>Meja Makan Komuniti:</strong> Menggabungkan kerusi dan meja satu unit.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 p-4 rounded-xl bg-slate-950/60 border border-slate-800">
+                            <h4 class="text-xs font-bold uppercase text-slate-400 tracking-wider mb-1">Sorotan Projek: Lastik Gergasi (Pioneering Catapult)</h4>
+                            <p class="text-xs text-slate-300">
+                                Menggunakan konsep tuas kelas pertama (*first class lever*). Lengan lontaran berputar pada paksi palang mendatar yang diikat padu dengan ikatan serong berlapik getah untuk mengurangkan geseran sentakan.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/40 rounded-2xl p-6 border border-slate-700/60 flex flex-col justify-between">
+                    <div>
+                        <h4 class="font-bold text-white text-base flex items-center gap-2 mb-4">
+                            <i data-lucide="sparkles" class="w-5 h-5 text-purple-400"></i> Simpulan Khusus Lain-Lain
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-slate-900/70 rounded-xl border border-slate-800">
+                                <span class="text-xs font-semibold text-purple-300">Ikatan Silang Gunting (Shear Lashing)</span>
+                                <p class="text-xs text-slate-400 mt-1">Untuk mencantumkan dua kayu selari atau membuat kaki A yang boleh dibuka mengembang.</p>
+                            </div>
+                            <div class="p-3 bg-slate-900/70 rounded-xl border border-slate-800">
+                                <span class="text-xs font-semibold text-purple-300">Simpul Tarik (Highwayman's Hitch)</span>
+                                <p class="text-xs text-slate-400 mt-1">Simpulan pelepas pantas untuk pelancar lastik atau penambatan rakit sementara.</p>
+                            </div>
+                            <div class="p-3 bg-slate-900/70 rounded-xl border border-slate-800">
+                                <span class="text-xs font-semibold text-purple-300">Ikatan Tong Drum (Barrel Hitch)</span>
+                                <p class="text-xs text-slate-400 mt-1">Mengikat tong terapung pada badan rakit agar tidak tergelincir ketika terkena air deras.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="openSimulation('catapult')" class="mt-6 w-full py-2.5 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-400 hover:to-purple-500 text-white font-bold rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition">
+                        <i data-lucide="eye" class="w-4 h-4"></i> Lihat Visualisasi 3D Lastik/Rakit
+                    </button>
+                </div>
+            </div>
+
+            <!-- Interaktif 3D Canvas Modal/Box (Three.js Real 3D Engine) -->
+            <div id="simulasiContainer" class="bg-slate-900 border border-slate-700/80 rounded-2xl p-6 shadow-2xl relative">
+                <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between pb-4 border-b border-slate-800 gap-3">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2" id="simTitle">
+                                Model 3D: Jambatan Kekuda Segi Tiga Tunggal (Single-Lock)
+                            </h3>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-0.5" id="simDesc">Klik & heret untuk memutar 360° | Skrol untuk zum | Warna putih menunjukkan ikatan tali (lashings).</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <select id="simSelect" onchange="changeModelType(this.value)" class="bg-slate-800 text-xs sm:text-sm text-amber-300 font-semibold border border-slate-700 rounded-lg px-3 py-2 focus:ring-1 focus:ring-amber-500 outline-none">
+                            <optgroup label="Kategori 1: Jambatan">
+                                <option value="bridge_single">1. Jambatan Single-Lock (Segi Tiga Tunggal)</option>
+                                <option value="bridge_double">2. Jambatan Double-Lock (Segi Tiga Bersilang)</option>
+                                <option value="bridge_trestle">3. Jambatan Trestel Tengah (Center-Trestle)</option>
+                            </optgroup>
+                            <optgroup label="Kategori 2: Menara">
+                                <option value="tower_square">4. Menara Kawalan Empat Kaki (Square Tower)</option>
+                                <option value="tower_hourglass">5. Menara Jam Pasir (Hourglass Tower)</option>
+                                <option value="tower_tripod">6. Menara Tinjau Tiga Kaki (Tripod Tower)</option>
+                            </optgroup>
+                            <optgroup label="Kategori 3: Lain-lain (Utiliti & Permainan)">
+                                <option value="flagpole">7. Tiang Bendera Tapak Segi Empat (Flagpole)</option>
+                                <option value="seesaw">8. Jungkitan Perintis (Pioneering Seesaw)</option>
+                                <option value="swing">9. Buaian Perintis Kaki-A (A-Frame Swing)</option>
+                                <option value="gateway_a">10. Pintu Gerbang Kaki-A (A-Frame Gateway)</option>
+                                <option value="gateway_arch">11. Pintu Gerbang Lengkungan Tali (Arch Gateway)</option>
+                                <option value="catapult">12. Lastik Gergasi (Pioneering Catapult)</option>
+                            </optgroup>
+                        </select>
+                        <button onclick="toggleAutoRotate()" id="autoRotateBtn" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-emerald-400 text-xs border border-slate-700 flex items-center gap-1.5" title="Putaran Automatik">
+                            <i data-lucide="rotate-3d" class="w-4 h-4"></i> Auto-Putar
+                        </button>
+                        <button onclick="resetSimulationCamera()" class="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 text-xs border border-slate-700" title="Tetap Semula Kamera">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pilihan Pantas Butang Model 3D -->
+                <div class="flex flex-wrap gap-1.5 mt-3">
+                    <button onclick="changeModelType('bridge_single')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition">Jambatan Single-Lock</button>
+                    <button onclick="changeModelType('bridge_double')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition">Jambatan Double-Lock</button>
+                    <button onclick="changeModelType('bridge_trestle')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition">Jambatan Trestel</button>
+                    <button onclick="changeModelType('tower_square')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 transition">Menara 4 Kaki</button>
+                    <button onclick="changeModelType('tower_hourglass')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 transition">Menara Jam Pasir</button>
+                    <button onclick="changeModelType('tower_tripod')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 transition">Menara 3 Kaki</button>
+                    <button onclick="changeModelType('flagpole')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30 hover:bg-purple-500/30 transition">Tiang Bendera</button>
+                    <button onclick="changeModelType('seesaw')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30 hover:bg-purple-500/30 transition">Jungkitan</button>
+                    <button onclick="changeModelType('swing')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30 hover:bg-purple-500/30 transition">Buaian</button>
+                    <button onclick="changeModelType('gateway_a')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30 hover:bg-purple-500/30 transition">Gerbang Kaki-A</button>
+                    <button onclick="changeModelType('gateway_arch')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30 hover:bg-purple-500/30 transition">Gerbang Lengkungan</button>
+                </div>
+                </div>
+
+                <!-- Pilihan Pantas Butang Model 3D -->
+                <div class="flex flex-wrap gap-1.5 mt-3">
+                    <button onclick="changeModelType('bridge_single')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition">Jambatan Single-Lock</button>
+                    <button onclick="changeModelType('bridge_double')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition">Jambatan Double-Lock</button>
+                    <button onclick="changeModelType('bridge_trestle')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition">Jambatan Trestel Tengah</button>
+                    <button onclick="changeModelType('tower_square')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 transition">Menara 4 Kaki</button>
+                    <button onclick="changeModelType('tower_hourglass')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 transition">Menara Jam Pasir</button>
+                    <button onclick="changeModelType('tower_tripod')" class="model-chip px-2.5 py-1 rounded-md text-[11px] font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 transition">Menara 3 Kaki</button>
+                </div>
+
+                <div id="threeCanvasContainer" class="relative w-full h-96 sm:h-[460px] mt-3 rounded-xl overflow-hidden border border-slate-800/80 cursor-grab active:cursor-grabbing">
+                    <!-- Three.js WebGL Canvas akan disuntik di sini -->
+                    
+                    <!-- Canvas HUD / Overlay Stats -->
+                    <div class="absolute bottom-3 left-3 bg-slate-900/90 backdrop-blur-md border border-slate-700/70 p-3 rounded-xl text-xs space-y-1.5 pointer-events-none shadow-lg max-w-xs">
+                        <div class="text-slate-400 flex items-center justify-between gap-4">
+                            <span>Ciri Struktur:</span>
+                            <span id="hudFeature" class="font-semibold text-white text-right">2 Kaki-A, 1 Titik Kunci</span>
+                        </div>
+                        <div class="text-slate-400 flex items-center justify-between gap-4">
+                            <span>Anggaran Kayu/Buluh:</span>
+                            <span id="hudSpars" class="font-mono text-amber-300">22 Batang</span>
+                        </div>
+                        <div class="text-slate-400 flex items-center justify-between gap-4">
+                            <span>Ikatan Kunci:</span>
+                            <span id="hudLashings" class="font-mono text-sky-300">Seraya & Silang Gunting</span>
+                        </div>
+                        <div class="pt-1 border-t border-slate-800 flex items-center gap-3 text-[10px]">
+                            <span class="flex items-center gap-1 text-amber-300"><span class="w-2.5 h-2.5 rounded-full bg-amber-600 inline-block"></span> Kayu Spar</span>
+                            <span class="flex items-center gap-1 text-slate-200"><span class="w-2.5 h-2.5 rounded-full bg-slate-100 inline-block"></span> Ikatan Tali</span>
+                        </div>
+                    </div>
+
+                    <!-- Zoom & Stress Controls -->
+                    <div class="absolute top-3 right-3 flex flex-col gap-2">
+                        <button onclick="applySimStress()" id="stressBtn" class="px-3 py-1.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 rounded-lg text-xs font-semibold backdrop-blur-md flex items-center gap-1.5 transition">
+                            <i data-lucide="activity" class="w-3.5 h-3.5"></i> Simulasi Beban
+                        </button>
+                        <div class="flex gap-1 justify-end">
+                            <button onclick="zoomCamera(-1.5)" class="p-2 bg-slate-900/80 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-lg backdrop-blur-md" title="Zum Masuk">
+                                <i data-lucide="zoom-in" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="zoomCamera(1.5)" class="p-2 bg-slate-900/80 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-lg backdrop-blur-md" title="Zum Keluar">
+                                <i data-lucide="zoom-out" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- BAHAGIAN 2: STUDIO PEMODELAN SKALA (BAGIAN 2) -->
+        <!-- ========================================== -->
+        <section id="section-model" class="space-y-8 hidden animate-fadeIn">
+            <!-- Header Pemodelan -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-sky-950/40 to-slate-900 border border-slate-800 p-6 md:p-8">
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20 mb-3">
+                        <i data-lucide="ruler" class="w-3.5 h-3.5"></i> Bahagian 2: Penyediaan Model Skala
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+                        Studio Pemodelan Projek Perintis (Scale Modeling)
+                    </h2>
+                    <p class="mt-2 text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Sebelum struktur saiz sebenar didirikan di hutan/kem, penyediaan <strong>model berskala (1:10 atau 1:20)</strong> adalah wajib. Model mengesahkan kebolehlaksanaan reka bentuk, mengurangkan pembaziran kayu, dan menjamin keselamatan.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 4 Langkah Kitaran Pemodelan -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700/60 relative">
+                    <span class="text-3xl font-black text-sky-400/30 absolute top-3 right-4 font-mono">01</span>
+                    <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center mb-3">
+                        <i data-lucide="drafting-compass" class="w-5 h-5"></i>
+                    </div>
+                    <h4 class="font-bold text-white text-base">Lakaran & Nisbah</h4>
+                    <p class="text-xs text-slate-400 mt-2 leading-relaxed">Melukis ortografik (pelan atas, hadapan, sisi) dengan nisbah piawai: 1 cm pada model = 10 cm (atau 20 cm) pada projek sebenar.</p>
+                </div>
+
+                <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700/60 relative">
+                    <span class="text-3xl font-black text-amber-400/30 absolute top-3 right-4 font-mono">02</span>
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-3">
+                        <i data-lucide="scissors" class="w-5 h-5"></i>
+                    </div>
+                    <h4 class="font-bold text-white text-base">Penyediaan Bahan Skala</h4>
+                    <p class="text-xs text-slate-400 mt-2 leading-relaxed">Menggunakan ranting pokok, lidi sate buluh, rod dowel kayu, serta benang kaitan kapas (yarn/cotton twine) sebagai pengganti tali manila.</p>
+                </div>
+
+                <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700/60 relative">
+                    <span class="text-3xl font-black text-emerald-400/30 absolute top-3 right-4 font-mono">03</span>
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-3">
+                        <i data-lucide="git-fork" class="w-5 h-5"></i>
+                    </div>
+                    <h4 class="font-bold text-white text-base">Ketepatan Ikatan Mini</h4>
+                    <p class="text-xs text-slate-400 mt-2 leading-relaxed">Setiap ikatan pada model MESTILAH meniru teknik ikatan sebenar (contoh: Ikatan Seraya dengan lilitan frapping kemas), BUKAN sekadar glu panas.</p>
+                </div>
+
+                <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700/60 relative">
+                    <span class="text-3xl font-black text-purple-400/30 absolute top-3 right-4 font-mono">04</span>
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-3">
+                        <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                    </div>
+                    <h4 class="font-bold text-white text-base">Ujian Beban Skala</h4>
+                    <p class="text-xs text-slate-400 mt-2 leading-relaxed">Memberikan beban seimbang (contoh: pemberat 500g pada model) bagi memerhatikan kelenturan dan kestabilan titik tumpu sambungan.</p>
+                </div>
+            </div>
+
+            <!-- Interaktif: Jadual Matriks Spesifikasi Bahan Model vs Realiti -->
+            <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="arrow-left-right" class="w-5 h-5 text-amber-400"></i> Matriks Perbandingan: Model Skala (1:10) vs Projek Sebenar (1:1)
+                    </h3>
+                    <span class="text-xs text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">Standard Kejuruteraan Pengakap</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-300">
+                        <thead class="bg-slate-900/80 text-slate-200 uppercase tracking-wider text-[11px] font-bold border-b border-slate-700">
+                            <tr>
+                                <th class="p-3">Elemen</th>
+                                <th class="p-3">Model Skala Mini (1:10)</th>
+                                <th class="p-3">Projek Lapangan Sebenar (1:1)</th>
+                                <th class="p-3">Fungsi Kejuruteraan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800">
+                            <tr class="hover:bg-slate-800/40">
+                                <td class="p-3 font-semibold text-amber-300">Kayu Spar Utama</td>
+                                <td class="p-3">Dowel Kayu / Lidi Buluh tebal (Ø 5mm - 8mm, p: 30cm)</td>
+                                <td class="p-3">Kayu Balak / Buluh Betung (Ø 8cm - 12cm, p: 3m)</td>
+                                <td class="p-3 text-slate-400">Menampung beban mampatan utama (Compression)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/40">
+                                <td class="p-3 font-semibold text-amber-300">Tali Ikatan (Lashings)</td>
+                                <td class="p-3">Benang Kasar / Benang Jahit Rami / Twine (Ø 1mm)</td>
+                                <td class="p-3">Tali Manila Sisal 3-Strand (Ø 10mm - 14mm)</td>
+                                <td class="p-3 text-slate-400">Mengikat sambungan sendi tanpa slip</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/40">
+                                <td class="p-3 font-semibold text-amber-300">Tali Penegang (Guying)</td>
+                                <td class="p-3">Tali Tangsi Pancing / Kord Nilon Mini</td>
+                                <td class="p-3">Tali Polipropilena / Kernmantle (Ø 12mm - 16mm)</td>
+                                <td class="p-3 text-slate-400">Kekuatan tegangan tinggi (Tension strength)</td>
+                            </tr>
+                            <tr class="hover:bg-slate-800/40">
+                                <td class="p-3 font-semibold text-amber-300">Sauh Tanah (Anchors)</td>
+                                <td class="p-3">Paku Tekan / Pasak Lidi dalam papan gabus (Styrofoam)</td>
+                                <td class="p-3">Pancang Kayu Keras (Panjang 1m, dipacak sendeng 60°)</td>
+                                <td class="p-3 text-slate-400">Mengunci asas agar tidak tercabut dari tanah</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Senarai Semak Audit Model 3 Kategori -->
+            <div class="bg-slate-850 rounded-2xl p-6 border border-slate-800 bg-slate-900/60">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-4">
+                    <i data-lucide="clipboard-check" class="w-5 h-5 text-emerald-400"></i> Senarai Semak Penilaian Model (Rubrik Pemarkahan)
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="modelChecklistContainer">
+                    <!-- Dinamik Checklist dijana oleh JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- BAHAGIAN 3: PENGURUSAN KUARTERMASTER (BAGIAN 3) -->
+        <!-- ========================================== -->
+        <section id="section-kuartermaster" class="space-y-8 hidden animate-fadeIn">
+            <!-- Header Kuartermaster -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-amber-950/40 to-slate-900 border border-slate-800 p-6 md:p-8">
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 mb-3">
+                        <i data-lucide="shield" class="w-3.5 h-3.5"></i> Bahagian 3: Pengurusan Logistik & Keselamatan
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+                        Pengurusan Kuartermaster (QM) Projek Perintis
+                    </h2>
+                    <p class="mt-2 text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Kuartermaster ialah tulang belakang kejayaan projek perintis. Tanpa pengurusan peralatan yang kemas, selamat, dan berdisiplin, risiko kemalangan meningkat serta kos kerosakan peralatan akan melonjak tinggi.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tiga Dimensi Tugas Kuartermaster (Sebelum, Semasa, Selepas) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Fasa 1 -->
+                <div class="bg-slate-800/50 border border-slate-700/60 rounded-2xl p-6 relative flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 bg-amber-500/10 text-amber-300 rounded-lg text-xs font-bold border border-amber-500/20">FASA PRA-PROJEK</span>
+                            <i data-lucide="package-search" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Pemeriksaan & Pengasingan</h3>
+                        <ul class="text-xs text-slate-300 space-y-2.5">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span><strong>Pemeriksaan Tali:</strong> Menguji sama ada tali reput (dalaman hancur berkabus), tercemar asid/minyak, atau terlerai hujungnya.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span><strong>Penggredan Kayu/Buluh:</strong> Mengasingkan kayu yang melengkung, retak teruk, atau dimakan anai-anai.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span><strong>Penjagaan Hujung Tali:</strong> Melakukan <em>Whipping</em> (Lilit Pemati) pada hujung tali yang baru dipotong.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-700/60 text-xs text-amber-400 font-medium">
+                        Kunci: Menjamin bekalan selamat sebelum tiba di tapak binaan.
+                    </div>
+                </div>
+
+                <!-- Fasa 2 -->
+                <div class="bg-slate-800/50 border border-slate-700/60 rounded-2xl p-6 relative flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-300 rounded-lg text-xs font-bold border border-emerald-500/20">FASA PEMBINAAN</span>
+                            <i data-lucide="hammer" class="w-5 h-5 text-emerald-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Logistik & Zon Kerja Selamat</h3>
+                        <ul class="text-xs text-slate-300 space-y-2.5">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span><strong>Sistem Rak Kuartermaster (QM Dump):</strong> Meletakkan tali mengikut saiz dan panjang di atas terpal (canvas sheet) supaya tidak dipijak lumpur.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span><strong>SOP Alat Tajam:</strong> Parang, gergaji, dan kapak mesti disarungkan (sheathed) dan diletakkan dalam 'Axe Yard' berpagar tali.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span><strong>Buku Log Keluar Masuk:</strong> Merekod pinjaman alat tangan serta masa pemulangan oleh ahli patrol.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-700/60 text-xs text-emerald-400 font-medium">
+                        Kunci: Meminimumkan kehilangan peralatan dan insiden kecederaan.
+                    </div>
+                </div>
+
+                <!-- Fasa 3 -->
+                <div class="bg-slate-800/50 border border-slate-700/60 rounded-2xl p-6 relative flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 bg-sky-500/10 text-sky-300 rounded-lg text-xs font-bold border border-sky-500/20">FASA PASCA-PROJEK</span>
+                            <i data-lucide="archive" class="w-5 h-5 text-sky-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Penyelenggaraan & Simpanan</h3>
+                        <ul class="text-xs text-slate-300 space-y-2.5">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span><strong>Pengeringan Tali (Coiling & Air Drying):</strong> Tali basah DIHARAMKAN simpan terus. Jemur di tempat teduh berangin (bukan bawah matahari terik melampau).</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span><strong>Penggulungan Kemas (Coiling Hank):</strong> Menggulung tali mengikut teknik <em>Mountain Coil</em> atau <em>Butterfly Coil</em>.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                                <span><strong>Penyelenggaraan Besi/Logam:</strong> Mengelap parang dan gergaji dengan minyak anti-karat (WD-40 atau minyak enjin terpakai) sebelum simpanan stor.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-700/60 text-xs text-sky-400 font-medium">
+                        Kunci: Memanjangkan jangka hayat peralatan sehingga 5-10 tahun.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interaktif: Sistem Log & Inventori Kuartermaster Maya -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-2">
+                    <div>
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i data-lucide="layers" class="w-5 h-5 text-amber-400"></i> Simulator Pengurusan Inventori Kuartermaster
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-1">Uji peranan anda sebagai QM: Pantau status fizikal, rekod kuantiti, dan buat keputusan kelulusan alat.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="tambahItemQM()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-lg flex items-center gap-1.5 transition">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Tambah Item Stor
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Jadual Inventori Dinamik -->
+                <div class="mt-4 overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm text-slate-300">
+                        <thead class="bg-slate-950/80 text-slate-400 uppercase text-[11px] font-semibold border-b border-slate-800">
+                            <tr>
+                                <th class="p-3">Kod & Nama Alatan</th>
+                                <th class="p-3">Kategori</th>
+                                <th class="p-3">Kuantiti</th>
+                                <th class="p-3">Keadaan Fizikal</th>
+                                <th class="p-3">Status Tindakan QM</th>
+                                <th class="p-3 text-right">Tindakan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="qmInventoryBody" class="divide-y divide-slate-800 font-mono text-xs">
+                            <!-- Dijana secara dinamik oleh JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4 p-4 rounded-xl bg-slate-950/70 border border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-3">
+                    <div class="flex items-center gap-4">
+                        <span>Jumlah Item Baik: <strong id="qmGoodCount" class="text-emerald-400">0</strong></span>
+                        <span>Perlu Penyelenggaraan: <strong id="qmWarningCount" class="text-amber-400">0</strong></span>
+                        <span>Rosak/Dilupus: <strong id="qmDangerCount" class="text-rose-400">0</strong></span>
+                    </div>
+                    <span class="italic text-[11px] text-slate-500">*Standard audit logistik pengakap kebangsaan</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- BAHAGIAN 4: UJI KEFAHAMAN & KUIZ DINAMIK -->
+        <!-- ========================================== -->
+        <section id="section-kuiz" class="space-y-8 hidden animate-fadeIn">
+            <!-- Header Kuiz -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950/40 to-slate-900 border border-slate-800 p-6 md:p-8">
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-3">
+                        <i data-lucide="award" class="w-3.5 h-3.5"></i> Penilaian Masteri
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+                        Cabaran Minda: Perintis & Kuartermaster
+                    </h2>
+                    <p class="mt-2 text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Jawab 5 soalan senario praktikal untuk menguji tahap kecekapan anda dalam pemilihan projek, pemodelan skala, dan protokol Kuartermaster.
+                    </p>
+                </div>
+            </div>
+
+            <div class="max-w-2xl mx-auto bg-slate-900/90 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+                <div id="quizContainer">
+                    <!-- Progress bar -->
+                    <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
+                        <span>Soalan <span id="currentQNum" class="text-amber-400 font-bold">1</span> daripada 5</span>
+                        <span>Skor: <span id="currentScore" class="text-emerald-400 font-bold">0</span></span>
+                    </div>
+                    <div class="w-full h-1.5 bg-slate-800 rounded-full mb-6 overflow-hidden">
+                        <div id="quizProgressBar" class="h-full bg-gradient-to-r from-amber-500 to-emerald-500 transition-all duration-300" style="width: 20%;"></div>
+                    </div>
+
+                    <!-- Soalan Card -->
+                    <div class="mb-6">
+                        <span id="quizBadge" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 uppercase tracking-wider">Kategori</span>
+                        <h3 id="quizQuestion" class="text-lg sm:text-xl font-bold text-white mt-3 leading-snug">
+                            Memuatkan soalan...
+                        </h3>
+                    </div>
+
+                    <!-- Jawapan Options -->
+                    <div id="quizOptions" class="space-y-3">
+                        <!-- Options injected via JavaScript -->
+                    </div>
+
+                    <!-- Maklum Balas Khas -->
+                    <div id="quizFeedback" class="hidden mt-6 p-4 rounded-xl text-xs sm:text-sm"></div>
+
+                    <!-- Butang Seterusnya -->
+                    <div class="mt-6 flex justify-end">
+                        <button id="nextQBtn" onclick="nextQuestion()" class="hidden px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm rounded-xl transition flex items-center gap-2">
+                            Soalan Seterusnya <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Keputusan Tamat Kuiz -->
+                <div id="quizResult" class="hidden text-center py-8 space-y-4">
+                    <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center">
+                        <i data-lucide="trophy" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Tahniah! Anda Selesai Menjawab</h3>
+                    <p class="text-sm text-slate-300">
+                        Skor Akhir Anda: <span id="finalScoreVal" class="text-emerald-400 font-extrabold text-xl">5/5</span>
+                    </p>
+                    <p id="finalFeedbackText" class="text-xs text-slate-400 max-w-md mx-auto">
+                        Pencapaian cemerlang! Anda mempunyai kemahiran asas kejuruteraan perintis dan disiplin Kuartermaster yang sangat tinggi.
+                    </p>
+                    <button onclick="restartQuiz()" class="mt-4 px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm rounded-xl transition">
+                        Uji Semula Kuiz
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-800 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2 text-slate-400 font-medium">
+                <i data-lucide="compass" class="w-4 h-4 text-amber-500"></i>
+                Modul Interaktif Pendidikan Perintis & Kepimpinan Lapangan
+            </div>
+            <div>
+                Topik 10: Membina Projek Perintis, Model Skala & Pengurusan Kuartermaster
+            </div>
+        </div>
+    </footer>
+
+    <!-- Audio Effects Generator (Web Audio API) -->
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let soundEnabled = true;
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('soundToggle');
+            btn.innerHTML = soundEnabled ? '<i data-lucide="volume-2" class="w-5 h-5"></i>' : '<i data-lucide="volume-x" class="w-5 h-5 text-rose-400"></i>';
+            lucide.createIcons();
+        }
+
+        function playTone(freq, type = 'sine', duration = 0.15) {
+            if (!soundEnabled || audioCtx.state === 'suspended') {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                if (!soundEnabled) return;
+            }
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        function sfxClick() { playTone(540, 'triangle', 0.08); }
+        function sfxCorrect() { 
+            playTone(440, 'sine', 0.1); 
+            setTimeout(() => playTone(660, 'sine', 0.18), 100);
+            setTimeout(() => playTone(880, 'sine', 0.25), 200);
+        }
+        function sfxWrong() { 
+            playTone(280, 'sawtooth', 0.2); 
+            setTimeout(() => playTone(190, 'sawtooth', 0.25), 120);
+        }
+    </script>
+
+    <!-- App Logic Script -->
+    <script>
+        // ================= NAVIGATION =================
+        function switchTab(tabId) {
+            sfxClick();
+            const sections = ['perintis', 'model', 'kuartermaster', 'kuiz'];
+            sections.forEach(s => {
+                const secEl = document.getElementById(`section-${s}`);
+                const navEl = document.getElementById(`nav-${s}`);
+                if (s === tabId) {
+                    secEl.classList.remove('hidden');
+                    if (navEl) {
+                        navEl.className = "tab-btn px-4 py-1.5 rounded-lg font-bold transition-all duration-200 bg-amber-500 text-slate-950 shadow-sm";
+                    }
+                } else {
+                    secEl.classList.add('hidden');
+                    if (navEl) {
+                        navEl.className = "tab-btn px-4 py-1.5 rounded-lg font-medium transition-all duration-200 text-slate-400 hover:text-white";
+                    }
+                }
+            });
+
+            if (tabId === 'perintis') {
+                setTimeout(resizeCanvas, 50);
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // ================= KATEGORI PERINTIS =================
+        function filterCategory(catKey) {
+            sfxClick();
+            const cats = ['jambatan', 'menara', 'lain'];
+            cats.forEach(c => {
+                const el = document.getElementById(`cat-content-${c}`);
+                const btn = document.getElementById(`cat-btn-${c}`);
+                if (c === catKey) {
+                    el.classList.remove('hidden');
+                    btn.className = "cat-pill px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 bg-amber-500 text-slate-950 shadow-md transition";
+                } else {
+                    el.classList.add('hidden');
+                    btn.className = "cat-pill px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+                }
+            });
+
+            // Tukar model simulasi bersesuaian
+            if (catKey === 'jambatan') changeModelType('bridge_single');
+            else if (catKey === 'menara') changeModelType('tower_square');
+            else changeModelType('flagpole');
+        }
+
+        function openSimulation(type) {
+            sfxClick();
+            const select = document.getElementById('simSelect');
+            select.value = type;
+            changeModelType(type);
+            const container = document.getElementById('simulasiContainer');
+            container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // ================= THREE.JS 3D MODELLING ENGINE =================
+        let scene, camera, renderer, structureGroup, waterMesh, groundMesh;
+        let currentModel = 'bridge_single';
+        let autoRotate = true;
+        let isDragging = false;
+        let prevMouse = { x: 0, y: 0 };
+        let spherical = { radius: 13, theta: 0.65, phi: 1.15 };
+        let stressActive = false;
+        let stressTime = 0;
+
+        // Bahan (Materials) Realistik untuk Kayu Buluh/Balak & Tali Manila Putih
+        const woodMat = new THREE.MeshStandardMaterial({ 
+            color: 0xc68b59, 
+            roughness: 0.72, 
+            metalness: 0.05 
+        });
+        const darkWoodMat = new THREE.MeshStandardMaterial({ 
+            color: 0x9c663b, 
+            roughness: 0.8, 
+            metalness: 0.05 
+        });
+        const ropeMat = new THREE.MeshStandardMaterial({ 
+            color: 0xf8fafc, 
+            roughness: 0.9, 
+            metalness: 0.0 
+        });
+        const lashingMat = new THREE.MeshStandardMaterial({ 
+            color: 0xf1f5f9, 
+            roughness: 0.85 
+        });
+
+        function initThreeJS() {
+            const container = document.getElementById('threeCanvasContainer');
+            if (!container) return;
+
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+            updateCameraPosition();
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+
+            // Pencahayaan Studio 3D
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+            scene.add(ambientLight);
+
+            const dirLight = new THREE.DirectionalLight(0xfffbeb, 0.95);
+            dirLight.position.set(10, 18, 12);
+            dirLight.castShadow = true;
+            dirLight.shadow.mapSize.width = 1024;
+            dirLight.shadow.mapSize.height = 1024;
+            scene.add(dirLight);
+
+            const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.35);
+            rimLight.position.set(-10, 8, -10);
+            scene.add(rimLight);
+
+            // Grid Tapak Rujukan
+            const gridHelper = new THREE.GridHelper(16, 16, 0x334155, 0x1e293b);
+            gridHelper.position.y = -2.5;
+            scene.add(gridHelper);
+
+            // Laluan Air (untuk jambatan)
+            const waterGeo = new THREE.PlaneGeometry(16, 6);
+            const waterMat = new THREE.MeshStandardMaterial({ 
+                color: 0x0284c7, 
+                transparent: true, 
+                opacity: 0.25, 
+                roughness: 0.2 
+            });
+            waterMesh = new THREE.Mesh(waterGeo, waterMat);
+            waterMesh.rotation.x = -Math.PI / 2;
+            waterMesh.position.y = -2.48;
+            scene.add(waterMesh);
+
+            structureGroup = new THREE.Group();
+            scene.add(structureGroup);
+
+            // Kawalan Tetikus & Sentuhan
+            const dom = renderer.domElement;
+            dom.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                prevMouse = { x: e.clientX, y: e.clientY };
+            });
+            window.addEventListener('mouseup', () => { isDragging = false; });
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const dx = e.clientX - prevMouse.x;
+                const dy = e.clientY - prevMouse.y;
+                spherical.theta -= dx * 0.008;
+                spherical.phi = Math.max(0.2, Math.min(Math.PI / 2 - 0.05, spherical.phi - dy * 0.008));
+                prevMouse = { x: e.clientX, y: e.clientY };
+                updateCameraPosition();
+            });
+
+            // Wheel Zoom
+            dom.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                zoomCamera(e.deltaY * 0.005);
+            }, { passive: false });
+
+            // Touch Support
+            dom.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    isDragging = true;
+                    prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                }
+            }, { passive: true });
+            dom.addEventListener('touchend', () => { isDragging = false; });
+            dom.addEventListener('touchmove', (e) => {
+                if (!isDragging || e.touches.length !== 1) return;
+                const dx = e.touches[0].clientX - prevMouse.x;
+                const dy = e.touches[0].clientY - prevMouse.y;
+                spherical.theta -= dx * 0.008;
+                spherical.phi = Math.max(0.2, Math.min(Math.PI / 2 - 0.05, spherical.phi - dy * 0.008));
+                prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                updateCameraPosition();
+                e.preventDefault();
+            }, { passive: false });
+
+            build3DModel(currentModel);
+            animateThree();
+        }
+
+        function updateCameraPosition() {
+            if (!camera) return;
+            camera.position.x = spherical.radius * Math.sin(spherical.phi) * Math.sin(spherical.theta);
+            camera.position.y = spherical.radius * Math.cos(spherical.phi) - 0.3;
+            camera.position.z = spherical.radius * Math.sin(spherical.phi) * Math.cos(spherical.theta);
+            camera.lookAt(0, 0.2, 0);
+        }
+
+        function zoomCamera(delta) {
+            spherical.radius = Math.max(6, Math.min(22, spherical.radius + delta));
+            updateCameraPosition();
+        }
+
+        function toggleAutoRotate() {
+            sfxClick();
+            autoRotate = !autoRotate;
+            const btn = document.getElementById('autoRotateBtn');
+            btn.classList.toggle('text-emerald-400', autoRotate);
+            btn.classList.toggle('text-slate-400', !autoRotate);
+        }
+
+        function resetSimulationCamera() {
+            sfxClick();
+            spherical = { radius: 13, theta: 0.65, phi: 1.15 };
+            stressActive = false;
+            document.getElementById('stressBtn').classList.remove('bg-rose-500', 'text-white');
+            updateCameraPosition();
+        }
+
+        function applySimStress() {
+            sfxClick();
+            stressActive = !stressActive;
+            const btn = document.getElementById('stressBtn');
+            if (stressActive) {
+                btn.classList.add('bg-rose-500', 'text-white');
+                btn.classList.remove('bg-rose-500/20', 'text-rose-300');
+            } else {
+                btn.classList.remove('bg-rose-500', 'text-white');
+                btn.classList.add('bg-rose-500/20', 'text-rose-300');
+            }
+        }
+
+        // Pembantu Membina Batang Kayu 3D antara 2 Titik (Vektor)
+        function addSpar(p1, p2, radius = 0.11, mat = woodMat, overhang = 0.25) {
+            const v1 = new THREE.Vector3(...p1);
+            const v2 = new THREE.Vector3(...p2);
+            const dir = new THREE.Vector3().subVectors(v2, v1);
+            const len = dir.length();
+            dir.normalize();
+
+            const totalLen = len + overhang * 2;
+            const geo = new THREE.CylinderGeometry(radius, radius * 1.03, totalLen, 12);
+            const mesh = new THREE.Mesh(geo, mat);
+
+            const mid = new THREE.Vector3().addVectors(v1, v2).multiplyScalar(0.5);
+            mesh.position.copy(mid);
+            mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            structureGroup.add(mesh);
+            return mesh;
+        }
+
+        // Pembantu Membina Simpulan/Ikatan Tali Putih pada Sendi
+        function addLashing(pos, radius = 0.16) {
+            const geo = new THREE.TorusGeometry(radius, 0.045, 8, 16);
+            const m1 = new THREE.Mesh(geo, lashingMat);
+            m1.position.set(...pos);
+            m1.rotation.x = Math.PI / 4;
+            structureGroup.add(m1);
+
+            const m2 = new THREE.Mesh(geo, lashingMat);
+            m2.position.set(...pos);
+            m2.rotation.y = Math.PI / 4;
+            structureGroup.add(m2);
+        }
+
+        // Pembantu Membina Tali Regangan / Pagar Tali
+        function addRope(p1, p2, radius = 0.03) {
+            const v1 = new THREE.Vector3(...p1);
+            const v2 = new THREE.Vector3(...p2);
+            const dir = new THREE.Vector3().subVectors(v2, v1);
+            const len = dir.length();
+            dir.normalize();
+
+            const geo = new THREE.CylinderGeometry(radius, radius, len, 8);
+            const mesh = new THREE.Mesh(geo, ropeMat);
+            const mid = new THREE.Vector3().addVectors(v1, v2).multiplyScalar(0.5);
+            mesh.position.copy(mid);
+            mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+            structureGroup.add(mesh);
+        }
+
+        // Pembantu Membina Pelantar Geladak Kayu (Decking)
+        function addDecking(startX, endX, y, zWidth, count, alongZ = false) {
+            for (let i = 0; i <= count; i++) {
+                const t = i / count;
+                if (!alongZ) {
+                    const x = startX + (endX - startX) * t;
+                    addSpar([x, y, -zWidth / 2], [x, y, zWidth / 2], 0.075, darkWoodMat, 0.12);
+                    addLashing([x, y, -zWidth / 2], 0.11);
+                    addLashing([x, y, zWidth / 2], 0.11);
+                } else {
+                    const z = startX + (endX - startX) * t;
+                    addSpar([-zWidth / 2, y, z], [zWidth / 2, y, z], 0.075, darkWoodMat, 0.12);
+                }
+            }
+        }
+
+        // Metadata Model
+        const modelSpecs = {
+            bridge_single: {
+                title: "Model 3D: Jambatan Kekuda Segi Tiga Tunggal (Single-Lock Bridge)",
+                desc: "Dua rangka kaki-A bertemu pada SATU titik puncak (single lock) di tengah bagi menggantung pelantar laluan.",
+                feature: "2 Kaki-A, 1 Titik Kunci Atas",
+                spars: "24 Batang",
+                lashings: "Seraya, Silang Gunting",
+                isBridge: true
+            },
+            bridge_double: {
+                title: "Model 3D: Jambatan Kekuda Segi Tiga Bersilang (Double-Lock Bridge)",
+                desc: "Dua rangka kaki-A condong bersilang dan mengunci satu sama lain di DUA titik atas tengah tanpa tiang dalam air.",
+                feature: "2 Kaki-A Bersilang, 2 Kunci",
+                spars: "28 Batang",
+                lashings: "Seraya, Serong, Gantung",
+                isBridge: true
+            },
+            bridge_trestle: {
+                title: "Model 3D: Jambatan Trestel Tengah (Center-Trestle Suspension)",
+                desc: "Satu struktur penyokong tegak (trestel) di tengah air dengan kayu/tali condong dari puncak ke kedua-dua tebing.",
+                feature: "1 Trestel Tegak + Rentang",
+                spars: "26 Batang",
+                lashings: "Serong (X-Brace), Seraya",
+                isBridge: true
+            },
+            tower_square: {
+                title: "Model 3D: Menara Kawalan Empat Kaki (Four-Legged / Square Tower)",
+                desc: "Empat tiang utama membentuk tapak & pelantar segi empat sama, diperkukuh palang pepenjuru sisi, pagar & tangga tali.",
+                feature: "4 Tiang, Bracing Pepenjuru",
+                spars: "24 Batang + Tangga Tali",
+                lashings: "Seraya & Serong Sisi",
+                isBridge: false
+            },
+            tower_hourglass: {
+                title: "Model 3D: Menara Jam Pasir (Hourglass Tower)",
+                desc: "Tiga tiang utama diikat bersilang di tengah menggunakan ikatan silang tungku membentuk jam pasir dengan tapak & pelantar segi tiga.",
+                feature: "3 Tiang Silang Tengah",
+                spars: "15 Batang + Tangga Tali",
+                lashings: "Silang Tungku (Tripod)",
+                isBridge: false
+            },
+            tower_tripod: {
+                title: "Model 3D: Menara Tinjau Tiga Kaki (Tripod Observation Tower)",
+                desc: "Tiga tiang utama bersilang membentuk tapak segi tiga stabil, pelantar tinjau berpagar jaring tali & tangga tali.",
+                feature: "Tapak Piramid Segi Tiga",
+                spars: "14 Batang + Pagar Tali",
+                lashings: "Silang Tungku & Seraya",
+                isBridge: false
+            },
+            flagpole: {
+                title: "Model 3D: Tiang Bendera Tapak Segi Empat (Square-Base Flagpole)",
+                desc: "Tapak segi empat sama dengan palang silang menyokong tiang bendera tinggi beserta 4 tali penegang ke penjuru tapak.",
+                feature: "Tapak Segi Empat + 4 Guy Lines",
+                spars: "9 Batang + Bendera",
+                lashings: "Seraya & Silang Gunting",
+                isBridge: false
+            },
+            seesaw: {
+                title: "Model 3D: Jungkitan Perintis (Pioneering Seesaw)",
+                desc: "Dua rangka kaki-A mengapit gandar paksi melintang yang menampung papan jungkitan seimbang dengan tempat duduk.",
+                feature: "2 Kaki-A + Gandar Paksi",
+                spars: "13 Batang + Papan",
+                lashings: "Seraya & Silang Gunting",
+                isBridge: false
+            },
+            swing: {
+                title: "Model 3D: Buaian Perintis Kaki-A (A-Frame Swing)",
+                desc: "Dua rangka kaki-A dengan palang tapak & sisi menyokong rasuk puncak untuk menggantung tempat duduk buaian.",
+                feature: "2 Kaki-A + Rasuk Galang",
+                spars: "12 Batang + Tali Buaian",
+                lashings: "Seraya & Silang Gunting",
+                isBridge: false
+            },
+            gateway_a: {
+                title: "Model 3D: Pintu Gerbang Kaki-A Jaring Tali (A-Frame Gateway)",
+                desc: "Dua menara sisi segitiga bersudut tegak menyokong palang atas, dilengkapi anyaman tali dan tali pancang sauh.",
+                feature: "2 Menara Sisi + Anyaman",
+                spars: "7 Batang + Tali Regang",
+                lashings: "Seraya & Simpul Manuk",
+                isBridge: false
+            },
+            gateway_arch: {
+                title: "Model 3D: Pintu Gerbang Lengkungan Parabolik (String-Art Arch Gateway)",
+                desc: "Dua tiang utama tegak dengan dua palang melintang atas serta regangan tali bersilang membentuk lengkungan gerbang.",
+                feature: "2 Palang Atas + Lengkungan",
+                spars: "4 Batang Utama + Tali",
+                lashings: "Ikatan Seraya & Manuk",
+                isBridge: false
+            },
+            catapult: {
+                title: "Model 3D: Lastik Gergasi (Pioneering Catapult)",
+                desc: "Struktur tapak segi empat tepat dengan dua penyokong segitiga dan lengan pelancar berkonsepkan tuas.",
+                feature: "Tuas Kelas Pertama",
+                spars: "14 Batang + Tali Anjal",
+                lashings: "Seraya, Serong & Simpul Tarik",
+                isBridge: false
+            }
+        };
+
+        function changeModelType(type) {
+            currentModel = type;
+            const spec = modelSpecs[type];
+            if (!spec) return;
+
+            document.getElementById('simTitle').innerText = spec.title;
+            document.getElementById('simDesc').innerText = spec.desc;
+            document.getElementById('hudFeature').innerText = spec.feature;
+            document.getElementById('hudSpars').innerText = spec.spars;
+            document.getElementById('hudLashings').innerText = spec.lashings;
+            document.getElementById('simSelect').value = type;
+
+            build3DModel(type);
+        }
+
+        function build3DModel(type) {
+            if (!structureGroup) return;
+            // Kosongkan model sebelumnya
+            while (structureGroup.children.length > 0) {
+                structureGroup.remove(structureGroup.children[0]);
+            }
+
+            const spec = modelSpecs[type];
+            if (waterMesh) waterMesh.visible = spec.isBridge;
+
+            const groundY = -2.5;
+
+            if (type === 'bridge_single') {
+                // Gambar 3 (jambatan1.jpg): Single-Lock Bridge
+                const span = 4.4;
+                const w = 1.6;
+                const peakY = 2.6;
+                const deckY = -1.3;
+
+                // Kaki-A Kiri condong ke puncak tengah (x = 0)
+                addSpar([-span, groundY, -w], [0, peakY, -w * 0.75], 0.12);
+                addSpar([-span, groundY, w], [0, peakY, w * 0.75], 0.12);
+                // Kaki-A Kanan condong ke puncak tengah (x = 0)
+                addSpar([span, groundY, -w], [0, peakY, -w * 0.75], 0.12);
+                addSpar([span, groundY, w], [0, peakY, w * 0.75], 0.12);
+
+                // Palang pengunci puncak (Single Lock)
+                addSpar([0, peakY, -w], [0, peakY, w], 0.11, darkWoodMat);
+                addLashing([0, peakY, -w * 0.75], 0.18);
+                addLashing([0, peakY, w * 0.75], 0.18);
+
+                // Palang melintang sokongan tengah pada kaki-A
+                addSpar([-2.2, 0.05, -w], [-2.2, 0.05, w], 0.1);
+                addSpar([2.2, 0.05, -w], [2.2, 0.05, w], 0.1);
+                addLashing([-2.2, 0.05, -w * 0.88], 0.15);
+                addLashing([-2.2, 0.05, w * 0.88], 0.15);
+                addLashing([2.2, 0.05, -w * 0.88], 0.15);
+                addLashing([2.2, 0.05, w * 0.88], 0.15);
+
+                // Palang bawah penyokong geladak di tengah
+                addSpar([0, deckY - 0.15, -w], [0, deckY - 0.15, w], 0.11);
+                // Tali penggantung dari puncak ke pelantar bawah
+                addRope([0, peakY, -w * 0.75], [0, deckY - 0.15, -w * 0.75], 0.035);
+                addRope([0, peakY, w * 0.75], [0, deckY - 0.15, w * 0.75], 0.035);
+
+                // Geladak laluan utama (2 rasuk panjang + papan melintang)
+                addSpar([-span - 0.8, deckY, -w * 0.7], [span + 0.8, deckY, -w * 0.7], 0.11);
+                addSpar([-span - 0.8, deckY, w * 0.7], [span + 0.8, deckY, w * 0.7], 0.11);
+                addDecking(-span - 0.5, span + 0.5, deckY + 0.12, w * 1.4, 16);
+
+            } else if (type === 'bridge_double') {
+                // Gambar 2 (jambatan2.jpg): Double-Lock Bridge
+                const span = 5.0;
+                const w = 1.7;
+                const deckY = -1.4;
+
+                // Kaki-A Kiri (condong melepasi tengah ke x = +1.1)
+                addSpar([-span, groundY, -w], [1.1, 2.1, -w * 0.85], 0.12);
+                addSpar([-span, groundY, w], [1.1, 2.1, w * 0.85], 0.12);
+                // Kaki-A Kanan (condong melepasi tengah ke x = -1.1)
+                addSpar([span, groundY, -w], [-1.1, 2.1, -w * 0.85], 0.12);
+                addSpar([span, groundY, w], [-1.1, 2.1, w * 0.85], 0.12);
+
+                // 2 Palang Pengunci Atas (Double Lock Transoms)
+                addSpar([-1.1, 2.1, -w * 1.1], [-1.1, 2.1, w * 1.1], 0.11, darkWoodMat);
+                addSpar([1.1, 2.1, -w * 1.1], [1.1, 2.1, w * 1.1], 0.11, darkWoodMat);
+                addLashing([-1.1, 2.1, -w * 0.85], 0.17);
+                addLashing([-1.1, 2.1, w * 0.85], 0.17);
+                addLashing([1.1, 2.1, -w * 0.85], 0.17);
+                addLashing([1.1, 2.1, w * 0.85], 0.17);
+
+                // Titik silang tengah X
+                addLashing([0, 1.25, -w * 0.9], 0.16);
+                addLashing([0, 1.25, w * 0.9], 0.16);
+
+                // Palang tebing kiri & kanan
+                addSpar([-3.8, 1.2, -w * 1.1], [-3.8, 1.2, w * 1.1], 0.1);
+                addSpar([3.8, 1.2, -w * 1.1], [3.8, 1.2, w * 1.1], 0.1);
+
+                // Tali penggantung dari kunci atas ke pelantar
+                addRope([-1.1, 2.1, -w * 0.85], [-1.1, deckY, -w * 0.8], 0.035);
+                addRope([-1.1, 2.1, w * 0.85], [-1.1, deckY, w * 0.8], 0.035);
+                addRope([1.1, 2.1, -w * 0.85], [1.1, deckY, -w * 0.8], 0.035);
+                addRope([1.1, 2.1, w * 0.85], [1.1, deckY, w * 0.8], 0.035);
+
+                // Pelantar laluan bawah
+                addSpar([-span - 0.6, deckY, -w * 0.8], [span + 0.6, deckY, -w * 0.8], 0.11);
+                addSpar([-span - 0.6, deckY, w * 0.8], [span + 0.6, deckY, w * 0.8], 0.11);
+                addDecking(-span - 0.3, span + 0.3, deckY + 0.12, w * 1.6, 18);
+
+            } else if (type === 'bridge_trestle') {
+                // Gambar 1 (jambatan3.jpg): Center-Trestle Suspension Bridge
+                const span = 5.4;
+                const w = 1.3;
+                const trestleTopY = 2.5;
+                const deckMidY = -0.3;
+                const bankY = -1.8;
+
+                // Struktur Trestel Tegak Segi Empat di tengah air (x = 0)
+                addSpar([0, groundY - 0.3, -w], [0, trestleTopY, -w], 0.13);
+                addSpar([0, groundY - 0.3, w], [0, trestleTopY, w], 0.13);
+                // Palang bawah, tengah & puncak trestel
+                addSpar([0, groundY + 0.3, -w * 1.2], [0, groundY + 0.3, w * 1.2], 0.11);
+                addSpar([0, deckMidY - 0.15, -w * 1.2], [0, deckMidY - 0.15, w * 1.2], 0.12);
+                addSpar([0, trestleTopY - 0.2, -w * 1.2], [0, trestleTopY - 0.2, w * 1.2], 0.12);
+                // X-Bracing pada trestel
+                addSpar([0, groundY + 0.3, -w], [0, deckMidY - 0.15, w], 0.09, darkWoodMat);
+                addSpar([0, groundY + 0.3, w], [0, deckMidY - 0.15, -w], 0.09, darkWoodMat);
+                addLashing([0, -1.3, 0], 0.16);
+                addLashing([0, trestleTopY - 0.2, -w], 0.17);
+                addLashing([0, trestleTopY - 0.2, w], 0.17);
+
+                // Kayu sokongan condong dari puncak trestel ke hujung tebing kiri & kanan
+                addSpar([0, trestleTopY - 0.2, -w], [-span, bankY, -w], 0.1);
+                addSpar([0, trestleTopY - 0.2, w], [-span, bankY, w], 0.1);
+                addSpar([0, trestleTopY - 0.2, -w], [span, bankY, -w], 0.1);
+                addSpar([0, trestleTopY - 0.2, w], [span, bankY, w], 0.1);
+
+                // Pancang tebing kiri & kanan
+                addSpar([-span, groundY, -w], [-span, bankY + 0.6, -w], 0.11);
+                addSpar([-span, groundY, w], [-span, bankY + 0.6, w], 0.11);
+                addSpar([span, groundY, -w], [span, bankY + 0.6, -w], 0.11);
+                addSpar([span, groundY, w], [span, bankY + 0.6, w], 0.11);
+
+                // Laluan pelantar condong dari tebing naik ke tengah trestel
+                addSpar([-span, bankY, -w * 0.85], [0, deckMidY, -w * 0.85], 0.11);
+                addSpar([-span, bankY, w * 0.85], [0, deckMidY, w * 0.85], 0.11);
+                addSpar([0, deckMidY, -w * 0.85], [span, bankY, -w * 0.85], 0.11);
+                addSpar([0, deckMidY, w * 0.85], [span, bankY, w * 0.85], 0.11);
+
+                // Papan geladak di kedua-dua cerun
+                for (let i = 1; i < 8; i++) {
+                    const t = i / 8;
+                    const xL = -span * (1 - t);
+                    const yL = bankY + (deckMidY - bankY) * t + 0.1;
+                    addSpar([xL, yL, -w * 0.95], [xL, yL, w * 0.95], 0.07, darkWoodMat, 0.1);
+
+                    const xR = span * t;
+                    const yR = deckMidY + (bankY - deckMidY) * t + 0.1;
+                    addSpar([xR, yR, -w * 0.95], [xR, yR, w * 0.95], 0.07, darkWoodMat, 0.1);
+                }
+
+            } else if (type === 'tower_square') {
+                // Gambar 6 (menara1.jpg): Four-Legged / Square Observation Tower
+                const b = 1.75; // Tapak bawah lebih lebar
+                const t = 1.25; // Pelantar atas
+                const platY = 1.7;
+                const railY = 2.65;
+                const lowY = -2.1;
+
+                // 4 Tiang Utama (sedikit condong ke dalam)
+                const corners = [
+                    [[-b, groundY, -b], [-t, railY, -t]],
+                    [[b, groundY, -b], [t, railY, -t]],
+                    [[b, groundY, b], [t, railY, t]],
+                    [[-b, groundY, b], [-t, railY, t]]
+                ];
+                corners.forEach(c => addSpar(c[0], c[1], 0.12));
+
+                // Palang Bawah (4 sisi)
+                const bPts = [[-b * 0.93, lowY, -b * 0.93], [b * 0.93, lowY, -b * 0.93], [b * 0.93, lowY, b * 0.93], [-b * 0.93, lowY, b * 0.93]];
+                for (let i = 0; i < 4; i++) {
+                    const next = (i + 1) % 4;
+                    addSpar(bPts[i], bPts[next], 0.1);
+                    addLashing(bPts[i], 0.16);
+                }
+
+                // Rangka Pelantar Atas (4 sisi)
+                const pPts = [[-t * 1.1, platY, -t * 1.1], [t * 1.1, platY, -t * 1.1], [t * 1.1, platY, t * 1.1], [-t * 1.1, platY, t * 1.1]];
+                for (let i = 0; i < 4; i++) {
+                    const next = (i + 1) % 4;
+                    addSpar(pPts[i], pPts[next], 0.11);
+                    addLashing(pPts[i], 0.17);
+                }
+
+                // Pagar Pelantar Kayu (4 sisi di atas)
+                const rPts = [[-t, railY - 0.15, -t], [t, railY - 0.15, -t], [t, railY - 0.15, t], [-t, railY - 0.15, t]];
+                for (let i = 0; i < 4; i++) {
+                    const next = (i + 1) % 4;
+                    addSpar(rPts[i], rPts[next], 0.1, darkWoodMat);
+                    addLashing(rPts[i], 0.15);
+                }
+
+                // Kayu Palang Pepenjuru Sisi (Diagonal Bracing)
+                addSpar(bPts[0], pPts[1], 0.09, darkWoodMat, 0.15);
+                addSpar(bPts[1], pPts[0], 0.09, darkWoodMat, 0.15);
+                addSpar(bPts[2], pPts[3], 0.09, darkWoodMat, 0.15);
+                addSpar(bPts[3], pPts[2], 0.09, darkWoodMat, 0.15);
+                addLashing([0, -0.2, -1.5], 0.15);
+                addLashing([0, -0.2, 1.5], 0.15);
+
+                // Lantai Pelantar Atas
+                addDecking(-t * 0.95, t * 0.95, platY + 0.12, t * 2.1, 9, true);
+
+                // Tangga Tali di Hadapan (+Z)
+                const ladX = 0.45;
+                addRope([-ladX, groundY, b * 0.93], [-ladX, railY - 0.15, t], 0.03);
+                addRope([ladX, groundY, b * 0.93], [ladX, railY - 0.15, t], 0.03);
+                for (let step = 0; step < 7; step++) {
+                    const f = (step + 0.5) / 7;
+                    const sy = groundY + (platY - groundY) * f;
+                    const sz = b * 0.93 + (t - b * 0.93) * f;
+                    addSpar([-ladX, sy, sz], [ladX, sy, sz], 0.055, darkWoodMat, 0.12);
+                }
+
+            } else if (type === 'tower_hourglass') {
+                // Gambar 5 (menara2.jpg): Hourglass Tower
+                const rBase = 2.1;
+                const rTop = 1.65;
+                const waistY = 0.0;
+                const platY = 1.85;
+                const topY = 2.75;
+                const lowY = -2.2;
+
+                // 3 Tiang Utama Bersilang di Tengah (Membentuk Jam Pasir)
+                const baseAngles = [Math.PI / 2, Math.PI / 2 + (2 * Math.PI) / 3, Math.PI / 2 + (4 * Math.PI) / 3];
+                const bVerts = [];
+                const tVerts = [];
+                const pVerts = [];
+
+                for (let i = 0; i < 3; i++) {
+                    const a1 = baseAngles[i];
+                    const a2 = baseAngles[i] + Math.PI; // Silang bertentangan ke atas
+                    const pBot = [Math.cos(a1) * rBase, groundY, Math.sin(a1) * rBase];
+                    const pTop = [Math.cos(a2) * rTop, topY, Math.sin(a2) * rTop];
+                    addSpar(pBot, pTop, 0.12);
+
+                    // Titik palang bawah & atas
+                    const fLow = (lowY - groundY) / (topY - groundY);
+                    bVerts.push([
+                        pBot[0] + (pTop[0] - pBot[0]) * fLow,
+                        lowY,
+                        pBot[2] + (pTop[2] - pBot[2]) * fLow
+                    ]);
+
+                    const fPlat = (platY - groundY) / (topY - groundY);
+                    pVerts.push([
+                        pBot[0] + (pTop[0] - pBot[0]) * fPlat,
+                        platY,
+                        pBot[2] + (pTop[2] - pBot[2]) * fPlat
+                    ]);
+
+                    tVerts.push([pTop[0] * 0.96, topY - 0.1, pTop[2] * 0.96]);
+                }
+
+                // Ikatan Silang Tungku Besar di Leher Tengah (Waist)
+                addLashing([0, 0.1, 0], 0.34);
+
+                // Palang Tapak Segi Tiga Bawah & Pelantar Segi Tiga Atas
+                for (let i = 0; i < 3; i++) {
+                    const next = (i + 1) % 3;
+                    addSpar(bVerts[i], bVerts[next], 0.1);
+                    addLashing(bVerts[i], 0.16);
+
+                    addSpar(pVerts[i], pVerts[next], 0.11);
+                    addLashing(pVerts[i], 0.17);
+
+                    // Pagar Tali Atas
+                    addRope(tVerts[i], tVerts[next], 0.03);
+                    addRope(pVerts[i], tVerts[next], 0.025);
+                    addRope(tVerts[i], pVerts[next], 0.025);
+                }
+
+                // Lantai Pelantar Segi Tiga
+                for (let i = 1; i <= 7; i++) {
+                    const t = i / 8;
+                    const pL = [
+                        pVerts[0][0] + (pVerts[1][0] - pVerts[0][0]) * t,
+                        platY + 0.1,
+                        pVerts[0][2] + (pVerts[1][2] - pVerts[0][2]) * t
+                    ];
+                    const pR = [
+                        pVerts[0][0] + (pVerts[2][0] - pVerts[0][0]) * t,
+                        platY + 0.1,
+                        pVerts[0][2] + (pVerts[2][2] - pVerts[0][2]) * t
+                    ];
+                    addSpar(pL, pR, 0.07, darkWoodMat, 0.08);
+                }
+
+                // Tangga Tali Menegak
+                addRope([-0.4, groundY, 1.3], [-0.4, platY, 0.85], 0.03);
+                addRope([0.4, groundY, 1.3], [0.4, platY, 0.85], 0.03);
+                for (let s = 0; s < 8; s++) {
+                    const f = (s + 0.5) / 8;
+                    const sy = groundY + (platY - groundY) * f;
+                    const sz = 1.3 + (0.85 - 1.3) * f;
+                    addSpar([-0.4, sy, sz], [0.4, sy, sz], 0.055, darkWoodMat, 0.1);
+                }
+
+            } else if (type === 'tower_tripod') {
+                // Gambar 4 (menara3.jpg): Tripod Observation Tower
+                const rBase = 1.9;
+                const rTop = 1.75;
+                const platY = 1.85;
+                const topY = 2.85;
+                const lowY = -2.1;
+
+                const angles = [-Math.PI / 2, -Math.PI / 2 + (2 * Math.PI) / 3, -Math.PI / 2 + (4 * Math.PI) / 3];
+                const bVerts = [];
+                const pVerts = [];
+                const tVerts = [];
+
+                for (let i = 0; i < 3; i++) {
+                    const aBot = angles[i];
+                    const aTop = angles[i] + Math.PI;
+                    const pBot = [Math.cos(aBot) * rBase, groundY, Math.sin(aBot) * rBase];
+                    const pTop = [Math.cos(aTop) * rTop, topY, Math.sin(aTop) * rTop];
+                    addSpar(pBot, pTop, 0.12);
+
+                    const fLow = (lowY - groundY) / (topY - groundY);
+                    bVerts.push([
+                        pBot[0] + (pTop[0] - pBot[0]) * fLow,
+                        lowY,
+                        pBot[2] + (pTop[2] - pBot[2]) * fLow
+                    ]);
+
+                    const fPlat = (platY - groundY) / (topY - groundY);
+                    pVerts.push([
+                        pBot[0] + (pTop[0] - pBot[0]) * fPlat,
+                        platY,
+                        pBot[2] + (pTop[2] - pBot[2]) * fPlat
+                    ]);
+
+                    tVerts.push([pTop[0] * 0.96, topY - 0.1, pTop[2] * 0.96]);
+                }
+
+                // Ikatan silang tungku di titik pertemuan bawah
+                addLashing([0, -0.1, 0], 0.32);
+
+                // Rangka Segi Tiga Tapak & Pelantar + Jaring Pagar Tali Berlian
+                for (let i = 0; i < 3; i++) {
+                    const next = (i + 1) % 3;
+                    addSpar(bVerts[i], bVerts[next], 0.1);
+                    addLashing(bVerts[i], 0.16);
+
+                    addSpar(pVerts[i], pVerts[next], 0.11);
+                    addLashing(pVerts[i], 0.17);
+
+                    // Pagar Tali Atas
+                    addRope(tVerts[i], tVerts[next], 0.032);
+                    // Corak jaring tali berlian (diamond safety netting)
+                    for (let k = 1; k <= 3; k++) {
+                        const t1 = k / 4;
+                        const t2 = (k - 1) / 4;
+                        const ptA = [pVerts[i][0] + (pVerts[next][0] - pVerts[i][0]) * t1, platY, pVerts[i][2] + (pVerts[next][2] - pVerts[i][2]) * t1];
+                        const ptB = [tVerts[i][0] + (tVerts[next][0] - tVerts[i][0]) * t2, topY - 0.1, tVerts[i][2] + (tVerts[next][2] - tVerts[i][2]) * t2];
+                        const ptC = [tVerts[i][0] + (tVerts[next][0] - tVerts[i][0]) * t1, topY - 0.1, tVerts[i][2] + (tVerts[next][2] - tVerts[i][2]) * t1];
+                        addRope(ptA, ptB, 0.02);
+                        addRope(ptA, ptC, 0.02);
+                    }
+                }
+
+                // Lantai Pelantar Segi Tiga
+                for (let i = 1; i <= 7; i++) {
+                    const t = i / 8;
+                    const pL = [
+                        pVerts[1][0] + (pVerts[0][0] - pVerts[1][0]) * t,
+                        platY + 0.1,
+                        pVerts[1][2] + (pVerts[0][2] - pVerts[1][2]) * t
+                    ];
+                    const pR = [
+                        pVerts[2][0] + (pVerts[0][0] - pVerts[2][0]) * t,
+                        platY + 0.1,
+                        pVerts[2][2] + (pVerts[0][2] - pVerts[2][2]) * t
+                    ];
+                    addSpar(pL, pR, 0.07, darkWoodMat, 0.08);
+                }
+
+                // Tangga Tali
+                addRope([-0.4, groundY, 1.45], [-0.4, platY, 0.9], 0.03);
+                addRope([0.4, groundY, 1.45], [0.4, platY, 0.9], 0.03);
+                for (let s = 0; s < 7; s++) {
+                    const f = (s + 0.5) / 7;
+                    const sy = groundY + (platY - groundY) * f;
+                    const sz = 1.45 + (0.9 - 1.45) * f;
+                    addSpar([-0.4, sy, sz], [0.4, sy, sz], 0.055, darkWoodMat, 0.1);
+                }
+
+            } else if (type === 'catapult') {
+                // Lastik Gergasi / Catapult
+                const w = 1.4;
+                const l = 2.6;
+                // Tapak
+                addSpar([-l, groundY, -w], [l, groundY, -w], 0.12);
+                addSpar([-l, groundY, w], [l, groundY, w], 0.12);
+                addSpar([-l, groundY, -w], [-l, groundY, w], 0.12);
+                addSpar([l, groundY, -w], [l, groundY, w], 0.12);
+
+                // Rangka Segitiga Paksi
+                addSpar([-1.6, groundY, -w], [-0.2, 1.2, -w], 0.12);
+                addSpar([1.6, groundY, -w], [-0.2, 1.2, -w], 0.12);
+                addSpar([-1.6, groundY, w], [-0.2, 1.2, w], 0.12);
+                addSpar([1.6, groundY, w], [-0.2, 1.2, w], 0.12);
+
+                // Palang Paksi
+                addSpar([-0.2, 1.2, -w * 1.15], [-0.2, 1.2, w * 1.15], 0.12, darkWoodMat);
+                addLashing([-0.2, 1.2, -w], 0.18);
+                addLashing([-0.2, 1.2, w], 0.18);
+
+                // Lengan Pelancar
+                addSpar([-2.1, -1.5, 0], [1.8, 2.3, 0], 0.11, woodMat);
+                addLashing([-0.2, 0.4, 0], 0.17);
+
+                // Tali Penarik Anjal
+                addRope([1.8, 2.3, 0], [l, groundY, -w], 0.035);
+                addRope([1.8, 2.3, 0], [l, groundY, w], 0.035);
+
+            } else if (type === 'flagpole') {
+                // Gambar bendera1.jpg: Tiang Bendera Tapak Segi Empat + 4 Guy Lines
+                const b = 1.85;
+                const baseY = groundY + 0.15;
+                const collarY = 0.25;
+                const poleTopY = 3.8;
+
+                // Rangka Tapak Segi Empat Sama (4 sisi)
+                const corners = [
+                    [-b, baseY, -b],
+                    [b, baseY, -b],
+                    [b, baseY, b],
+                    [-b, baseY, b]
+                ];
+                for (let i = 0; i < 4; i++) {
+                    const next = (i + 1) % 4;
+                    addSpar(corners[i], corners[next], 0.1, woodMat, 0.22);
+                    addLashing(corners[i], 0.15);
+                }
+
+                // 2 Palang Silang Tengah pada Tapak
+                addSpar([-b, baseY + 0.08, 0], [b, baseY + 0.08, 0], 0.095, darkWoodMat, 0.18);
+                addSpar([0, baseY + 0.08, -b], [0, baseY + 0.08, b], 0.095, darkWoodMat, 0.18);
+                addLashing([0, baseY + 0.08, 0], 0.18);
+
+                // 2 Tiang Pendek Sokongan Bawah (Mengapit tiang bendera utama)
+                addSpar([-0.14, baseY, 0], [-0.14, collarY, 0], 0.095, woodMat, 0.15);
+                addSpar([0.14, baseY, 0], [0.14, collarY, 0], 0.095, woodMat, 0.15);
+
+                // Tiang Bendera Utama Tinggi di Tengah
+                addSpar([0, baseY + 0.4, 0], [0, poleTopY, 0], 0.085, woodMat, 0.1);
+                addLashing([0, collarY, 0], 0.22);
+                addLashing([0, collarY - 0.55, 0], 0.2);
+
+                // 4 Tali Penegang (Guy Lines) dari Puncak Sokongan ke 4 Penjuru Tapak
+                corners.forEach(c => {
+                    addRope([0, collarY, 0], c, 0.025);
+                    addRope([0, collarY - 0.4, 0], [c[0] * 0.85, baseY, c[2] * 0.85], 0.02);
+                });
+
+                // Tali Halyard Bendera
+                addRope([0.1, baseY + 0.5, 0.1], [0.06, poleTopY, 0.06], 0.02);
+
+                // Bendera Merah dengan Lambang Putih di Puncak
+                const flagGroup = new THREE.Group();
+                const flagGeo = new THREE.BoxGeometry(0.95, 0.62, 0.03);
+                const flagMat = new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.6 });
+                const flagMesh = new THREE.Mesh(flagGeo, flagMat);
+                flagMesh.position.set(0.52, poleTopY - 0.35, 0);
+                flagGroup.add(flagMesh);
+
+                const emblemGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.04, 16);
+                const emblemMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
+                const emblemMesh = new THREE.Mesh(emblemGeo, emblemMat);
+                emblemMesh.rotation.x = Math.PI / 2;
+                emblemMesh.position.set(0.52, poleTopY - 0.35, 0);
+                flagGroup.add(emblemMesh);
+
+                structureGroup.add(flagGroup);
+
+            } else if (type === 'seesaw') {
+                // Gambar mainan1.jpg: Jungkitan Perintis (Pioneering Seesaw)
+                const w = 1.1; // Jarak antara 2 rangka A
+                const baseSpread = 1.5;
+                const peakY = 1.8;
+                const axleY = -0.75;
+
+                // 2 Rangka Kaki-A Kiri & Kanan
+                [-w, w].forEach(zPos => {
+                    addSpar([-baseSpread, groundY, zPos], [0.25, peakY, zPos], 0.1, woodMat, 0.25);
+                    addSpar([baseSpread, groundY, zPos], [-0.25, peakY, zPos], 0.1, woodMat, 0.25);
+                    addLashing([0, peakY - 0.25, zPos], 0.17);
+
+                    // Palang mendatar bawah pada setiap kaki-A
+                    addSpar([-baseSpread * 0.85, groundY + 0.35, zPos], [baseSpread * 0.85, groundY + 0.35, zPos], 0.09, darkWoodMat, 0.15);
+                    addLashing([-baseSpread * 0.78, groundY + 0.35, zPos], 0.14);
+                    addLashing([baseSpread * 0.78, groundY + 0.35, zPos], 0.14);
+
+                    // Palang sokongan gandar
+                    addSpar([-0.9, axleY, zPos], [0.9, axleY, zPos], 0.09, darkWoodMat, 0.15);
+                    addLashing([-0.82, axleY, zPos], 0.14);
+                    addLashing([0.82, axleY, zPos], 0.14);
+                });
+
+                // Palang pengikat atas antara dua kaki-A
+                addSpar([0, peakY - 0.25, -w], [0, peakY - 0.25, w], 0.095, darkWoodMat, 0.2);
+
+                // Gandar Paksi Utama (Balak tebal melintang di bawah)
+                addSpar([0, axleY + 0.14, -w * 1.3], [0, axleY + 0.14, w * 1.3], 0.16, darkWoodMat, 0.15);
+                addLashing([0, axleY + 0.14, -w], 0.2);
+                addLashing([0, axleY + 0.14, w], 0.2);
+
+                // Papan Jungkitan Condong Merentasi Gandar (Seesaw Beam + Paddles)
+                const beamGroup = new THREE.Group();
+                beamGroup.position.set(0, axleY + 0.32, 0);
+                beamGroup.rotation.z = 0.26; // Sudut condong jungkitan
+
+                const plankGeo = new THREE.BoxGeometry(5.2, 0.1, 0.24);
+                const plankMesh = new THREE.Mesh(plankGeo, woodMat);
+                beamGroup.add(plankMesh);
+
+                // Tempat duduk kayu di kedua-dua hujung
+                const seatGeo = new THREE.BoxGeometry(0.55, 0.12, 0.42);
+                const seatL = new THREE.Mesh(seatGeo, darkWoodMat);
+                seatL.position.set(-2.4, 0.04, 0);
+                const seatR = new THREE.Mesh(seatGeo, darkWoodMat);
+                seatR.position.set(2.4, 0.04, 0);
+                beamGroup.add(seatL, seatR);
+
+                structureGroup.add(beamGroup);
+                addLashing([0, axleY + 0.32, 0], 0.18);
+
+            } else if (type === 'swing') {
+                // Gambar swing.jpg: Buaian Perintis Kaki-A (A-Frame Swing)
+                const spanX = 1.9;
+                const spreadZ = 1.55;
+                const peakY = 2.15;
+                const lowY = groundY + 0.3;
+                const midY = -0.35;
+
+                // 2 Rangka Kaki-A di Kiri (-spanX) dan Kanan (+spanX)
+                [-spanX, spanX].forEach(xPos => {
+                    addSpar([xPos, groundY, -spreadZ], [xPos, peakY, 0.2], 0.11, woodMat, 0.25);
+                    addSpar([xPos, groundY, spreadZ], [xPos, peakY, -0.2], 0.11, woodMat, 0.25);
+                    addLashing([xPos, peakY - 0.2, 0], 0.18);
+
+                    // Palang tapak sisi bawah
+                    addSpar([xPos, lowY, -spreadZ * 0.9], [xPos, lowY, spreadZ * 0.9], 0.095, darkWoodMat, 0.18);
+                    addLashing([xPos, lowY, -spreadZ * 0.85], 0.15);
+                    addLashing([xPos, lowY, spreadZ * 0.85], 0.15);
+
+                    // Palang pengukuh tengah kaki-A
+                    addSpar([xPos, midY, -spreadZ * 0.55], [xPos, midY, spreadZ * 0.55], 0.09, darkWoodMat, 0.15);
+                    addLashing([xPos, midY, -spreadZ * 0.5], 0.14);
+                    addLashing([xPos, midY, spreadZ * 0.5], 0.14);
+                });
+
+                // Palang pengukuh belakang bawah menghubungkan dua kaki-A
+                addSpar([-spanX, lowY, -spreadZ * 0.85], [spanX, lowY, -spreadZ * 0.85], 0.095, darkWoodMat, 0.2);
+
+                // Rasuk Galang Melintang Puncak (Top Crossbar)
+                addSpar([-spanX - 0.35, peakY - 0.2, 0], [spanX + 0.35, peakY - 0.2, 0], 0.12, woodMat, 0.1);
+                addLashing([-spanX, peakY - 0.2, 0], 0.19);
+                addLashing([spanX, peakY - 0.2, 0], 0.19);
+
+                // Tali Gantung Buaian (Warna Jingga/Coklat Cerah seperti gambar)
+                const swingRopeMat = new THREE.MeshStandardMaterial({ color: 0xea580c, roughness: 0.8 });
+                const seatW = 0.85;
+                const seatY = -1.25;
+
+                const makeSwingRope = (x) => {
+                    const geo = new THREE.CylinderGeometry(0.028, 0.028, peakY - 0.2 - seatY, 8);
+                    const m = new THREE.Mesh(geo, swingRopeMat);
+                    m.position.set(x, (peakY - 0.2 + seatY) / 2, 0);
+                    structureGroup.add(m);
+                };
+                makeSwingRope(-seatW);
+                makeSwingRope(seatW);
+
+                // Tempat Duduk Buaian (3 batang kayu diikat selari)
+                [-0.18, 0, 0.18].forEach(zOff => {
+                    addSpar([-seatW - 0.15, seatY, zOff], [seatW + 0.15, seatY, zOff], 0.065, woodMat, 0.05);
+                });
+                addLashing([-seatW, seatY, 0], 0.14);
+                addLashing([seatW, seatY, 0], 0.14);
+
+            } else if (type === 'gateway_a') {
+                // Gambar gerbang2.jpg: Pintu Gerbang Kaki-A Jaring Tali
+                const innerX = 1.9;
+                const outerX = 3.6;
+                const topY = 2.4;
+                const crossY = 1.95;
+
+                // 2 Menara Sisi Segitiga (Tiang dalam tegak, tiang luar condong)
+                [-1, 1].forEach(side => {
+                    const xIn = side * innerX;
+                    const xOut = side * outerX;
+
+                    // Tiang dalam tegak & tiang luar condong bertemu di puncak
+                    addSpar([xIn, groundY, 0], [xIn, topY, 0], 0.12, woodMat, 0.15);
+                    addSpar([xOut, groundY, 0], [xIn - side * 0.2, topY, 0], 0.12, woodMat, 0.15);
+                    addLashing([xIn, crossY, 0], 0.18);
+
+                    // 6 Baris Anyaman Tali Mendatar antara Tiang Tegak & Tiang Condong
+                    for (let r = 0; r < 6; r++) {
+                        const f = r / 6;
+                        const y = groundY + 0.2 + (crossY - groundY - 0.4) * f;
+                        const curXOut = xOut + (xIn - xOut) * f;
+                        addRope([xIn, y, 0], [curXOut, y, 0], 0.022);
+
+                        // Tali regangan pepenjuru turun ke pasak sauh di depan
+                        addRope([xIn, y, 0], [side * (innerX + 0.9), groundY, 1.35], 0.02);
+                    }
+
+                    // Pasak Sauh Tanah di Hadapan
+                    addSpar([side * (innerX + 0.9), groundY - 0.1, 1.35], [side * (innerX + 0.95), groundY + 0.35, 1.4], 0.07, darkWoodMat, 0.05);
+                });
+
+                // Palang Utama Melintang Atas Pintu Gerbang
+                addSpar([-innerX - 0.5, crossY, 0], [innerX + 0.5, crossY, 0], 0.12, woodMat, 0.15);
+                addLashing([-innerX, crossY, 0], 0.19);
+                addLashing([innerX, crossY, 0], 0.19);
+
+            } else if (type === 'gateway_arch') {
+                // Gambar gerbang1.jpg: Pintu Gerbang Lengkungan Parabolik (String-Art Arch)
+                const postX = 2.6;
+                const topY = 2.55;
+                const bar1Y = 2.15; // Palang atas
+                const bar2Y = 1.15; // Palang kedua (tempat mula lengkungan)
+
+                // 2 Tiang Utama Tegak Kiri & Kanan
+                addSpar([-postX, groundY, 0], [-postX, topY, 0], 0.13, woodMat, 0.15);
+                addSpar([postX, groundY, 0], [postX, topY, 0], 0.13, woodMat, 0.15);
+
+                // 2 Palang Melintang Selari di Bahagian Atas
+                addSpar([-postX - 0.35, bar1Y, 0], [postX + 0.35, bar1Y, 0], 0.11, woodMat, 0.1);
+                addSpar([-postX - 0.35, bar2Y, 0], [postX + 0.35, bar2Y, 0], 0.11, woodMat, 0.1);
+
+                addLashing([-postX, bar1Y, 0], 0.18);
+                addLashing([postX, bar1Y, 0], 0.18);
+                addLashing([-postX, bar2Y, 0], 0.18);
+                addLashing([postX, bar2Y, 0], 0.18);
+
+                // Anyaman Tali Parabolik (String-Art Curve) Kiri & Kanan
+                const steps = 7;
+                for (let i = 1; i <= steps; i++) {
+                    const t = i / (steps + 1);
+                    // Titik pada tiang tegak (dari bawah naik ke bar2Y)
+                    const yPost = (groundY + 0.3) + (bar2Y - (groundY + 0.3)) * t;
+                    // Titik pada palang mendatar bar2Y (dari tepi menuju tengah)
+                    const xBarL = -postX + postX * t;
+                    const xBarR = postX - postX * t;
+
+                    addRope([-postX, yPost, 0], [xBarL, bar2Y, 0], 0.022);
+                    addRope([postX, yPost, 0], [xBarR, bar2Y, 0], 0.022);
+                }
+            }
+        }
+
+        function animateThree() {
+            requestAnimationFrame(animateThree);
+            if (!renderer || !scene || !camera) return;
+
+            if (autoRotate && !isDragging) {
+                spherical.theta += 0.004;
+                updateCameraPosition();
+            }
+
+            if (stressActive && structureGroup) {
+                stressTime += 0.12;
+                structureGroup.position.y = Math.sin(stressTime) * 0.04;
+                structureGroup.rotation.z = Math.sin(stressTime * 0.7) * 0.015;
+            } else if (structureGroup) {
+                structureGroup.position.y = 0;
+                structureGroup.rotation.z = 0;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        function resizeCanvas() {
+            const container = document.getElementById('threeCanvasContainer');
+            if (!container || !renderer || !camera) return;
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        // ================= BAHAGIAN 2: MODEL SKALA CHECKLIST =================
+        const modelChecklistItems = [
+            { cat: "Kategori Jambatan", title: "Ketegangan Tali Berskala", desc: "Tali titian dan pemegang ditegangkan tanpa lendutan berlebihan; sauh 3-2-1 dipasak kukuh." },
+            { cat: "Kategori Menara", title: "Nisbah Ketinggian & Tapak", desc: "Keluasan tapak sekurang-kurangnya 1/3 daripada jumlah ketinggian menara untuk mengelak tumbang." },
+            { cat: "Kategori Lain-lain", title: "Mekanisme Berfungsi", desc: "Pada model lastik/rakit, engsel tuas atau ketahanan terapung boleh diuji secara fizikal." },
+            { cat: "Semua Kategori", title: "Kemasan Ikatan (Frapping)", desc: "Setiap ikatan seraya/serong mempunyai lilitan pengikat (frapping turns) yang ketat." },
+            { cat: "Semua Kategori", title: "Tiada Penggunaan Gam Tersembunyi", desc: "Kekuatan model bergantung 100% kepada daya cengkaman ikatan simpulan, bukan gam gajah." },
+            { cat: "Semua Kategori", title: "Label Skala & Lukisan Pelan", desc: "Model disertakan kertas kerja lukisan ortografik dan nisbah skala yang jelas (cth: 1:10)." }
+        ];
+
+        function renderModelChecklist() {
+            const container = document.getElementById('modelChecklistContainer');
+            container.innerHTML = modelChecklistItems.map((item, idx) => `
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 flex items-start gap-3">
+                    <input type="checkbox" id="chk-${idx}" onchange="sfxClick()" class="mt-1 w-4 h-4 rounded text-amber-500 focus:ring-amber-400 bg-slate-800 border-slate-700 cursor-pointer">
+                    <label for="chk-${idx}" class="cursor-pointer">
+                        <span class="text-[10px] font-bold text-sky-400 uppercase tracking-wider block">${item.cat}</span>
+                        <h5 class="text-sm font-semibold text-slate-100">${item.title}</h5>
+                        <p class="text-xs text-slate-400 mt-1">${item.desc}</p>
+                    </label>
+                </div>
+            `).join('');
+        }
+
+        // ================= BAHAGIAN 3: KUARTERMASTER INVENTORY =================
+        let qmInventory = [
+            { id: "QM-TL01", name: "Tali Manila 12mm (30 meter)", cat: "Tali Temali", qty: "6 Gulung", condition: "Baik", status: "Diluluskan" },
+            { id: "QM-TL02", name: "Tali Rafia / Penanda Tapak", cat: "Tali Temali", qty: "3 Gulung", condition: "Baik", status: "Diluluskan" },
+            { id: "QM-WD01", name: "Buluh Betung 3.5m (Kaki Menara)", cat: "Kayu/Buluh", qty: "12 Batang", condition: "Sedikit Retak di Hujung", status: "Perlu Pemangkasan" },
+            { id: "QM-WD02", name: "Kayu Bakau 2.0m (Lantai Rangka)", cat: "Kayu/Buluh", qty: "20 Batang", condition: "Kering & Padu", status: "Diluluskan" },
+            { id: "QM-TL03", name: "Tali Sisal Sintetik Terbiar Hujan", cat: "Tali Temali", qty: "2 Gulung", condition: "Reput Dalaman & Berbau", status: "DILUPUSKAN (BAHAYA)" },
+            { id: "QM-TL04", name: "Parang Tebas & Sarung Kulit", cat: "Alat Tajam", qty: "4 Bilah", condition: "Bilah Berkarat Ringan", status: "Perlu Minyak & Asah" }
+        ];
+
+        function renderQMInventory() {
+            const tbody = document.getElementById('qmInventoryBody');
+            let good = 0, warning = 0, danger = 0;
+
+            tbody.innerHTML = qmInventory.map((item, index) => {
+                let badgeClass = "text-emerald-400 bg-emerald-500/10 border-emerald-500/30";
+                if (item.status.includes('DILUPUSKAN')) {
+                    badgeClass = "text-rose-400 bg-rose-500/10 border-rose-500/30";
+                    danger++;
+                } else if (item.status.includes('Perlu')) {
+                    badgeClass = "text-amber-400 bg-amber-500/10 border-amber-500/30";
+                    warning++;
+                } else {
+                    good++;
+                }
+
+                return `
+                    <tr class="hover:bg-slate-800/30">
+                        <td class="p-3 font-medium text-slate-200">
+                            <span class="text-[10px] text-slate-500 block">${item.id}</span>
+                            ${item.name}
+                        </td>
+                        <td class="p-3 text-slate-400">${item.cat}</td>
+                        <td class="p-3 text-slate-200 font-semibold">${item.qty}</td>
+                        <td class="p-3 text-slate-300">${item.condition}</td>
+                        <td class="p-3">
+                            <span class="px-2 py-0.5 rounded text-[11px] font-semibold border ${badgeClass}">
+                                ${item.status}
+                            </span>
+                        </td>
+                        <td class="p-3 text-right">
+                            <button onclick="selenggaraItem(${index})" class="p-1 text-slate-400 hover:text-amber-400" title="Tukar Status Selenggara">
+                                <i data-lucide="wrench" class="w-4 h-4"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('qmGoodCount').innerText = good;
+            document.getElementById('qmWarningCount').innerText = warning;
+            document.getElementById('qmDangerCount').innerText = danger;
+            lucide.createIcons();
+        }
+
+        function tambahItemQM() {
+            sfxClick();
+            const nama = prompt("Masukkan Nama Alatan / Bahan Kuartermaster:");
+            if (!nama) return;
+            const kat = prompt("Kategori (Tali Temali / Kayu / Alat Tajam / Keselamatan):", "Tali Temali");
+            const kuantiti = prompt("Kuantiti (cth: 4 Batang / 2 Gulung):", "1 Unit");
+
+            qmInventory.push({
+                id: "QM-NEW" + (qmInventory.length + 1),
+                name: nama,
+                cat: kat || "Umum",
+                qty: kuantiti || "1 Unit",
+                condition: "Pemeriksaan Baharu",
+                status: "Diluluskan"
+            });
+            renderQMInventory();
+        }
+
+        function selenggaraItem(index) {
+            sfxClick();
+            const cur = qmInventory[index];
+            if (cur.status === "Diluluskan") {
+                cur.status = "Perlu Penyelenggaraan";
+                cur.condition = "Perlu diperiksa & dibersihkan";
+            } else if (cur.status === "Perlu Penyelenggaraan" || cur.status.includes("Perlu")) {
+                cur.status = "DILUPUSKAN (BAHAYA)";
+                cur.condition = "Gagal ujian beban";
+            } else {
+                cur.status = "Diluluskan";
+                cur.condition = "Kemas & Diselenggara";
+            }
+            renderQMInventory();
+        }
+
+        // ================= BAHAGIAN 4: KUIZ INTERAKTIF =================
+        const quizData = [
+            {
+                cat: "Kategori Jambatan",
+                q: "Antara berikut, manakah kombinasi ikatan yang paling tepat untuk mendirikan kerangka 'A-Frame' bagi sebuah Jambatan Monyet (Monkey Bridge)?",
+                opts: [
+                    "Ikatan Bunga Geti dan Simpul Tindih Kasih",
+                    "Ikatan Seraya untuk palang bawah & Ikatan Silang Gunting / Tungku untuk puncak kaki",
+                    "Simpul Pencuri dan Ikatan Pengail",
+                    "Ikatan Lilit Balak semata-mata"
+                ],
+                ans: 1,
+                explain: "Kerangka A memerlukan ikatan silang gunting (shear lashing) di puncak bagi membolehkan kedua-dua kaki dibuka membentuk huruf A, serta ikatan seraya (square lashing) untuk mengunci palang mendatar di bahagian bawah."
+            },
+            {
+                cat: "Kategori Menara",
+                q: "Mengapakah Menara Tripod (Tiga Kaki) lebih digemari di kawasan perkhemahan berbanding Menara Empat Kaki di kawasan bumi yang bergelombang?",
+                opts: [
+                    "Kerana menara 3 kaki memerlukan tali yang lebih pendek sahaja.",
+                    "Kerana 3 titik sentuhan sentiasa membentuk satu satah geometri tunggal yang tidak akan jongkang-jongkit di tanah tidak rata.",
+                    "Kerana menara 3 kaki tidak memerlukan tali guying penahan angin.",
+                    "Kerana hanya 1 orang sahaja dibenarkan membinanya."
+                ],
+                ans: 1,
+                explain: "Tiga titik sentuhan bumi adalah definisi asas sebuah satah stabil (coplanar). Ini menjamin menara tripod tidak akan bergoyang walau di permukaan tanah hutan yang tidak rata."
+            },
+            {
+                cat: "Kategori Lain-lain (Pengangkutan)",
+                q: "Semasa membina projek rakit perintis menggunakan tong drum plastik, apakah kaedah terbaik mengikat tong pada rangka buluh?",
+                opts: [
+                    "Menebuk lubang pada tong drum dan memakunya pada buluh.",
+                    "Menggunakan Ikatan Tong (Barrel Hitch) atau lilitan silang bertali fleksibel mengelilingi perimeter drum.",
+                    "Menggunakan pita pelekat pembungkusan.",
+                    "Meletakkan drum secara bebas di atas buluh tanpa ikatan."
+                ],
+                ans: 1,
+                explain: "Tong drum plastik tidak boleh ditebuk kerana akan bocor dan kehilangan daya apungan. Ikatan tong atau lashing perimeter memastikan drum terikat kejap tanpa merosakkannya."
+            },
+            {
+                cat: "Pemodelan Skala",
+                q: "Apakah nisbah skala piawai yang paling praktikal digunakan bagi membina model perintis meja sebelum memulakan pembinaan sebenar?",
+                opts: [
+                    "1:1 (Saiz sebenar)",
+                    "1:10 atau 1:20 (1 cm pada model mewakili 10 cm atau 20 cm sebenar)",
+                    "1:1000 (Terlalu kecil seperti saiz peta bandar)",
+                    "5:1 (Model lebih besar daripada struktur asal)"
+                ],
+                ans: 1,
+                explain: "Nisbah 1:10 atau 1:20 membolehkan batang lidi/dowel 30cm mewakili kayu 3m - 6m dengan tepat untuk mengkaji sudut ikatan dan geometri."
+            },
+            {
+                cat: "Pengurusan Kuartermaster",
+                q: "Bagaimanakah seorang Kuartermaster yang bertanggungjawab patut menguruskan tali manila yang basah lecun selepas aktiviti perkhemahan tamat?",
+                opts: [
+                    "Terus gulung ketat dan simpan di dalam kotak plastik kedap udara.",
+                    "Bakar tali dengan api kecil untuk mengeringkannya dengan segera.",
+                    "Uraikan tali dan jemur di kawasan teduh berangin (air-drying) sehingga kering sepenuhnya sebelum digulung kemas.",
+                    "Buang kesemua tali tersebut ke dalam tong sampah."
+                ],
+                ans: 2,
+                explain: "Menyimpan tali basah dalam tempat tertutup menyebabkan reput kulat (mildew) yang memusnahkan gentian teras tali. Tali wajib dikeringkan di tempat teduh berventilasi baik."
+            }
+        ];
+
+        let currentQIndex = 0;
+        let userScore = 0;
+        let answered = false;
+
+        function renderQuestion() {
+            answered = false;
+            const q = quizData[currentQIndex];
+            document.getElementById('currentQNum').innerText = currentQIndex + 1;
+            document.getElementById('currentScore').innerText = userScore;
+            document.getElementById('quizBadge').innerText = q.cat;
+            document.getElementById('quizQuestion').innerText = q.q;
+
+            const progress = ((currentQIndex + 1) / quizData.length) * 100;
+            document.getElementById('quizProgressBar').style.width = progress + '%';
+
+            const optContainer = document.getElementById('quizOptions');
+            optContainer.innerHTML = q.opts.map((opt, i) => `
+                <button onclick="selectAnswer(${i})" class="quiz-opt-btn w-full p-4 text-left rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/70 text-slate-200 text-xs sm:text-sm font-medium transition flex items-center justify-between group">
+                    <span>${opt}</span>
+                    <i data-lucide="circle" class="w-4 h-4 text-slate-500 group-hover:text-amber-400"></i>
+                </button>
+            `).join('');
+
+            const fb = document.getElementById('quizFeedback');
+            fb.className = "hidden mt-6 p-4 rounded-xl text-xs sm:text-sm";
+            fb.innerHTML = "";
+            document.getElementById('nextQBtn').classList.add('hidden');
+
+            lucide.createIcons();
+        }
+
+        function selectAnswer(index) {
+            if (answered) return;
+            answered = true;
+            const q = quizData[currentQIndex];
+            const buttons = document.querySelectorAll('.quiz-opt-btn');
+            const fb = document.getElementById('quizFeedback');
+
+            if (index === q.ans) {
+                sfxCorrect();
+                userScore++;
+                document.getElementById('currentScore').innerText = userScore;
+                buttons[index].className = "quiz-opt-btn w-full p-4 text-left rounded-xl bg-emerald-950/70 border border-emerald-500 text-emerald-200 text-xs sm:text-sm font-bold flex items-center justify-between";
+                buttons[index].querySelector('i').setAttribute('data-lucide', 'check-circle');
+                
+                fb.className = "mt-6 p-4 rounded-xl text-xs sm:text-sm bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 block";
+                fb.innerHTML = `<strong>Tepat Sekali!</strong> ${q.explain}`;
+            } else {
+                sfxWrong();
+                buttons[index].className = "quiz-opt-btn w-full p-4 text-left rounded-xl bg-rose-950/70 border border-rose-500 text-rose-200 text-xs sm:text-sm font-bold flex items-center justify-between";
+                buttons[index].querySelector('i').setAttribute('data-lucide', 'x-circle');
+
+                // Highlight jawapan betul
+                buttons[q.ans].className = "quiz-opt-btn w-full p-4 text-left rounded-xl bg-emerald-950/50 border border-emerald-500/60 text-emerald-300 text-xs sm:text-sm font-semibold flex items-center justify-between";
+
+                fb.className = "mt-6 p-4 rounded-xl text-xs sm:text-sm bg-rose-950/60 border border-rose-500/40 text-rose-300 block";
+                fb.innerHTML = `<strong>Kurang Tepat.</strong> ${q.explain}`;
+            }
+
+            lucide.createIcons();
+            document.getElementById('nextQBtn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            sfxClick();
+            currentQIndex++;
+            if (currentQIndex < quizData.length) {
+                renderQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            document.getElementById('quizContainer').classList.add('hidden');
+            const resultBox = document.getElementById('quizResult');
+            resultBox.classList.remove('hidden');
+            document.getElementById('finalScoreVal').innerText = `${userScore} / ${quizData.length}`;
+
+            const fb = document.getElementById('finalFeedbackText');
+            if (userScore === 5) {
+                fb.innerText = "Sempurna! Anda memiliki kefahaman setaraf Ketua Kuartermaster & Jurutera Perintis Kanan. Bersedia mendirikan binaan lapangan!";
+            } else if (userScore >= 3) {
+                fb.innerText = "Bagus! Anda menguasai prinsip asas dengan baik. Ulang kaji beberapa aspek ikatan khusus dan SOP alatan tajam.";
+            } else {
+                fb.innerText = "Perlu peningkatan. Terokai semula Bahagian 1, 2 dan 3 untuk mendalami seni perintis dan keselamatan logistik.";
+            }
+        }
+
+        function restartQuiz() {
+            sfxClick();
+            currentQIndex = 0;
+            userScore = 0;
+            document.getElementById('quizContainer').classList.remove('hidden');
+            document.getElementById('quizResult').classList.add('hidden');
+            renderQuestion();
+        }
+
+        // ================= INISIALISASI =================
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            initThreeJS();
+            renderModelChecklist();
+            renderQMInventory();
+            renderQuestion();
+        });
+    </script>
+</body>
+</html>
