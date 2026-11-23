@@ -95,6 +95,9 @@
                     <button id="btn-mod-gadgets" onclick="switchMode('gadgets')" class="text-slate-600 hover:text-slate-900 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-2">
                         <span>Simulasi Gajet</span>
                     </button>
+                    <button id="btn-mod-3d" onclick="switchMode('3d')" class="text-slate-600 hover:text-slate-900 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-2">
+                        <span>Model 3D</span>
+                    </button>
                     <button id="btn-mod-quiz" onclick="switchMode('quiz')" class="text-slate-600 hover:text-slate-900 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 hidden sm:flex items-center gap-2">
                         <span>Uji Minda</span>
                     </button>
@@ -125,9 +128,9 @@
                     <div class="text-2xl sm:text-3xl font-bold text-amber-400">8</div>
                     <div class="text-xs text-scout-200 mt-1">Asas Ikatan</div>
                 </div>
-                <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-3 sm:p-4 text-center">
-                    <div class="text-2xl sm:text-3xl font-bold text-emerald-400">4</div>
-                    <div class="text-xs text-scout-200 mt-1">Model Gajet</div>
+                <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-3 sm:p-4 text-center cursor-pointer hover:bg-white/20 transition" onclick="switchMode('3d')">
+                    <div class="text-2xl sm:text-3xl font-bold text-emerald-400">4 + 2</div>
+                    <div class="text-xs text-scout-200 mt-1">Gajet & 3D</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-3 sm:p-4 text-center cursor-pointer hover:bg-white/20 transition" onclick="switchMode('quiz')">
                     <div class="text-2xl sm:text-3xl font-bold text-sky-400" id="header-score">0%</div>
@@ -138,7 +141,7 @@
     </header>
 
     <!-- KANDUNGAN UTAMA -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
 
         <!-- ========================================================= -->
         <!-- SEKSYEN 1: SIMULASI 8 SIMPULAN & IKATAN                     -->
@@ -277,6 +280,42 @@
                 </div>
 
             </div>
+
+            <!-- Video Demo Ikatan & Simpulan (Diletakkan kemas di dalam Seksyen Simpulan) -->
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8 overflow-hidden mt-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-5 border-b border-slate-100 gap-3">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-red-700 bg-red-100 px-2.5 py-1 rounded-md">
+                            Panduan Audio Visual
+                        </span>
+                        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mt-1.5 flex items-center gap-2">
+                            <svg class="w-6 h-6 text-red-600 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            Video Demo Ikatan dan Simpulan
+                        </h3>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=rJQrdIJX0bc" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-xs font-semibold px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition border border-slate-200 w-fit gap-1.5">
+                        <span>Tonton di YouTube</span>
+                        <svg class="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    </a>
+                </div>
+                
+                <!-- Video Embed Responsif -->
+                <div class="max-w-4xl mx-auto">
+                    <div class="relative w-full rounded-2xl overflow-hidden bg-slate-900 shadow-md aspect-video">
+                        <iframe
+                            src="https://www.youtube.com/embed/rJQrdIJX0bc?si=kpjn_O6IxSZbGaUq"
+                            title="Video Demo 8 Simpulan dan Ikatan"
+                            class="absolute inset-0 w-full h-full border-0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <p class="text-slate-500 text-xs mt-3 text-center font-medium">
+                        Demonstrasi Lengkap: 8 Simpulan dan Ikatan Asas Lencana Keahlian Pengakap
+                    </p>
+                </div>
+            </div>
         </section>
 
         <!-- ========================================================= -->
@@ -364,6 +403,90 @@
         </section>
 
         <!-- ========================================================= -->
+        <!-- SEKSYEN 2B: MODEL 3D MENARA PIONEERING (3D EMBED)         -->
+        <!-- ========================================================= -->
+        <section id="section-3d" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-scout-700 bg-scout-100 px-2.5 py-1 rounded-md">
+                        Penerokaan Struktur 3D
+                    </span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">Model 3D Menara Pioneering</h2>
+                    <p class="text-sm text-slate-600">Putar, zum dan periksa sudut pandangan 360° bagi struktur binaan menara pengakap secara interaktif.</p>
+                </div>
+
+                <!-- Pemilih Model 3D -->
+                <div class="flex flex-wrap gap-2 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm">
+                    <button id="btn-3d-tripod" onclick="switch3DModel('tripod')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-scout-700 text-white shadow-sm transition">
+                        1. Tripod / Brynback Tower
+                    </button>
+                    <button id="btn-3d-hourglass" onclick="switch3DModel('hourglass')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:bg-slate-100 transition">
+                        2. Hourglass Tower
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Paparan Iframe 3D Interaktif (8 cols) -->
+                <div class="lg:col-span-8 bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+                    <div class="px-6 py-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2 bg-slate-50/70">
+                        <div>
+                            <h3 id="model-3d-title" class="text-lg font-bold text-slate-900">Tripod / Brynback Tower (Model 3D)</h3>
+                            <p id="model-3d-subtitle" class="text-xs text-slate-500">Gunakan tetikus atau sentuhan untuk memutar & mengezum struktur 3D</p>
+                        </div>
+                        <a id="model-3d-external" href="https://farihan-ptss.github.io/pengakap_kelana1/brynback_tower.html" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-scout-100 text-scout-800 hover:bg-scout-200 text-xs font-bold transition flex items-center gap-1.5">
+                            <span>Skrin Penuh</span>
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        </a>
+                    </div>
+
+                    <!-- Bekas Iframe 3D -->
+                    <div class="relative w-full bg-slate-900 h-[440px] sm:h-[520px]">
+                        <iframe 
+                            id="iframe-3d-viewer"
+                            src="https://farihan-ptss.github.io/pengakap_kelana1/brynback_tower.html" 
+                            title="Simulasi Model 3D Menara Pengakap"
+                            class="w-full h-full border-0"
+                            loading="lazy"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Panel Maklumat Teknikal Menara (4 cols) -->
+                <div class="lg:col-span-4 space-y-5">
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-2.5 py-1 rounded-md">
+                            Spesifikasi Binaan
+                        </span>
+                        <h4 id="model-3d-info-title" class="text-lg font-bold text-slate-900 mt-2">Brynback / Tripod Tower</h4>
+                        <p id="model-3d-info-desc" class="text-sm text-slate-600 mt-2 leading-relaxed">
+                            Menara tinjau berasaskan struktur tiga kaki utama (tripod) yang memberikan kestabilan tinggi di permukaan tanah tidak rata serta tapak platform di bahagian atas.
+                        </p>
+
+                        <div class="mt-4 pt-4 border-t border-slate-100">
+                            <div class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
+                                Ikatan & Simpulan Utama Digunakan:
+                            </div>
+                            <ul id="model-3d-knots-list" class="space-y-2 text-sm text-slate-700">
+                                <!-- Dijana oleh JS -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-scout-800 to-slate-900 rounded-3xl p-6 text-white shadow-md">
+                        <h4 class="text-base font-bold mb-2">Kawalan Interaksi 3D</h4>
+                        <ul class="space-y-2 text-xs text-scout-100">
+                            <li class="flex items-center gap-2">🖱️ <strong>Klik & Seret:</strong> Putar sudut pandangan 360°</li>
+                            <li class="flex items-center gap-2">🔍 <strong>Skrol / Cubit:</strong> Zum masuk & keluar</li>
+                            <li class="flex items-center gap-2">🖐️ <strong>Klik Kanan & Seret:</strong> Alih kedudukan kamera</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
         <!-- SEKSYEN 3: KUIZ INTERAKTIF UJI KEFAHAMAN                  -->
         <!-- ========================================================= -->
         <section id="section-quiz" class="hidden max-w-3xl mx-auto">
@@ -415,70 +538,39 @@
 
     </main>
 
-    <!-- Bar Navigasi Bawah Khas Mudah Alih untuk Kuiz -->
+    <!-- Bar Navigasi Bawah Khas Mudah Alih -->
     <div class="sm:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-2 flex justify-around z-40">
         <button onclick="switchMode('knots')" class="flex-1 py-2 text-xs font-bold text-scout-800 flex flex-col items-center">
-            <span>🪢 Simpulan (8)</span>
+            <span>🪢 Simpulan</span>
         </button>
         <button onclick="switchMode('gadgets')" class="flex-1 py-2 text-xs font-bold text-slate-600 flex flex-col items-center">
             <span>⛺ Gajet</span>
+        </button>
+        <button onclick="switchMode('3d')" class="flex-1 py-2 text-xs font-bold text-slate-600 flex flex-col items-center">
+            <span>🧊 Model 3D</span>
         </button>
         <button onclick="switchMode('quiz')" class="flex-1 py-2 text-xs font-bold text-slate-600 flex flex-col items-center">
             <span>📝 Kuiz</span>
         </button>
     </div>
 
-     <!-- Video Ikatan -->
-      <div class="bg-white rounded-xl shadow-md border border-stone-200 p-6 overflow-hidden">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 mb-4 border-b border-stone-200 gap-2">
-          <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-red-700 bg-red-100 px-2.5 py-1 rounded">
-              PANDUAN AUDIO VISUAL
-            </span>
-            <h3 class="text-lg font-bold text-stone-900 mt-1 flex items-center">
-              <i class="fa-brands fa-youtube text-red-600 mr-2 text-xl"></i> Video Demo Ikatan dan Simpulan
-            </h3>
-          </div>
-          <a href="https://www.youtube.com/watch?v=rJQrdIJX0bc" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-xs font-semibold px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg transition border border-stone-300 w-fit">
-            <i class="fa-solid fa-arrow-up-right-from-square mr-1.5 text-red-600"></i> Tonton di YouTube
-          </a>
+    <!-- Footer Rasmi -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12 pb-20 sm:pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-xl bg-scout-700 text-white flex items-center justify-center font-bold shadow">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                </div>
+                <div>
+                    <p class="font-bold text-slate-200">MPU24381 Pengakap Kelana Politeknik 1</p>
+                    <p class="text-slate-500">Politeknik Tuanku Syed Sirajuddin, Jabatan Pengajian Politeknik & Kolej Komuniti</p>
+                </div>
+            </div>
+            <div class="text-slate-400 text-xs font-medium">
+                Hak Milik 2026 @ Pn Farihan Elyana binti Zahari
+            </div>
         </div>
-        
-        <!-- Video Embed Responsif -->
-        <div class="relative w-full rounded-lg overflow-hidden
-            bg-black shadow-inner aspect-video">
-
-  <iframe
-    src="https://www.youtube.com/embed/rJQrdIJX0bc?si=kpjn_O6IxSZbGaUq"
-    title="YouTube video player"
-    class="absolute inset-0 w-full h-full border-0"
-    allow="accelerometer; autoplay; clipboard-write;
-           encrypted-media; gyroscope; picture-in-picture; web-share"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allowfullscreen>
-  </iframe>
-</div>
-        <p class="text-stone-500 text-xs mt-2 text-center italic">
-          <i class="fa-solid fa-headphones mr-1 text-stone-400"></i> 
-8 Simpulan dan Ikatan Lencana Keahlian
-        </p>
-      </div>
-    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-      <div class="flex items-center space-x-3">
-        <div class="w-8 h-8 rounded-lg bg-red-700 text-white flex items-center justify-center font-bold">
-          <i class="fa-solid fa-fleur-de-lis"></i>
-        </div>
-        <div>
-          <p class="font-bold text-slate-200">MPU24381 Pengakap Kelana Politeknik 1</p>
-          <p class="text-slate-500">Politeknik Tuanku Syed Sirajuddin,  Jabatan Pengajian Politeknik & Kolej Komuniti</p>
-        </div>
-      </div>
-      <div class="text-slate-400 text-xs font-medium">
-        Hak Milik 2026@Pn Farihan Elyana binti Zahari
-      </div>
-    </div>
-  </footer>
+    </footer>
 
     <!-- ========================================================= -->
     <!-- LOGIK APLIKASI & DATA VISUAL SIMULASI (JAVASCRIPT)        -->
@@ -1351,6 +1443,34 @@
         let quizScore = 0;
         let quizAnswered = false;
 
+        // Data Model 3D Menara Pioneering
+        const models3DData = {
+            tripod: {
+                title: "Tripod / Brynback Tower (Model 3D)",
+                subtitle: "Struktur menara tiga kaki dengan pelantar pemerhati di bahagian atas",
+                url: "https://farihan-ptss.github.io/pengakap_kelana1/brynback_tower.html",
+                infoTitle: "Brynback / Tripod Tower",
+                infoDesc: "Menara tinjau berasaskan struktur tiga tiang utama (tripod) yang condong ke dalam untuk menampung beban pelantar atas dengan kestabilan maksimum.",
+                knots: [
+                    { name: "Ikatan Seraya (Square Lashing)", note: "Mengikat palang mendatar & rangka pelantar", knotId: 6 },
+                    { name: "Ikatan Serong (Diagonal Lashing)", note: "Mengikat palang silang (X-brace) pengukuh kaki", knotId: 7 },
+                    { name: "Simpul Manuk (Clove Hitch)", note: "Memulakan & mematikan ikatan pada tiang utama", knotId: 2 }
+                ]
+            },
+            hourglass: {
+                title: "Hourglass Tower (Model 3D)",
+                subtitle: "Menara berbentuk jam pasir dengan pinggang ramping di bahagian tengah",
+                url: "https://farihan-ptss.github.io/pengakap_kelana1/hourglass_tower.html",
+                infoTitle: "Hourglass Tower (Menara Jam Pasir)",
+                infoDesc: "Reka bentuk ikonik dalam kemahiran pioneering pengakap menggunakan susunan kayu bersilang yang mengembang di tapak dan puncak untuk agihan beban sekata.",
+                knots: [
+                    { name: "Ikatan Serong (Diagonal Lashing)", note: "Kunci utama setiap persilangan kayu 'X' pada badan menara", knotId: 7 },
+                    { name: "Ikatan Seraya (Square Lashing)", note: "Mengikat gelang penahan & lantai pelantar puncak", knotId: 6 },
+                    { name: "Lilit Dua Simpul", note: "Menambat tali sauh (guy lines) penstabil menara", knotId: 4 }
+                ]
+            }
+        };
+
         // =========================================================
         // INISIALISASI APLIKASI
         // =========================================================
@@ -1359,24 +1479,25 @@
             loadKnot(0);
             renderGadgetSelector();
             loadGadget(0);
+            switch3DModel('tripod');
             loadQuizQuestion();
         });
 
-        // Penukaran Tab Utama (Simpulan / Gajet / Kuiz)
+        // Penukaran Tab Utama (Simpulan / Gajet / Model 3D / Kuiz)
         function switchMode(mode) {
             stopAutoPlay();
-            const sections = ['knots', 'gadgets', 'quiz'];
+            const sections = ['knots', 'gadgets', '3d', 'quiz'];
             sections.forEach(sec => {
                 const el = document.getElementById(`section-${sec}`);
                 const btn = document.getElementById(`btn-mod-${sec}`);
                 if (sec === mode) {
-                    el.classList.remove('hidden');
+                    if (el) el.classList.remove('hidden');
                     if (btn) {
                         btn.classList.add('tab-active');
                         btn.classList.remove('text-slate-600');
                     }
                 } else {
-                    el.classList.add('hidden');
+                    if (el) el.classList.add('hidden');
                     if (btn) {
                         btn.classList.remove('tab-active');
                         btn.classList.add('text-slate-600');
@@ -1386,19 +1507,57 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // =========================================================
-        // LOGIK MODUL 1: 8 SIMPULAN & IKATAN
-        // =========================================================
+        // Penukaran Model 3D (Tripod / Hourglass)
+        function switch3DModel(modelKey) {
+            const data = models3DData[modelKey];
+            if (!data) return;
+
+            const btnTripod = document.getElementById('btn-3d-tripod');
+            const btnHourglass = document.getElementById('btn-3d-hourglass');
+
+            if (modelKey === 'tripod') {
+                btnTripod.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-scout-700 text-white shadow-sm transition";
+                btnHourglass.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:bg-slate-100 transition";
+            } else {
+                btnHourglass.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-scout-700 text-white shadow-sm transition";
+                btnTripod.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:bg-slate-100 transition";
+            }
+
+            document.getElementById('model-3d-title').textContent = data.title;
+            document.getElementById('model-3d-subtitle').textContent = data.subtitle;
+            document.getElementById('iframe-3d-viewer').src = data.url;
+            document.getElementById('model-3d-external').href = data.url;
+            document.getElementById('model-3d-info-title').textContent = data.infoTitle;
+            document.getElementById('model-3d-info-desc').textContent = data.infoDesc;
+
+            const listEl = document.getElementById('model-3d-knots-list');
+            listEl.innerHTML = data.knots.map(k => `
+                <li onclick="inspectKnotFromGadget(${k.knotId})" class="p-3 rounded-2xl bg-slate-50 hover:bg-scout-50 border border-slate-100 hover:border-scout-300 cursor-pointer transition">
+                    <div class="font-bold text-xs text-scout-800 flex items-center justify-between">
+                        <span>${k.name}</span>
+                        <span class="text-[11px] text-scout-600">Lihat Simulasi →</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-0.5">${k.note}</p>
+                </li>
+            `).join('');
+        }
+
+        // Menjana Butang Pemilih 8 Simpulan & Ikatan
         function renderKnotSelector() {
             const container = document.getElementById('knot-selector-grid');
+            if (!container) return;
             container.innerHTML = knotsData.map((knot, idx) => `
-                <button onclick="loadKnot(${idx})" id="knot-tab-${idx}" 
-                    class="text-left p-2.5 sm:p-3 rounded-2xl border transition-all duration-200 flex flex-col justify-between
+                <button onclick="loadKnot(${idx})" 
+                    class="p-3 rounded-2xl text-left transition-all duration-200 border flex flex-col justify-between
                     ${idx === currentKnotIndex 
                         ? 'bg-scout-700 text-white border-scout-700 shadow-md ring-2 ring-scout-500/30' 
                         : 'bg-white text-slate-700 border-slate-200 hover:border-scout-400 hover:bg-scout-50/50'}">
-                    <span class="text-[11px] font-bold opacity-75">0${idx + 1}</span>
-                    <span class="text-xs sm:text-sm font-bold leading-snug mt-0.5 line-clamp-1">${knot.shortName}</span>
+                    <span class="text-[11px] font-bold ${idx === currentKnotIndex ? 'text-amber-300' : 'text-scout-600'}">
+                        #${idx + 1}
+                    </span>
+                    <span class="font-bold text-xs sm:text-sm mt-1 leading-snug">
+                        ${knot.shortName}
+                    </span>
                 </button>
             `).join('');
         }
