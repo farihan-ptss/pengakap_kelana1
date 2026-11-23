@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model 3D Brynback Tower - Projek Perintis Pengakap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js & OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow: hidden;
+            background-color: #f3f4f6;
+            user-select: none;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        /* Gaya Label 3D Terapung */
+        .label-3d {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            background: rgba(17, 24, 39, 0.88);
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            line-height: 1.3;
+            pointer-events: auto;
+            cursor: pointer;
+            border: 1px solid rgba(251, 191, 36, 0.6);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+        .label-3d:hover {
+            background: rgba(180, 83, 9, 0.95);
+            border-color: #ffffff;
+            transform: translate(-50%, -50%) scale(1.06);
+            z-index: 20;
+        }
+        .label-3d .badge {
+            display: inline-block;
+            background: #f59e0b;
+            color: #111827;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-right: 4px;
+        }
+        /* Custom Scrollbar untuk Panel Maklumat */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.6);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(107, 114, 128, 0.8);
+        }
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #d97706;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #d1d5db;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Kanvas Utama 3D -->
+    <div id="canvas-container"></div>
+
+    <!-- Bekas Label 3D -->
+    <div id="labels-container" class="pointer-events-none fixed inset-0 overflow-hidden"></div>
+
+    <!-- Header / Tajuk Atas Kiri -->
+    <div class="fixed top-4 left-4 z-30 max-w-xs sm:max-w-sm pointer-events-none">
+        <div class="bg-white/90 backdrop-blur-md p-3.5 rounded-2xl shadow-lg border border-gray-200/80 pointer-events-auto">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-amber-600 flex items-center justify-center text-white font-bold shadow-sm shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 22 22 22 12 2"></polygon>
+                        <line x1="6" y1="14" x2="18" y2="14"></line>
+                        <line x1="8.5" y1="9" x2="15.5" y2="9"></line>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-sm sm:text-base font-bold text-gray-900 leading-tight">Brynback Tower (Model 3D)</h1>
+                    <p class="text-xs text-gray-500 font-medium">Projek Perintis • Skala Lidi 35.0 cm</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Butang Togol Panel Maklumat (Atas Kanan) -->
+    <div class="fixed top-4 right-4 z-30 flex gap-2">
+        <button id="toggle-labels-btn" class="bg-white/90 hover:bg-white backdrop-blur-md text-gray-800 px-3.5 py-2.5 rounded-xl shadow-lg border border-gray-200/80 text-xs font-semibold flex items-center gap-2 transition active:scale-95">
+            <span id="label-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span>Label & Ikatan</span>
+        </button>
+        <button id="toggle-sidebar-btn" class="bg-amber-600 hover:bg-amber-700 text-white px-3.5 py-2.5 rounded-xl shadow-lg text-xs font-semibold flex items-center gap-1.5 transition active:scale-95">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+            <span class="hidden sm:inline">Pelan & Ukuran</span>
+        </button>
+    </div>
+
+    <!-- Panel Maklumat Sisi (Boleh Disembunyikan) -->
+    <aside id="info-sidebar" class="fixed top-16 right-4 bottom-24 w-80 sm:w-96 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200/90 z-30 flex flex-col overflow-hidden transition-all duration-300 translate-x-0">
+        <!-- Tab Navigasi Panel -->
+        <div class="flex border-b border-gray-200 bg-gray-50/80 p-1.5 gap-1">
+            <button data-tab="ukuran" class="tab-btn flex-1 py-2 text-xs font-bold rounded-lg bg-white text-amber-700 shadow-sm transition">
+                📏 Ukuran Lidi (35cm)
+            </button>
+            <button data-tab="ikatan" class="tab-btn flex-1 py-2 text-xs font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition">
+                🪢 Jenis Ikatan
+            </button>
+        </div>
+
+        <!-- Kandungan Tab 1: Ukuran Lidi -->
+        <div id="tab-ukuran" class="tab-content flex-1 overflow-y-auto p-4 space-y-3">
+            <div class="bg-amber-50 border border-amber-200/80 rounded-xl p-3 text-xs text-amber-900">
+                <span class="font-bold">Nota Skala:</span> Ukuran di bawah berdasarkan panjang maksimum sebatang lidi satay/buluh <strong>35.0 cm</strong> (nisbah ~1:15 daripada menara sebenar).
+            </div>
+
+            <div class="space-y-2 text-xs">
+                <div class="p-2.5 rounded-xl bg-gray-50 border border-gray-200/70 hover:border-amber-400 transition cursor-pointer" onclick="focusCamera('tripod')">
+                    <div class="flex justify-between items-center font-bold text-gray-900">
+                        <span>1. Tiang Utama (Tripod)</span>
+                        <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">3 × 35.0 cm</span>
+                    </div>
+                    <p class="text-gray-600 mt-1">3 batang lidi penuh bersilang pada paras ±24 cm dari tapak, membentuk tapak segi tiga di bawah & bukaan segi tiga di atas.</p>
+                </div>
+
+                <div class="p-2.5 rounded-xl bg-gray-50 border border-gray-200/70 hover:border-amber-400 transition cursor-pointer" onclick="focusCamera('base')">
+                    <div class="flex justify-between items-center font-bold text-gray-900">
+                        <span>2. Palang Tapak (Segi Tiga Bawah)</span>
+                        <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">3 × 22.0 cm</span>
+                    </div>
+                    <p class="text-gray-600 mt-1">Diikat 3 cm dari hujung bawah kaki tripod untuk mengunci bukaan tapak agar kukuh.</p>
+                </div>
+
+                <div class="p-2.5 rounded-xl bg-gray-50 border border-gray-200/70 hover:border-amber-400 transition cursor-pointer" onclick="focusCamera('platform')">
+                    <div class="flex justify-between items-center font-bold text-gray-900">
+                        <span>3. Palang Platform (Tengah)</span>
+                        <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">3 × 18.0 cm</span>
+                    </div>
+                    <p class="text-gray-600 mt-1">Rangka segi tiga mendatar pada ketinggian ±26 cm sebagai penyokong lantai menara.</p>
+                </div>
+
+                <div class="p-2.5 rounded-xl bg-gray-50 border border-gray-200/70 hover:border-amber-400 transition cursor-pointer" onclick="focusCamera('platform')">
+                    <div class="flex justify-between items-center font-bold text-gray-900">
+                        <span>4. Lantai Platform</span>
+                        <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">8 × (6–14 cm)</span>
+                    </div>
+                    <p class="text-gray-600 mt-1">Susunan lidi rapat mengikut bentuk segi tiga platform menggunakan Lilit Kacang.</p>
+                </div>
+
+                <div class="p-2.5 rounded-xl bg-gray-50 border border-gray-200/70 hover:border-amber-400 transition cursor-pointer" onclick="focusCamera('crow')">
+                    <div class="flex justify-between items-center font-bold text-gray-900">
+                        <span>5. Tiang Penahan Pagar (Condong)</span>
+                        <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">6 × 12.0 cm</span>
+                    </div>
+                    <p class="text-gray-600 mt-1">Membentuk corak zig-zag / 'V' terbalik pada ketiga-tiga sisi pagar pemerhati.</p>
+                </div>
+
+                <div class="p-2.5 rounded-xl bg-gray-50 border border-gray-200/70 hover:border-amber-400 transition cursor-pointer" onclick="focusCamera('crow')">
+                    <div class="flex justify-between items-center font-bold text-gray-900">
+                        <span>6. Palang Pagar Atas (Puncak)</span>
+                        <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">3 × 13.0 cm</span>
+                    </div>
+                    <p class="text-gray-600 mt-1">Mengikat puncak tiang pagar membentuk segi tiga pengadang keselamatan atas.</p>
+                </div>
+
+                <div class="p-2.5 rounded-xl bg-gray-50 border border-gray-200/70 hover:border-amber-400 transition cursor-pointer" onclick="focusCamera('ladder')">
+                    <div class="flex justify-between items-center font-bold text-gray-900">
+                        <span>7. Anak Tangga Tali</span>
+                        <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">12 × 4.5 cm</span>
+                    </div>
+                    <p class="text-gray-600 mt-1">Digantung dari palang platform hadapan terus ke palang tapak bawah.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kandungan Tab 2: Jenis Ikatan -->
+        <div id="tab-ikatan" class="tab-content hidden flex-1 overflow-y-auto p-4 space-y-3 text-xs">
+            <div class="p-3 rounded-xl bg-amber-50/70 border border-amber-200">
+                <h3 class="font-bold text-amber-900 text-sm">1. Ikatan Silang Tungku (Figure-of-8)</h3>
+                <p class="text-gray-700 mt-1"><strong>Lokasi:</strong> Persilangan 3 tiang utama (paras 24 cm).</p>
+                <p class="text-gray-600 mt-1">Mengikat ketiga-tiga batang lidi utama secara serentak sebelum kaki dibuka membentuk tripod yang stabil.</p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-gray-50 border border-gray-200">
+                <h3 class="font-bold text-gray-900 text-sm">2. Ikatan Seraya (Square Lashing)</h3>
+                <p class="text-gray-700 mt-1"><strong>Lokasi:</strong> Pertemuan palang tapak (22cm), palang platform (18cm) & palang pagar atas (13cm) dengan tiang.</p>
+                <p class="text-gray-600 mt-1">Digunakan pada setiap sambungan bersudut tepat (90°) untuk menanggung beban menegak.</p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-gray-50 border border-gray-200">
+                <h3 class="font-bold text-gray-900 text-sm">3. Ikatan Serong (Diagonal Lashing)</h3>
+                <p class="text-gray-700 mt-1"><strong>Lokasi:</strong> Tiang pagar condong (12cm) pada palang platform & persilangan pagar.</p>
+                <p class="text-gray-600 mt-1">Mengikat kayu yang bersilang pada sudut tirus/condong supaya struktur pagar tidak rebah.</p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-gray-50 border border-gray-200">
+                <h3 class="font-bold text-gray-900 text-sm">4. Lilit Kacang (Floor Lashing)</h3>
+                <p class="text-gray-700 mt-1"><strong>Lokasi:</strong> Lantai platform segi tiga.</p>
+                <p class="text-gray-600 mt-1">Mengikat lidi-lidi lantai secara berterusan dan rapat di atas palang platform.</p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-gray-50 border border-gray-200">
+                <h3 class="font-bold text-gray-900 text-sm">5. Simpul Manuk & Lilit Tangga</h3>
+                <p class="text-gray-700 mt-1"><strong>Lokasi:</strong> Permulaan/penamat ikatan & anak tangga (4.5cm).</p>
+                <p class="text-gray-600 mt-1">Simpul Manuk memulakan setiap ikatan; Lilit Tangga (Marline Spike Hitch) mengunci setiap anak tangga pada tali.</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Bar Kawalan Bawah (Pandangan Kamera & Exploded View) -->
+    <div class="fixed bottom-4 left-4 right-4 z-30 flex flex-col md:flex-row items-center justify-between gap-3 pointer-events-none">
+        
+        <!-- Butang Preset Kamera -->
+        <div class="bg-white/90 backdrop-blur-md p-1.5 rounded-2xl shadow-lg border border-gray-200/80 flex flex-wrap justify-center gap-1 pointer-events-auto">
+            <button onclick="focusCamera('full')" class="cam-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-600 text-white shadow-sm transition">
+                Pandangan Penuh
+            </button>
+            <button onclick="focusCamera('tripod')" class="cam-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-gray-700 hover:bg-gray-100 transition">
+                Silang Tungku
+            </button>
+            <button onclick="focusCamera('crow')" class="cam-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-gray-700 hover:bg-gray-100 transition">
+                Platform & Pagar
+            </button>
+            <button onclick="focusCamera('top')" class="cam-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-gray-700 hover:bg-gray-100 transition">
+                Pelan Atas
+            </button>
+        </div>
+
+        <!-- Kawalan Exploded View (Cerai Struktur) -->
+        <div class="bg-white/90 backdrop-blur-md px-4 py-2.5 rounded-2xl shadow-lg border border-gray-200/80 flex items-center gap-3 pointer-events-auto w-full max-w-xs">
+            <span class="text-xs font-bold text-gray-700 whitespace-nowrap">Cerai Struktur:</span>
+            <input id="explode-slider" type="range" min="0" max="1" step="0.01" value="0" class="w-full">
+            <span id="explode-val" class="text-xs font-mono font-bold text-amber-700 w-9 text-right">0%</span>
+        </div>
+
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. INISIALISASI SCENE, KAMERA & RENDERER
+        // ==========================================
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xf1f5f9);
+        scene.fog = new THREE.FogExp2(0xf1f5f9, 0.012);
+
+        const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 200);
+        camera.position.set(34, 24, 38);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        container.appendChild(renderer.domElement);
+
+        // Kawalan Orbit
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.06;
+        controls.target.set(0, 17, 0);
+        controls.minDistance = 10;
+        controls.maxDistance = 90;
+        controls.maxPolarAngle = Math.PI / 2 - 0.02; // Elak kamera masuk bawah tanah
+
+        // ==========================================
+        // 2. PENCAHAYAAN & TAPAK RUJUKAN (1 unit = 1 cm)
+        // ==========================================
+        const hemiLight = new THREE.HemisphereLight(0xffffff, 0xe2e8f0, 0.75);
+        hemiLight.position.set(0, 50, 0);
+        scene.add(hemiLight);
+
+        const dirLight = new THREE.DirectionalLight(0xfffbeb, 0.85);
+        dirLight.position.set(25, 45, 30);
+        dirLight.castShadow = true;
+        dirLight.shadow.mapSize.width = 2048;
+        dirLight.shadow.mapSize.height = 2048;
+        dirLight.shadow.camera.near = 5;
+        dirLight.shadow.camera.far = 110;
+        const d = 28;
+        dirLight.shadow.camera.left = -d;
+        dirLight.shadow.camera.right = d;
+        dirLight.shadow.camera.top = d;
+        dirLight.shadow.camera.bottom = -d;
+        dirLight.shadow.bias = -0.0005;
+        scene.add(dirLight);
+
+        const fillLight = new THREE.DirectionalLight(0xe0f2fe, 0.35);
+        fillLight.position.set(-25, 20, -25);
+        scene.add(fillLight);
+
+        // Tapak Lantai & Grid Skala (1 petak = 5 cm)
+        const groundGeo = new THREE.PlaneGeometry(140, 140);
+        const groundMat = new THREE.MeshStandardMaterial({ 
+            color: 0xe2e8f0, 
+            roughness: 0.9, 
+            metalness: 0.05 
+        });
+        const ground = new THREE.Mesh(groundGeo, groundMat);
+        ground.rotation.x = -Math.PI / 2;
+        ground.receiveShadow = true;
+        scene.add(ground);
+
+        const gridHelper = new THREE.GridHelper(70, 14, 0x94a3b8, 0xcbd5e1);
+        gridHelper.position.y = 0.02;
+        scene.add(gridHelper);
+
+        // ==========================================
+        // 3. BAHAN & TEKSTUR LIDI BULUH + TALI IKATAN
+        // ==========================================
+        function createBambooTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 128;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            
+            // Warna asas lidi buluh semula jadi
+            ctx.fillStyle = '#c89658';
+            ctx.fillRect(0, 0, 128, 512);
+
+            // Jalur serat kayu halus
+            for (let i = 0; i < 90; i++) {
+                const x = Math.random() * 128;
+                ctx.fillStyle = Math.random() > 0.5 ? 'rgba(138, 90, 38, 0.16)' : 'rgba(235, 198, 142, 0.18)';
+                ctx.fillRect(x, 0, 1 + Math.random() * 1.5, 512);
+            }
+            // Buku buluh halus
+            ctx.fillStyle = 'rgba(110, 68, 25, 0.25)';
+            ctx.fillRect(0, 160, 128, 3);
+            ctx.fillRect(0, 380, 128, 3);
+
+            const tex = new THREE.CanvasTexture(canvas);
+            tex.wrapS = THREE.RepeatWrapping;
+            tex.wrapT = THREE.RepeatWrapping;
+            return tex;
+        }
+
+        const stickMaterial = new THREE.MeshStandardMaterial({
+            map: createBambooTexture(),
+            roughness: 0.55,
+            metalness: 0.05
+        });
+
+        const ropeMaterial = new THREE.MeshStandardMaterial({
+            color: 0xfef3c7, // Warna tali guni/benang kait krim cerah
+            roughness: 0.85,
+            metalness: 0.0
+        });
+
+        const cordMaterial = new THREE.MeshStandardMaterial({
+            color: 0xd97706, // Tali utama tangga
+            roughness: 0.8
+        });
+
+        // ==========================================
+        // 4. FUNGSI PEMBINAAN KAYU & IKATAN TALI
+        // ==========================================
+        const STICK_RADIUS = 0.24; // Jejari lidi ~2.4mm (diameter ~4.8mm)
+
+        // Membina batang lidi di antara titik A dan B dengan lebihan (overhang) di kedua-dua hujung
+        function createStickBetween(p1, p2, overhang1 = 1.5, overhang2 = 1.5, radius = STICK_RADIUS, mat = stickMaterial) {
+            const dir = new THREE.Vector3().subVectors(p2, p1);
+            const dist = dir.length();
+            dir.normalize();
+
+            const start = new THREE.Vector3().copy(p1).addScaledVector(dir, -overhang1);
+            const end = new THREE.Vector3().copy(p2).addScaledVector(dir, overhang2);
+            const totalLen = start.distanceTo(end);
+
+            const geo = new THREE.CylinderGeometry(radius, radius * 1.04, totalLen, 14);
+            const mesh = new THREE.Mesh(geo, mat);
+
+            const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+            mesh.position.copy(mid);
+            mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            return mesh;
+        }
+
+        // Membina lilitan tali (lashing wraps) pada titik persilangan
+        function createLashing(pos, dir1, dir2, scale = 1.0) {
+            const group = new THREE.Group();
+            group.position.copy(pos);
+
+            const torusGeo = new THREE.TorusGeometry(STICK_RADIUS * 1.65 * scale, 0.085 * scale, 8, 18);
+            
+            // Lilitan mengelilingi paksi kayu 1
+            if (dir1) {
+                const q1 = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir1.clone().normalize());
+                for (let offset of [-0.14, 0, 0.14]) {
+                    const ring = new THREE.Mesh(torusGeo, ropeMaterial);
+                    ring.quaternion.copy(q1);
+                    ring.position.addScaledVector(dir1.clone().normalize(), offset);
+                    group.add(ring);
+                }
+            }
+
+            // Lilitan bersilang mengelilingi paksi kayu 2
+            if (dir2) {
+                const q2 = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir2.clone().normalize());
+                for (let offset of [-0.14, 0, 0.14]) {
+                    const ring = new THREE.Mesh(torusGeo, ropeMaterial);
+                    ring.quaternion.copy(q2);
+                    ring.position.addScaledVector(dir2.clone().normalize(), offset);
+                    group.add(ring);
+                }
+            }
+
+            return group;
+        }
+
+        // ==========================================
+        // 5. GEOMETRI BRYNBACK TOWER (SKALA 35 CM)
+        // ==========================================
+        const towerGroups = {
+            tripod: new THREE.Group(),
+            base: new THREE.Group(),
+            platform: new THREE.Group(),
+            crow: new THREE.Group(),
+            ladder: new THREE.Group()
+        };
+
+        Object.values(towerGroups).forEach(g => scene.add(g));
+
+        // Sudut 3 penjuru segi tiga sama sisi (Sisi 0 di hadapan: z positif)
+        // Sudut A: 90 deg (hadapan +Z), B: 210 deg (kiri belakang), C: 330 deg (kanan belakang)
+        const angles = [Math.PI / 2, (7 * Math.PI) / 6, (11 * Math.PI) / 6];
+
+        // --- A. 3 TIANG UTAMA TRIPOD (35.0 cm) ---
+        // Bersilang pada ketinggian y = 23.5 cm (titik pinggang tripod)
+        // Tapak jejari R_ground = 12.2 cm (jarak antara kaki = 21.1 cm)
+        // Puncak jejari R_top = 6.2 cm pada y = 32.8 cm (panjang tepat 35.0 cm)
+        const yCross = 23.5;
+        const rGround = 12.2;
+        const rCross = 0.45; // Sedikit offset supaya tiang tidak bertindih tepat di tengah
+
+        const legBottoms = [];
+        const legTops = [];
+        const legDirs = [];
+
+        for (let i = 0; i < 3; i++) {
+            const theta = angles[i];
+            const pGround = new THREE.Vector3(rGround * Math.cos(theta), 0, rGround * Math.sin(theta));
+            // Arah ke titik pinggang bersilang (sedikit berpusing untuk lilitan Silang Tungku)
+            const pWaist = new THREE.Vector3(
+                rCross * Math.cos(theta + 1.2),
+                yCross,
+                rCross * Math.sin(theta + 1.2)
+            );
+
+            const dir = new THREE.Vector3().subVectors(pWaist, pGround).normalize();
+            const pEnd = new THREE.Vector3().copy(pGround).addScaledVector(dir, 35.0); // Panjang tepat 35 cm
+
+            legBottoms.push(pGround);
+            legTops.push(pEnd);
+            legDirs.push(dir);
+
+            const pole = createStickBetween(pGround, pEnd, 0, 0);
+            towerGroups.tripod.add(pole);
+        }
+
+        // Ikatan Silang Tungku pada paras y = 23.5 cm
+        const silangTungkuPos = new THREE.Vector3(0, yCross, 0);
+        const stWrap1 = createLashing(silangTungkuPos, legDirs[0], legDirs[1], 1.55);
+        const stWrap2 = createLashing(silangTungkuPos, legDirs[2], new THREE.Vector3(0, 1, 0), 1.45);
+        towerGroups.tripod.add(stWrap1, stWrap2);
+
+        // --- B. 3 PALANG TAPAK SEGI TIGA BAWAH (22.0 cm) ---
+        // Diikat pada paras 3.2 cm dari lantai menggunakan Ikatan Seraya
+        const baseNodes = [];
+        for (let i = 0; i < 3; i++) {
+            baseNodes.push(new THREE.Vector3().copy(legBottoms[i]).addScaledVector(legDirs[i], 3.3));
+        }
+
+        for (let i = 0; i < 3; i++) {
+            const j = (i + 1) % 3;
+            const pA = baseNodes[i].clone().add(new THREE.Vector3(0, (i % 2) * 0.22, 0));
+            const pB = baseNodes[j].clone().add(new THREE.Vector3(0, (i % 2) * 0.22, 0));
+            const barDir = new THREE.Vector3().subVectors(pB, pA).normalize();
+
+            // Panjang keseluruhan palang ~22 cm (overhang 1.8 cm setiap hujung)
+            const baseBar = createStickBetween(pA, pB, 1.8, 1.8);
+            towerGroups.base.add(baseBar);
+
+            // Ikatan Seraya pada kedua-dua penjuru
+            towerGroups.base.add(createLashing(pA, legDirs[i], barDir, 1.15));
+            towerGroups.base.add(createLashing(pB, legDirs[j], barDir, 1.15));
+        }
+
+        // --- C. PALANG PLATFORM & LANTAI (18.0 cm, tinggi ~27.5 cm) ---
+        // Diikat pada bahagian atas bukaan tripod
+        const yPlatform = 27.6;
+        const platNodes = [];
+        for (let i = 0; i < 3; i++) {
+            const t = (yPlatform - legBottoms[i].y) / legDirs[i].y;
+            platNodes.push(new THREE.Vector3().copy(legBottoms[i]).addScaledVector(legDirs[i], t));
+        }
+
+        // 3 Palang Platform (panjang ~18 cm dengan overhang)
+        for (let i = 0; i < 3; i++) {
+            const j = (i + 1) % 3;
+            const pA = platNodes[i].clone().add(new THREE.Vector3(0, (i === 1 ? 0.25 : 0), 0));
+            const pB = platNodes[j].clone().add(new THREE.Vector3(0, (i === 1 ? 0.25 : 0), 0));
+            const barDir = new THREE.Vector3().subVectors(pB, pA).normalize();
+
+            const platBar = createStickBetween(pA, pB, 4.8, 4.8); // Jumlah panjang ±18 cm
+            towerGroups.platform.add(platBar);
+
+            // Ikatan Seraya pada pertemuan palang platform & kaki tripod
+            towerGroups.platform.add(createLashing(pA, legDirs[i], barDir, 1.15));
+            towerGroups.platform.add(createLashing(pB, legDirs[j], barDir, 1.15));
+        }
+
+        // Lantai Platform (Susunan Lilit Kacang di atas rangka segi tiga)
+        // Sisi 1-2 adalah bahagian belakang (-Z), penjuru 0 adalah bahagian hadapan (+Z)
+        const pFront = platNodes[0];
+        const pBackLeft = platNodes[1];
+        const pBackRight = platNodes[2];
+        const pBackMid = new THREE.Vector3().addVectors(pBackLeft, pBackRight).multiplyScalar(0.5);
+
+        const numFloorSticks = 8;
+        for (let k = 1; k <= numFloorSticks; k++) {
+            const frac = k / (numFloorSticks + 1);
+            const leftPt = new THREE.Vector3().lerpVectors(pBackLeft, pFront, frac);
+            const rightPt = new THREE.Vector3().lerpVectors(pBackRight, pFront, frac);
+            leftPt.y = yPlatform + 0.42;
+            rightPt.y = yPlatform + 0.42;
+
+            const floorStick = createStickBetween(leftPt, rightPt, 0.7, 0.7, STICK_RADIUS * 0.9);
+            towerGroups.platform.add(floorStick);
+
+            // Lilit Kacang pada kedua-dua tepi lantai
+            if (k % 2 === 1) {
+                const fDir = new THREE.Vector3().subVectors(rightPt, leftPt).normalize();
+                towerGroups.platform.add(createLashing(leftPt, fDir, null, 0.85));
+                towerGroups.platform.add(createLashing(rightPt, fDir, null, 0.85));
+            }
+        }
+
+        // --- D. STRUKTUR PAGAR ATAS / CROW'S NEST (6x 12cm + 3x 13cm) ---
+        // Tiga palang pagar atas membentuk segi tiga pada ketinggian y = 36.2 cm
+        const yTopRail = 36.2;
+        const rTopRail = 6.8;
+        const topRailNodes = [];
+        for (let i = 0; i < 3; i++) {
+            const theta = angles[i];
+            topRailNodes.push(new THREE.Vector3(rTopRail * Math.cos(theta), yTopRail, rTopRail * Math.sin(theta)));
+        }
+
+        // 3 Palang Pagar Atas (13.0 cm)
+        for (let i = 0; i < 3; i++) {
+            const j = (i + 1) % 3;
+            const pA = topRailNodes[i].clone().add(new THREE.Vector3(0, (i % 2) * 0.22, 0));
+            const pB = topRailNodes[j].clone().add(new THREE.Vector3(0, (i % 2) * 0.22, 0));
+            const railBar = createStickBetween(pA, pB, 0.8, 0.8); // ±13.4 cm
+            towerGroups.crow.add(railBar);
+        }
+
+        // 6 Tiang Penahan Pagar Condong (12.0 cm) - Corak V terbalik / zig-zag pada 3 sisi
+        for (let i = 0; i < 3; i++) {
+            const j = (i + 1) % 3;
+            const sideDir = new THREE.Vector3().subVectors(platNodes[j], platNodes[i]).normalize();
+            
+            // Dua titik tapak di atas palang platform (mengembang keluar sedikit)
+            const foot1 = new THREE.Vector3().copy(platNodes[i]).addScaledVector(sideDir, -1.6);
+            const foot2 = new THREE.Vector3().copy(platNodes[j]).addScaledVector(sideDir, 1.6);
+            foot1.y = yPlatform + 0.15;
+            foot2.y = yPlatform + 0.15;
+
+            // Puncak menyilang ke arah palang pagar atas
+            const peak1 = new THREE.Vector3().lerpVectors(topRailNodes[i], topRailNodes[j], 0.32);
+            const peak2 = new THREE.Vector3().lerpVectors(topRailNodes[i], topRailNodes[j], 0.68);
+
+            const strut1 = createStickBetween(foot1, peak2, 1.0, 1.0); // ±12.0 cm
+            const strut2 = createStickBetween(foot2, peak1, 1.0, 1.0); // ±12.0 cm
+            towerGroups.crow.add(strut1, strut2);
+
+            const d1 = new THREE.Vector3().subVectors(peak2, foot1).normalize();
+            const d2 = new THREE.Vector3().subVectors(peak1, foot2).normalize();
+            const railDir = new THREE.Vector3().subVectors(topRailNodes[j], topRailNodes[i]).normalize();
+
+            // Ikatan Serong pada kaki pagar (bertemu palang platform)
+            towerGroups.crow.add(createLashing(foot1, d1, sideDir, 1.05));
+            towerGroups.crow.add(createLashing(foot2, d2, sideDir, 1.05));
+
+            // Ikatan Serong pada persilangan tengah V-terbalik
+            const midCross = new THREE.Vector3().addVectors(foot1, peak2).multiplyScalar(0.5);
+            towerGroups.crow.add(createLashing(midCross, d1, d2, 1.0));
+
+            // Ikatan Seraya/Serong pada palang pagar atas
+            towerGroups.crow.add(createLashing(peak2, d1, railDir, 1.05));
+            towerGroups.crow.add(createLashing(peak1, d2, railDir, 1.05));
+        }
+
+        // --- E. TANGGA TALI (12 Anak Tangga 4.5 cm) ---
+        // Dari sisi hadapan platform (sisi antara penjuru 2 dan penjuru 0, atau tengah sisi hadapan)
+        // Kita letakkan tangga di sisi kanan-hadapan (antara kaki 0 dan kaki 2) supaya jelas dilihat
+        const ladderSideStart = platNodes[0];
+        const ladderSideEnd = platNodes[2];
+        const topLadderCenter = new THREE.Vector3().addVectors(ladderSideStart, ladderSideEnd).multiplyScalar(0.5);
+        const topLadderDir = new THREE.Vector3().subVectors(ladderSideEnd, ladderSideStart).normalize();
+
+        const botLadderCenter = new THREE.Vector3().addVectors(baseNodes[0], baseNodes[2]).multiplyScalar(0.5);
+        const botLadderDir = new THREE.Vector3().subVectors(baseNodes[2], baseNodes[0]).normalize();
+
+        const rungHalfWidth = 1.75; // Jumlah panjang lidi anak tangga = 4.5 cm (termasuk lebihan tepi)
+        const topLeftRope = new THREE.Vector3().copy(topLadderCenter).addScaledVector(topLadderDir, -rungHalfWidth);
+        const topRightRope = new THREE.Vector3().copy(topLadderCenter).addScaledVector(topLadderDir, rungHalfWidth);
+
+        const botLeftRope = new THREE.Vector3().copy(botLadderCenter).addScaledVector(botLadderDir, -rungHalfWidth);
+        const botRightRope = new THREE.Vector3().copy(botLadderCenter).addScaledVector(botLadderDir, rungHalfWidth);
+
+        // Dua utas tali tegak tangga
+        const leftRopeMesh = createStickBetween(botLeftRope, topLeftRope, 0, 0, 0.065, cordMaterial);
+        const rightRopeMesh = createStickBetween(botRightRope, topRightRope, 0, 0, 0.065, cordMaterial);
+        towerGroups.ladder.add(leftRopeMesh, rightRopeMesh);
+
+        // Simpul Manuk di hujung atas dan bawah tali tangga
+        towerGroups.ladder.add(createLashing(topLeftRope, topLadderDir, null, 0.8));
+        towerGroups.ladder.add(createLashing(topRightRope, topLadderDir, null, 0.8));
+        towerGroups.ladder.add(createLashing(botLeftRope, botLadderDir, null, 0.8));
+        towerGroups.ladder.add(createLashing(botRightRope, botLadderDir, null, 0.8));
+
+        // 12 Anak Tangga Lidi Pendek (4.5 cm)
+        const numRungs = 12;
+        for (let r = 1; r <= numRungs; r++) {
+            const frac = r / (numRungs + 1);
+            const pL = new THREE.Vector3().lerpVectors(botLeftRope, topLeftRope, frac);
+            const pR = new THREE.Vector3().lerpVectors(botRightRope, topRightRope, frac);
+
+            const rung = createStickBetween(pL, pR, 0.5, 0.5, STICK_RADIUS * 0.72);
+            towerGroups.ladder.add(rung);
+
+            // Lilit Tangga pada kedua-dua hujung anak tangga
+            const rDir = new THREE.Vector3().subVectors(pR, pL).normalize();
+            towerGroups.ladder.add(createLashing(pL, rDir, null, 0.65));
+            towerGroups.ladder.add(createLashing(pR, rDir, null, 0.65));
+        }
+
+        // ==========================================
+        // 6. LABEL 3D TERAPUNG (UKURAN & JENIS IKATAN)
+        // ==========================================
+        const labelsData = [
+            {
+                id: 'lbl-silang',
+                pos: new THREE.Vector3(0, yCross, 0),
+                group: 'tripod',
+                badge: 'IKATAN',
+                title: 'Ikatan Silang Tungku',
+                sub: 'Paras 24.0 cm • 3 Tiang Utama (35 cm)',
+                cam: 'tripod'
+            },
+            {
+                id: 'lbl-tapak',
+                pos: new THREE.Vector3(-5.5, 3.5, 9.2),
+                group: 'base',
+                badge: '22.0 cm',
+                title: 'Palang Tapak (Ikatan Seraya)',
+                sub: 'Segi tiga pengukuh kaki tripod',
+                cam: 'base'
+            },
+            {
+                id: 'lbl-platform',
+                pos: new THREE.Vector3(-4.5, yPlatform + 0.5, 4.2),
+                group: 'platform',
+                badge: '18.0 cm',
+                title: 'Platform & Lilit Kacang',
+                sub: 'Tinggi 27.5 cm • Ikatan Seraya',
+                cam: 'crow'
+            },
+            {
+                id: 'lbl-pagar',
+                pos: new THREE.Vector3(0, yTopRail + 0.5, 6.8),
+                group: 'crow',
+                badge: '12 & 13 cm',
+                title: 'Pagar Atas (Ikatan Serong)',
+                sub: '6 Tiang Condong + 3 Palang Atas',
+                cam: 'crow'
+            },
+            {
+                id: 'lbl-tangga',
+                pos: new THREE.Vector3(5.2, 15.0, 5.2),
+                group: 'ladder',
+                badge: '4.5 cm',
+                title: 'Tangga Tali (12 Anak Tangga)',
+                sub: 'Simpul Manuk & Lilit Tangga',
+                cam: 'ladder'
+            }
+        ];
+
+        const labelsContainer = document.getElementById('labels-container');
+        const labelElements = [];
+
+        labelsData.forEach(item => {
+            const el = document.createElement('div');
+            el.className = 'label-3d';
+            el.innerHTML = `
+                <div><span class="badge">${item.badge}</span><strong>${item.title}</strong></div>
+                <div class="text-[10px] text-gray-300 mt-0.5">${item.sub}</div>
+            `;
+            el.addEventListener('click', () => focusCamera(item.cam));
+            labelsContainer.appendChild(el);
+            labelElements.push({ el, data: item });
+        });
+
+        let labelsVisible = true;
+        const toggleLabelsBtn = document.getElementById('toggle-labels-btn');
+        const labelDot = document.getElementById('label-dot');
+
+        toggleLabelsBtn.addEventListener('click', () => {
+            labelsVisible = !labelsVisible;
+            labelsContainer.style.display = labelsVisible ? 'block' : 'none';
+            labelDot.className = labelsVisible 
+                ? 'w-2.5 h-2.5 rounded-full bg-emerald-500' 
+                : 'w-2.5 h-2.5 rounded-full bg-gray-400';
+        });
+
+        // ==========================================
+        // 7. MOD EXPLODED VIEW (CERAI STRUKTUR)
+        // ==========================================
+        const explodeSlider = document.getElementById('explode-slider');
+        const explodeVal = document.getElementById('explode-val');
+        let explodeFactor = 0;
+
+        explodeSlider.addEventListener('input', (e) => {
+            explodeFactor = parseFloat(e.target.value);
+            explodeVal.textContent = Math.round(explodeFactor * 100) + '%';
+            updateExplodedPositions();
+        });
+
+        function updateExplodedPositions() {
+            // Pisahkan setiap sub-kumpulan secara menegak dan mendatar supaya jelas susunannya
+            towerGroups.base.position.set(0, -explodeFactor * 2.5, 0);
+            towerGroups.tripod.position.set(0, 0, 0);
+            towerGroups.platform.position.set(0, explodeFactor * 6.5, 0);
+            towerGroups.crow.position.set(0, explodeFactor * 14.5, 0);
+            towerGroups.ladder.position.set(explodeFactor * 7.5, explodeFactor * 2.0, explodeFactor * 4.5);
+        }
+
+        // ==========================================
+        // 8. PRESET KAMERA & ANIMASI PERALIHAN
+        // ==========================================
+        let targetCamPos = null;
+        let targetLookAt = null;
+
+        const cameraPresets = {
+            full: { pos: new THREE.Vector3(34, 24, 38), look: new THREE.Vector3(0, 17, 0) },
+            tripod: { pos: new THREE.Vector3(16, 24, 18), look: new THREE.Vector3(0, 23.5, 0) },
+            crow: { pos: new THREE.Vector3(18, 36, 20), look: new THREE.Vector3(0, 31, 0) },
+            base: { pos: new THREE.Vector3(20, 10, 22), look: new THREE.Vector3(0, 3.5, 0) },
+            ladder: { pos: new THREE.Vector3(24, 17, 22), look: new THREE.Vector3(4, 15, 4) },
+            top: { pos: new THREE.Vector3(0.1, 56, 0.1), look: new THREE.Vector3(0, 25, 0) }
+        };
+
+        window.focusCamera = function(presetKey) {
+            const preset = cameraPresets[presetKey];
+            if (!preset) return;
+            targetCamPos = preset.pos.clone();
+            targetLookAt = preset.look.clone();
+
+            // Kemas kini gaya aktif butang preset
+            document.querySelectorAll('.cam-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-600', 'text-white', 'shadow-sm');
+                btn.classList.add('text-gray-700', 'hover:bg-gray-100');
+            });
+            const activeBtn = Array.from(document.querySelectorAll('.cam-btn')).find(b => 
+                b.getAttribute('onclick').includes(`'${presetKey}'`)
+            );
+            if (activeBtn) {
+                activeBtn.classList.add('bg-amber-600', 'text-white', 'shadow-sm');
+                activeBtn.classList.remove('text-gray-700', 'hover:bg-gray-100');
+            }
+        };
+
+        // Hentikan animasi kamera automatik jika pengguna menggerakkan tetikus/sentuhan secara manual
+        controls.addEventListener('start', () => {
+            targetCamPos = null;
+            targetLookAt = null;
+        });
+
+        // ==========================================
+        // 9. INTERAKSI UI PANEL SISI & TAB
+        // ==========================================
+        const sidebar = document.getElementById('info-sidebar');
+        const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
+        let sidebarOpen = true;
+
+        // Auto-tutup panel sisi pada skrin mudah alih kecil supaya ruang 3D luas
+        if (window.innerWidth < 640) {
+            sidebarOpen = false;
+            sidebar.classList.add('translate-x-[120%]');
+        }
+
+        toggleSidebarBtn.addEventListener('click', () => {
+            sidebarOpen = !sidebarOpen;
+            if (sidebarOpen) {
+                sidebar.classList.remove('translate-x-[120%]');
+            } else {
+                sidebar.classList.add('translate-x-[120%]');
+            }
+        });
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.getAttribute('data-tab');
+                
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.remove('bg-white', 'text-amber-700', 'shadow-sm', 'font-bold');
+                    b.classList.add('text-gray-600', 'font-semibold');
+                });
+                btn.classList.add('bg-white', 'text-amber-700', 'shadow-sm', 'font-bold');
+                btn.classList.remove('text-gray-600', 'font-semibold');
+
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+                document.getElementById(`tab-${targetTab}`).classList.remove('hidden');
+            });
+        });
+
+        // ==========================================
+        // 10. GELUNG ANIMASI & PENYELARASAN SKRIN
+        // ==========================================
+        function updateLabelsProjection() {
+            if (!labelsVisible) return;
+
+            labelElements.forEach(({ el, data }) => {
+                const worldPos = data.pos.clone().add(towerGroups[data.group].position);
+                const projected = worldPos.project(camera);
+
+                // Sembunyikan label jika berada di belakang kamera
+                if (projected.z > 1) {
+                    el.style.display = 'none';
+                    return;
+                }
+
+                const x = (projected.x * 0.5 + 0.5) * window.innerWidth;
+                const y = (-(projected.y * 0.5) + 0.5) * window.innerHeight;
+
+                el.style.display = 'block';
+                el.style.left = `${x}px`;
+                el.style.top = `${y}px`;
+            });
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Animasi peralihan kamera yang lancar
+            if (targetCamPos && targetLookAt) {
+                camera.position.lerp(targetCamPos, 0.08);
+                controls.target.lerp(targetLookAt, 0.08);
+                if (camera.position.distanceTo(targetCamPos) < 0.15) {
+                    targetCamPos = null;
+                    targetLookAt = null;
+                }
+            }
+
+            controls.update();
+            updateLabelsProjection();
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        window.onload = function () {
+            animate();
+        };
+    </script>
+</body>
+</html>
